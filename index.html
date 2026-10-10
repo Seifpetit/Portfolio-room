@@ -1,55 +1,119 @@
 <!doctype html>
 <html lang="en">
+<!-- Page setup: encoding, phone scaling, title, fonts and the two stylesheets -->
 <head>
+<!-- Text encoding -->
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<style>body{margin:0}</style>
-<title>Seif's Room</title>
-<meta name="description" content="Seif's pixel-art portfolio room.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="room.css">
 
+<!-- Fit the page to phone screens, including the notch area -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<!-- No white edge while the stylesheets load -->
+<style>body{margin:0}</style>
+
+<!-- Browser tab title (room.js replaces it with the title from content.json) -->
+<title>Seif's Room</title>
+
+<!-- Search and link-preview text (room.js replaces it with the description from content.json) -->
+<meta name="description" content="Seif's pixel-art portfolio room.">
+
+<!-- Opens the font server connection early -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<!-- Pixel font for titles, buttons and dialogue -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600&display=swap">
+
+<!-- Easy-to-read font for longer text -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+
+<!-- Shared with the editor: palette, fonts, cursors, scrollbars, flag picker -->
+<link rel="stylesheet" href="style.css">
+
+<!-- The room's own styles -->
+<link rel="stylesheet" href="room.css">
+</head>
+
+<!-- Everything visible: the room, the start screen, the panels, the dialogue banner -->
+<body>
+<!-- The room: header, the canvas it is drawn on, and the shortcut buttons -->
 <div class="app">
+  <!-- Top bar: room title and language flag -->
   <header>
+    <!-- Room title (room.js fills it from the room text, the braced part in amber) -->
     <h1>Seif's <span>Room</span></h1>
+
+    <!-- Language flag picker (filled by room.js) -->
     <div class="lang" id="lang"></div>
   </header>
+
+  <!-- The room itself: one canvas, click or tap to walk -->
   <div class="stage" id="stage"><canvas id="c" aria-label="A pixel room. Tap a spot to walk there."></canvas></div>
+
+  <!-- Shortcut buttons: open a panel without walking there -->
   <nav aria-label="Shortcuts">
+    <!-- Opens the Projects panel -->
     <button type="button" data-open="projects">Projects</button>
+
+    <!-- Opens the CV panel -->
     <button type="button" data-open="cv">CV</button>
+
+    <!-- Opens the Contact panel -->
     <button type="button" data-open="socials">Contact</button>
+
+    <!-- Hint under the buttons -->
     <small>In a hurry? These open the same panels without walking.</small>
   </nav>
 </div>
 
+<!-- Start screen over the blurred room: title, hint and loading bar; the first click hides it -->
 <div class="title" id="title" role="dialog" aria-label="Seif's Room. Click anywhere to start.">
+  <!-- Big title -->
   <h2 class="title-name">Seif's <span>Room</span></h2>
+
+  <!-- How to move: only one of the two shows, depending on mouse or touch -->
   <p class="title-hint">
-    <span class="mouse">Click anywhere to move</span><span class="touch">Tap anywhere to move</span>
+    <!-- Shown with a mouse -->
+    <span class="mouse">Click anywhere to move</span>
+
+    <!-- Shown on touch screens -->
+    <span class="touch">Tap anywhere to move</span>
   </p>
+
+  <!-- Loading bar, filled while the sprites load -->
   <div class="title-load" role="progressbar" aria-label="Loading the room"><i id="load-bar"></i></div>
 </div>
 
+<!-- Panel window (Projects, CV or Contact), built by room.js when an object is reached -->
 <div class="overlay" id="overlay" hidden>
   <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
+    <!-- Panel head: title and Back button -->
     <div class="dialog-head">
+      <!-- Panel title -->
       <h2 id="dlg-title"></h2>
+
+      <!-- Back to the room -->
       <button class="close" id="close" type="button" aria-label="Back to the room">Back</button>
     </div>
+
+    <!-- Panel content, built by room.js -->
     <div id="dlg-body"></div>
   </section>
 </div>
 
+<!-- Dialogue banner: the capybara talks here when he reaches an object -->
 <div class="banner" id="banner" hidden>
   <div class="banner-inner" id="banner-inner" role="status">
     <div class="banner-box">
+      <!-- Portrait -->
       <img class="banner-portrait" src="assets/portrait.png" alt="The capybara, in a teal hoodie and glasses, talking">
+
+      <!-- Name plate -->
       <div class="banner-name">Seif</div>
+
+      <!-- The line being typed -->
       <p class="banner-text" id="banner-text"></p>
+
+      <!-- Blinking "next" arrow -->
       <span class="banner-next" aria-hidden="true"></span>
     </div>
   </div>
@@ -579,7 +643,10 @@
 }
 </script>
 
-
-
+<!-- Icons and language flags, shared with the editor -->
 <script src="icons.js"></script>
+
+<!-- The room: drawing, walking, dialogue and panels -->
 <script src="room.js"></script>
+</body>
+</html>
