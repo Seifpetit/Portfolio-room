@@ -5,16 +5,21 @@
 /* Room styles. Layout: one full-screen night room drawn on canvas;
    panels slide over it like game dialog boxes. Deliberately single-theme. */
 
+/* let the page and body fill the whole window */
 html,
 body {
   height: 100%;
 }
+
+/* night background, ink text, no page scrolling */
 body {
   background: var(--night);
   color: var(--ink);
   font-family: var(--body);
   overflow: hidden;
 }
+
+/* app shell: full-height column holding header, stage and nav */
 .app {
   height: 100%;
   position: relative;
@@ -24,6 +29,8 @@ body {
   padding-inline: 16px;
   box-sizing: border-box;
 }
+
+/* site header floating over the top of the room, click-through */
 header {
   position: absolute;
   top: 10px;
@@ -37,6 +44,8 @@ header {
   justify-content: space-between;
   gap: 8px 16px;
 }
+
+/* site name in the display font */
 h1 {
   font-family: var(--display);
   font-weight: 600;
@@ -44,13 +53,17 @@ h1 {
   margin: 0;
   letter-spacing: 0.02em;
 }
+
+/* amber highlight on part of the site name */
 h1 span {
   color: var(--amber);
 }
+
 /* =================================================================================================
    Title screen: shown on first load over the blurred room, gone on the first click, tap or key
    ================================================================================================= */
 
+/* title screen: dark blurred veil centred over the whole room */
 .title {
   position: fixed;
   inset: 0;
@@ -67,6 +80,8 @@ h1 span {
   cursor: var(--hand);
   transition: opacity 0.35s steps(4);
 }
+
+/* faint CRT scanlines across the title screen */
 .title::before {
   content: "";
   position: absolute;
@@ -74,30 +89,45 @@ h1 span {
   pointer-events: none;
   background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.22) 0 2px, transparent 2px 4px);
 }
+
+/* title screen fading away once dismissed */
 .title.out {
   opacity: 0;
   pointer-events: none;
 }
+
+/* plain arrow cursor while the room is still loading */
 .title:not(.ready) {
   cursor: var(--arrow);
 }
+
+/* hide the big title until the pixel font is ready */
 .title-name {
   visibility: hidden;
 }
+
+/* show the big title once fonts have loaded */
 .fonts .title-name {
   visibility: visible;
 } /* no flash of a fallback font */
+
 .title-name span {
   color: var(--amber);
 }
+
+/* hint and loading bar share the same grid cell */
 .title-hint,
 .title-load {
   grid-area: 2 / 1;
 }
+
+/* show the loading bar first, then swap in the hint */
 .title:not(.ready) .title-hint,
 .title.ready .title-load {
   visibility: hidden;
 }
+
+/* loading bar frame: dark pixel trough */
 .title-load {
   position: relative;
   align-self: center;
@@ -108,6 +138,8 @@ h1 span {
     0 0 0 3px #120e1a,
     inset 0 0 0 2px #3b2d57;
 }
+
+/* loading bar fill: striped amber that grows in steps */
 .title-load i {
   position: absolute;
   left: 2px;
@@ -118,10 +150,12 @@ h1 span {
   background: repeating-linear-gradient(90deg, var(--amber) 0 8px, #e8902a 8px 10px);
   transition: width 0.2s steps(3);
 }
+
 /* =================================================================================================
    .title-name
    ================================================================================================= */
 
+/* big title name with a chunky pixel outline, rising then floating */
 .title-name {
   position: relative;
   margin: 0;
@@ -144,51 +178,80 @@ h1 span {
     rise 0.5s steps(5) backwards,
     titlefloat 3.6s linear 0.5s infinite;
 }
+
 /* =================================================================================================
    a full sine, sampled so it never eases to a stop at the top or bottom
    ================================================================================================= */
 
+/* title float: gentle up and down bob */
 @keyframes titlefloat {
+  /* start at rest */
   0% {
     transform: translateY(-0px);
   }
+
+  /* lift barely off the baseline */
   8.33333% {
     transform: translateY(-0.335px);
   }
+
+  /* keep rising */
   16.6667% {
     transform: translateY(-1.25px);
   }
+
+  /* quarter way: halfway up */
   25% {
     transform: translateY(-2.5px);
   }
+
+  /* nearing the top */
   33.3333% {
     transform: translateY(-3.75px);
   }
+
+  /* almost at the highest point */
   41.6667% {
     transform: translateY(-4.665px);
   }
+
+  /* top of the bob, 5px up */
   50% {
     transform: translateY(-5px);
   }
+
+  /* start coming back down */
   58.3333% {
     transform: translateY(-4.665px);
   }
+
+  /* falling past three quarters height */
   66.6667% {
     transform: translateY(-3.75px);
   }
+
+  /* halfway back down */
   75% {
     transform: translateY(-2.5px);
   }
+
+  /* nearly back at rest */
   83.3333% {
     transform: translateY(-1.25px);
   }
+
+  /* a hair above the baseline */
   91.6667% {
     transform: translateY(-0.335px);
   }
+
+  /* back at rest, ready to loop */
   100% {
     transform: translateY(-0px);
   }
 }
+
+/* press-to-start hint under the title, pulsing */
 .title-hint {
   position: relative;
   margin: 0;
@@ -198,22 +261,33 @@ h1 span {
   text-shadow: 3px 3px 0 #120e1a;
   animation: hintpulse 1.8s steps(3) infinite 0.6s;
 }
+
+/* hint pulse: dims and brightens */
 @keyframes hintpulse {
   50% {
     opacity: 0.35;
   }
 }
+
+/* touch wording hidden by default */
 .title-hint .touch {
   display: none;
 }
+
+/* touch screens: show the tap wording instead of the click one */
 @media (hover: none) {
+  /* hide the mouse wording */
   .title-hint .mouse {
     display: none;
   }
+
+  /* show the tap wording */
   .title-hint .touch {
     display: inline;
   }
 }
+
+/* phones: thinner title outline */
 @media (max-width: 520px) {
   .title-name {
     text-shadow:
@@ -228,18 +302,24 @@ h1 span {
       0 8px 0 #120e1a;
   }
 }
+
+/* reduced motion: keep the title screen still */
 @media (prefers-reduced-motion: reduce) {
   .title-name,
   .title-hint {
     animation: none;
   }
 }
+
+/* stage: centres the room canvas in the space left */
 .stage {
   flex: 1;
   min-height: 0;
   display: grid;
   place-items: center;
 }
+
+/* room canvas: crisp pixels, dark frame and drop shadow */
 canvas {
   touch-action: none;
   cursor: var(--hand);
@@ -251,6 +331,8 @@ canvas {
     0 0 0 4px #120e1a,
     0 18px 40px rgba(0, 0, 0, 0.45);
 }
+
+/* shortcut buttons row pinned to the bottom of the screen */
 nav {
   position: absolute;
   bottom: 12px;
@@ -262,6 +344,8 @@ nav {
   gap: 8px;
   justify-content: center;
 }
+
+/* shortcut buttons: small uppercase pixel tabs */
 nav button {
   font: 600 0.68rem var(--display);
   letter-spacing: 0.06em;
@@ -273,12 +357,16 @@ nav button {
   border-radius: 2px;
   cursor: var(--hand);
 }
+
+/* shortcut button hover and keyboard focus turn amber */
 nav button:hover,
 nav button:focus-visible {
   border-color: var(--amber);
   color: var(--amber);
   outline: none;
 }
+
+/* shortcut helper note, hidden unless a layout shows it */
 nav small {
   display: none;
   width: 100%;
@@ -287,6 +375,7 @@ nav small {
   font-size: 0.75rem;
 }
 
+/* overlay: dims the room and docks the panel at the bottom */
 .overlay {
   z-index: 5;
   position: fixed;
@@ -297,6 +386,8 @@ nav small {
   padding: 16px;
   padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
 }
+
+/* panel dialog box: bordered game-style window that rises in */
 .dialog {
   width: min(640px, 100%);
   max-height: 78%;
@@ -310,17 +401,23 @@ nav small {
   box-sizing: border-box;
   animation: rise 0.22s steps(4);
 }
+
+/* rise: slide up from below while fading in */
 @keyframes rise {
   from {
     transform: translateY(24px);
     opacity: 0;
   }
 }
+
+/* reduced motion: panels appear without sliding */
 @media (prefers-reduced-motion: reduce) {
   .dialog {
     animation: none;
   }
 }
+
+/* panel header: title on the left, close button on the right */
 .dialog-head {
   display: flex;
   justify-content: space-between;
@@ -328,11 +425,15 @@ nav small {
   gap: 12px;
   margin-bottom: 6px;
 }
+
+/* panel title in amber */
 .dialog h2 {
   font: 600 1.3rem var(--display);
   margin: 0;
   color: var(--amber);
 }
+
+/* close button: inverted ink label with icon */
 .close {
   display: inline-flex;
   align-items: center;
@@ -346,10 +447,14 @@ nav small {
   padding: 2px 10px 2px 4px;
   cursor: var(--hand);
 }
+
+/* amber ring around the close button on keyboard focus */
 .close:focus-visible {
   outline: 3px solid var(--amber);
   outline-offset: 2px;
 }
+
+/* placeholder tag marking sample content */
 .sample {
   display: inline-block;
   font: 0.72rem var(--display);
@@ -360,30 +465,42 @@ nav small {
   padding: 2px 6px;
   margin-bottom: 12px;
 }
+
+/* panel paragraphs: comfy line height and readable width */
 .dialog p {
   line-height: 1.55;
   margin: 0 0 12px;
   max-width: 62ch;
 }
+
+/* responsive grid of small cards */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   gap: 10px;
 }
+
+/* simple bordered card */
 .card {
   border: 2px solid var(--wall);
   padding: 12px;
   min-width: 0;
 }
+
+/* card heading */
 .card h3 {
   font: 600 1rem var(--display);
   margin: 0 0 4px;
 }
+
+/* card text: smaller and muted */
 .card p {
   font-size: 0.88rem;
   color: var(--muted);
   margin: 0;
 }
+
+/* plain list of links with no bullets */
 .links {
   list-style: none;
   padding: 0;
@@ -391,6 +508,8 @@ nav small {
   display: grid;
   gap: 8px;
 }
+
+/* link row: label and value spread apart, dotted divider */
 .links li {
   display: flex;
   justify-content: space-between;
@@ -399,23 +518,33 @@ nav small {
   padding-block: 6px;
   flex-wrap: wrap;
 }
+
+/* link label in the display font */
 .links b {
   font-family: var(--display);
   font-weight: 600;
 }
+
+/* links in amber */
 a {
   color: var(--amber);
 }
+
+/* stack of CV rows */
 .cv-rows {
   display: grid;
   gap: 8px;
   margin-bottom: 12px;
 }
+
+/* CV row: fixed label column, value beside it */
 .cv-rows div {
   display: grid;
   grid-template-columns: 7.5em 1fr;
   gap: 10px;
 }
+
+/* CV labels in muted display font */
 .cv-rows dt,
 .cv-rows span:first-child {
   font-family: var(--display);
@@ -426,6 +555,7 @@ a {
    RPG dialogue banner: slides up when the character reaches an object
    ================================================================================================= */
 
+/* dialogue banner wrapper pinned to the bottom, centred */
 .banner {
   z-index: 4;
   position: fixed;
@@ -437,6 +567,8 @@ a {
   padding: 0 16px calc(14px + env(safe-area-inset-bottom, 0px));
   pointer-events: none;
 }
+
+/* clickable banner body that slides up when shown */
 .banner-inner {
   position: relative;
   width: min(760px, 100%);
@@ -444,12 +576,16 @@ a {
   cursor: var(--hand);
   animation: slideup 0.28s steps(5);
 }
+
+/* slideup: banner pops up from below */
 @keyframes slideup {
   from {
     transform: translateY(60%);
     opacity: 0;
   }
 }
+
+/* banner text box: purple gradient with gold pixel border */
 .banner-box {
   min-height: 104px;
   background: linear-gradient(#2b2140, #1c1530);
@@ -463,6 +599,8 @@ a {
   box-sizing: border-box;
   position: relative;
 }
+
+/* speaker name tab on the top edge, right of the portrait */
 .banner-name {
   position: absolute;
   top: -18px;
@@ -475,6 +613,8 @@ a {
   outline: 3px solid #120e1a;
   padding: 2px 16px;
 }
+
+/* spoken line in the banner, keeping line breaks */
 .banner-text {
   font: 400 1.18rem/1.5 var(--display);
   color: var(--ink);
@@ -482,6 +622,8 @@ a {
   min-height: 3em;
   white-space: pre-line;
 }
+
+/* blinking next arrow in the banner corner */
 .banner-next {
   display: flex;
   position: absolute;
@@ -491,11 +633,15 @@ a {
   color: var(--amber);
   animation: blink 1s steps(2) infinite;
 }
+
+/* blink: on and off */
 @keyframes blink {
   50% {
     opacity: 0;
   }
 }
+
+/* speaker portrait standing on top of the banner */
 .banner-portrait {
   position: absolute;
   left: 22px;
@@ -505,6 +651,8 @@ a {
   filter: drop-shadow(4px 0 0 #120e1a) drop-shadow(-4px 0 0 #120e1a) drop-shadow(0 -4px 0 #120e1a);
   pointer-events: none;
 }
+
+/* reduced motion: no banner slide or blinking arrow */
 @media (prefers-reduced-motion: reduce) {
   .banner-inner,
   .banner-next {
@@ -516,6 +664,7 @@ a {
    Projects: listing-style pixel cards
    ================================================================================================= */
 
+/* wide frameless panel for the floating project cards */
 .dialog.wide {
   width: min(1100px, 100%);
   max-height: 100%;
@@ -527,62 +676,94 @@ a {
   padding: 8px 4px 24px;
   animation: none;
 }
+
+/* floating overlay: centred and a bit darker */
 .overlay.floating {
   place-items: center;
   grid-template-columns: minmax(0, 1fr);
   background: rgba(8, 6, 14, 0.72);
 }
+
+/* let the wide panel shrink and stay centred */
 .dialog.wide {
   min-width: 0;
   justify-self: center;
 }
+
+/* tighter gap under the wide panel header */
 .dialog.wide .dialog-head {
   margin-bottom: 4px;
 }
+
+/* bigger shadowed title on the wide panel */
 .dialog.wide h2 {
   font-size: 1.6rem;
   text-shadow: 3px 3px 0 #120e1a;
 }
+
+/* shadow on the note so it reads over the room */
 .dialog.wide .sample-note {
   text-shadow: 2px 2px 0 #120e1a;
 }
+
+/* no text shadow on the placeholder tag */
 .dialog.wide .sample {
   text-shadow: none;
 }
+
+/* hide header and shortcuts while cards float */
 body.floating header,
 body.floating nav {
   visibility: hidden;
 }
+
+/* keep the capybara banner above the floating overlay */
 body.floating .banner {
   z-index: 6;
 }
+
+/* banner stays still and unclickable under floating cards */
 body.floating .banner-inner {
   animation: none;
   cursor: var(--arrow);
 }
+
+/* no next arrow while cards float */
 body.floating .banner-next {
   display: none;
 }
+
+/* leave room under the cards for the banner and portrait */
 .overlay.floating {
   padding-bottom: calc(190px + var(--ph) * 0.6 + env(safe-area-inset-bottom, 0px));
 }
+
+/* phones: smaller banner and less bottom room */
 @media (max-width: 520px) {
+  /* less space reserved under the floating cards */
   .overlay.floating {
     padding-bottom: calc(176px + var(--ph) * 0.6 + env(safe-area-inset-bottom, 0px));
   }
+
+  /* smaller banner text */
   .banner-text {
     font-size: 0.95rem;
   }
+
+  /* tighter, shorter banner box */
   .banner-box {
     padding: 22px 14px 14px;
     min-height: 92px;
   }
 }
 
+/* muted intro note above the cards */
 .sample-note {
   margin: 0 0 14px !important;
   color: var(--muted);
 }
+
+/* project cards in a horizontal snapping scroller */
 .pcards {
   display: flex;
   gap: 18px;
@@ -591,20 +772,28 @@ body.floating .banner-next {
   scroll-snap-type: x proximity;
   padding: 6px 6px 12px;
 }
+
+/* fixed-width cards that snap at their start */
 .pcards > .pcard {
   flex: 0 0 240px;
   scroll-snap-align: start;
 }
+
 /* =================================================================================================
    timid pixel scrollbar (custom, so it looks the same everywhere): shows while scrolling, then fades out
    ================================================================================================= */
 
+/* hide the native scrollbar in Firefox */
 .pcards {
   scrollbar-width: none;
 }
+
+/* hide the native scrollbar in WebKit browsers */
 .pcards::-webkit-scrollbar {
   display: none;
 }
+
+/* custom scrollbar track, hidden until scrolling */
 .pscroll {
   position: relative;
   height: 8px;
@@ -614,13 +803,19 @@ body.floating .banner-next {
   background: repeating-linear-gradient(90deg, rgba(185, 174, 203, 0.14) 0 4px, transparent 4px 8px);
   touch-action: none;
 }
+
+/* track shown while the cards are scrolling */
 .pscroll.on {
   opacity: 0.75;
   transition: opacity 0.08s steps(2);
 }
+
+/* track brighter on hover */
 .pscroll:hover {
   opacity: 0.9;
 }
+
+/* draggable gold scrollbar thumb */
 .pscroll i {
   position: absolute;
   top: 0;
@@ -634,6 +829,8 @@ body.floating .banner-next {
     0 0 0 2px var(--outline);
   cursor: var(--hand);
 }
+
+/* project card: reset button styles into a framed pixel card */
 .pcard {
   all: unset;
   box-sizing: border-box;
@@ -649,52 +846,77 @@ body.floating .banner-next {
   color: var(--ink);
   animation: pop 0.5s backwards;
 }
+
 /* =================================================================================================
    sticker pop: each card slaps in with an overshoot and a wobble, in chunky steps
    ================================================================================================= */
 
+/* pop: sticker slap-in with bounce */
 @keyframes pop {
+  /* start tiny, tilted and invisible */
   0% {
     transform: scale(0.25) rotate(-12deg);
     opacity: 0;
     animation-timing-function: steps(3);
   }
+
+  /* overshoot big with a white flash border */
   40% {
     transform: scale(1.14) rotate(5deg);
     opacity: 1;
     border-color: #fff;
     animation-timing-function: steps(2);
   }
+
+  /* bounce back undersized */
   60% {
     transform: scale(0.93) rotate(-3deg);
     animation-timing-function: steps(2);
   }
+
+  /* small overshoot again */
   78% {
     transform: scale(1.04) rotate(1deg);
     animation-timing-function: steps(2);
   }
+
+  /* settle at normal size */
   100% {
     transform: none;
   }
 }
+
+/* first card pops in first */
 .pcard:nth-child(1) {
   animation-delay: 0.15s;
 }
+
+/* second card a little later */
 .pcard:nth-child(2) {
   animation-delay: 0.27s;
 }
+
+/* third card delay */
 .pcard:nth-child(3) {
   animation-delay: 0.39s;
 }
+
+/* fourth card delay */
 .pcard:nth-child(4) {
   animation-delay: 0.51s;
 }
+
+/* fifth card delay */
 .pcard:nth-child(5) {
   animation-delay: 0.63s;
 }
+
+/* sixth card delay */
 .pcard:nth-child(6) {
   animation-delay: 0.75s;
 }
+
+/* card lifts with an amber border on hover or focus */
 .pcard:hover,
 .pcard:focus-visible {
   transform: translate(-2px, -3px);
@@ -703,13 +925,19 @@ body.floating .banner-next {
     0 0 0 3px #120e1a,
     8px 10px 0 3px rgba(0, 0, 0, 0.45);
 }
+
+/* amber outline around a keyboard-focused card */
 .pcard:focus-visible {
   outline: 3px solid var(--amber);
   outline-offset: 4px;
 }
+
+/* card presses down when clicked */
 .pcard:active {
   transform: translate(1px, 1px);
 }
+
+/* card thumbnail area, 2:1, under a gold line */
 .pthumb {
   position: relative;
   display: block;
@@ -718,12 +946,16 @@ body.floating .banner-next {
   background: #0c0912;
   overflow: hidden;
 }
+
+/* thumbnail canvas filling the area with crisp pixels */
 .pthumb canvas {
   width: 100%;
   height: 100%;
   display: block;
   image-rendering: pixelated;
 }
+
+/* amber badge in the thumbnail corner */
 .pbadge {
   position: absolute;
   top: 8px;
@@ -736,6 +968,8 @@ body.floating .banner-next {
   border: 2px solid #120e1a;
   padding: 1px 7px;
 }
+
+/* card body: stacked title, text and tags */
 .pbody {
   display: flex;
   flex-direction: column;
@@ -743,10 +977,14 @@ body.floating .banner-next {
   padding: 10px 12px 6px;
   flex: 1;
 }
+
+/* project title in pale gold */
 .ptitle {
   font: 600 1.1rem var(--display);
   color: #ffe9b8;
 }
+
+/* project blurb cut to two lines */
 .pdesc {
   font-size: 0.84rem;
   line-height: 1.35;
@@ -756,6 +994,8 @@ body.floating .banner-next {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* tag chips pushed to the bottom of the body */
 .ptags {
   display: flex;
   flex-wrap: wrap;
@@ -763,6 +1003,8 @@ body.floating .banner-next {
   margin-top: auto;
   padding-top: 4px;
 }
+
+/* single tag chip */
 .ptags span {
   font: 0.7rem var(--display);
   letter-spacing: 0.04em;
@@ -771,6 +1013,8 @@ body.floating .banner-next {
   border: 2px solid #120e1a;
   padding: 1px 6px;
 }
+
+/* project card footer: role on the left, link on the right */
 .pfoot {
   display: flex;
   justify-content: space-between;
@@ -779,30 +1023,46 @@ body.floating .banner-next {
   border-top: 2px dotted #3b2d57;
   font: 600 0.85rem var(--display);
 }
+
+/* role label in amber */
 .pfoot > span:first-child {
   color: var(--amber);
 }
+
+/* call-to-action in cyan */
 .pcta {
   color: #7ff3ff;
 }
+
+/* phones: bigger cards that snap one at a time */
 @media (max-width: 640px) {
+  /* smaller gap and strict snapping */
   .pcards {
     gap: 14px;
     scroll-snap-type: x mandatory;
   }
+
+  /* cards take most of the width, snapping to centre */
   .pcards > .pcard {
     flex: 0 0 72%;
     scroll-snap-align: center;
   }
+
+  /* less padding around the wide panel */
   .dialog.wide {
     padding: 8px 0 8px;
     align-self: end;
   }
 }
+
+/* reduced motion: no card pop or hover lift */
 @media (prefers-reduced-motion: reduce) {
+  /* no pop-in on cards */
   .pcard {
     animation: none;
   }
+
+  /* no lift on hovered cards */
   .pcard:hover {
     transform: none;
   }
@@ -812,6 +1072,7 @@ body.floating .banner-next {
    Socials: big frameless pixel logos, each tilted a little
    ================================================================================================= */
 
+/* social icons in a centred two-column grid */
 .socials {
   display: grid;
   grid-template-columns: auto auto;
@@ -819,10 +1080,14 @@ body.floating .banner-next {
   gap: 22px clamp(36px, 8vw, 72px);
   padding: 18px 8px 10px;
 }
+
+/* odd last icon centred on its own row */
 .socials .sicon.mail {
   grid-column: 1 / -1;
   justify-self: center;
 }
+
+/* social link: logo above its label, popping in */
 .sicon {
   display: flex;
   flex-direction: column;
@@ -833,15 +1098,23 @@ body.floating .banner-next {
   animation: pop 0.5s backwards;
   outline: none;
 }
+
+/* first logo pops in first */
 .sicon:nth-child(1) {
   animation-delay: 0.15s;
 }
+
+/* second logo delay */
 .sicon:nth-child(2) {
   animation-delay: 0.3s;
 }
+
+/* third logo delay */
 .sicon:nth-child(3) {
   animation-delay: 0.45s;
 }
+
+/* logo box with a random slight tilt */
 .slogo {
   display: grid;
   place-items: center;
@@ -849,6 +1122,8 @@ body.floating .banner-next {
   aspect-ratio: 1;
   transform: rotate(var(--tilt, 0deg));
 }
+
+/* logo canvas: frameless crisp pixels with a springy hover */
 .slogo canvas {
   width: 100%;
   max-width: none;
@@ -862,35 +1137,53 @@ body.floating .banner-next {
     filter 0.2s;
   filter: drop-shadow(3px 3px 0 #120e1a);
 }
+
+/* LinkedIn blue glow colour */
 .slogo.li canvas {
   --glow: #2f8fff;
 }
+
+/* GitHub logo glows pale cyan */
 .slogo.gh canvas {
   --glow: #b9f5ff;
 }
+
+/* Gmail logo glows coral red */
 .slogo.gm canvas {
   --glow: #ff6b5e;
 }
+
+/* hovered or focused social logo grows and glows in its brand colour */
 .sicon:hover .slogo canvas,
 .sicon:focus-visible .slogo canvas {
   transform: scale(1.16);
   filter: drop-shadow(3px 3px 0 #120e1a) drop-shadow(0 0 6px var(--glow)) drop-shadow(0 0 14px var(--glow));
 }
+
+/* keyboard focus underlines the social label in amber */
 .sicon:focus-visible .slabel {
   color: var(--amber);
   text-decoration: underline;
 }
+
+/* social label: bold pixel font with a dark drop shadow */
 .slabel {
   font: 600 1.05rem var(--display);
   letter-spacing: 0.06em;
   text-shadow: 2px 2px 0 #120e1a;
 }
+
+/* wide dialog header: extra room between title and close button */
 .dialog.wide .dialog-head {
   gap: 56px;
 }
+
+/* socials dialog shrinks to fit its icons */
 .dialog.wide[data-panel="socials"] {
   width: auto;
 }
+
+/* social label under each logo, restated after the dialog rules */
 .slabel {
   font: 600 1.05rem var(--display);
   letter-spacing: 0.06em;
@@ -901,6 +1194,7 @@ body.floating .banner-next {
    Projects sit on a pixel computer screen
    ================================================================================================= */
 
+/* monitor bezel framing the project list, switching on as it opens */
 .monitor {
   position: relative;
   padding: 14px;
@@ -912,6 +1206,8 @@ body.floating .banner-next {
     8px 10px 0 4px rgba(0, 0, 0, 0.4);
   animation: poweron 0.45s steps(5) backwards;
 }
+
+/* green power light blinking in the monitor's bottom corner */
 .monitor::after {
   content: "";
   position: absolute;
@@ -925,6 +1221,8 @@ body.floating .banner-next {
     0 0 8px #5cf2c6;
   animation: blink 2.4s steps(2) infinite;
 }
+
+/* dark teal glass of the screen holding the project cards */
 .screen {
   position: relative;
   background: radial-gradient(ellipse at 50% 40%, #12384a 0, #0b2030 55%, #08141f 100%);
@@ -934,6 +1232,8 @@ body.floating .banner-next {
   padding: 26px 12px 22px;
   overflow: hidden;
 }
+
+/* scanline stripes laid over the screen */
 .screen::before {
   content: "";
   position: absolute;
@@ -942,15 +1242,21 @@ body.floating .banner-next {
   z-index: 2;
   background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 4px);
 }
+
+/* sample-data note in terminal green on the screen */
 .screen .sample-note {
   margin: 0 6px 18px !important;
   color: #9ff5dc;
   font-family: var(--display);
 }
+
+/* terminal prompt printed before the sample note */
 .screen .sample-note::before {
   content: attr(data-prompt);
   color: #5cf2c6;
 }
+
+/* monitor neck under the screen */
 .stand {
   width: 64px;
   height: 18px;
@@ -963,6 +1269,8 @@ body.floating .banner-next {
   z-index: -1;
   animation: poweron 0.45s steps(5) backwards;
 }
+
+/* flat monitor foot under the neck */
 .stand::after {
   content: "";
   position: absolute;
@@ -975,41 +1283,64 @@ body.floating .banner-next {
     inset 0 4px 0 #5a5175,
     0 0 0 4px #120e1a;
 }
+
+/* no gap above whatever follows the stand */
 .stand + * {
   margin-top: 0;
 }
+
+/* space below the monitor stand */
 .monitor + .stand {
   margin-bottom: 34px;
 }
+
+/* first project card appears once the screen is on */
 .monitor .pcard:nth-child(1) {
   animation-delay: 0.52s;
 }
+
+/* second project card appears a beat later */
 .monitor .pcard:nth-child(2) {
   animation-delay: 0.64s;
 }
+
+/* third project card follows */
 .monitor .pcard:nth-child(3) {
   animation-delay: 0.76s;
 }
+
+/* fourth project card follows */
 .monitor .pcard:nth-child(4) {
   animation-delay: 0.88s;
 }
+
+/* fifth project card follows */
 .monitor .pcard:nth-child(5) {
   animation-delay: 1s;
 }
+
+/* sixth project card appears last */
 .monitor .pcard:nth-child(6) {
   animation-delay: 1.12s;
 }
+
+/* monitor switching on like an old CRT */
 @keyframes poweron {
+  /* start: a thin bright invisible line */
   0% {
     transform: scale(1, 0.02);
     filter: brightness(3);
     opacity: 0;
   }
+
+  /* the bright line flashes into view */
   40% {
     transform: scale(1, 0.02);
     filter: brightness(3);
     opacity: 1;
   }
+
+  /* screen stretches open, overshooting slightly */
   70% {
     transform: scale(1, 1.03);
   }
@@ -1019,6 +1350,7 @@ body.floating .banner-next {
    CV: a vertical paper on the bureau, the desk and trophies barely there behind it
    ================================================================================================= */
 
+/* CV stage sized to the window, paper centred */
 .cvscene {
   position: relative;
   width: min(900px, 100%);
@@ -1027,6 +1359,8 @@ body.floating .banner-next {
   display: grid;
   place-items: center;
 }
+
+/* faded desk picture behind the paper, edges fading out */
 .cvscene .desk {
   position: absolute;
   inset: 0;
@@ -1042,10 +1376,12 @@ body.floating .banner-next {
   -webkit-mask-image: radial-gradient(ellipse at 50% 55%, #000 45%, transparent 80%);
   mask-image: radial-gradient(ellipse at 50% 55%, #000 45%, transparent 80%);
 }
+
 /* =================================================================================================
    .cvdoc
    ================================================================================================= */
 
+/* CV sheet of paper, A4-shaped, slightly tilted on the desk */
 .cvdoc {
   position: relative;
   height: 100%;
@@ -1070,6 +1406,8 @@ body.floating .banner-next {
   gap: 0.8em;
   overflow: hidden;
 }
+
+/* folded dog-ear in the paper's bottom-right corner */
 .cvdoc::after {
   content: "";
   position: absolute;
@@ -1078,11 +1416,15 @@ body.floating .banner-next {
   border: 9px solid;
   border-color: #d8c7a6 #1c1530 #1c1530 #d8c7a6;
 }
+
+/* CV header row: photo beside name and role */
 .cvtop {
   display: flex;
   gap: 1em;
   align-items: center;
 }
+
+/* photo frame on the CV */
 .cvphoto {
   flex: 0 0 26cqw;
   height: 31cqw;
@@ -1091,6 +1433,8 @@ body.floating .banner-next {
   position: relative;
   overflow: hidden;
 }
+
+/* placeholder head of the empty photo */
 .cvphoto::before {
   content: "";
   position: absolute;
@@ -1101,6 +1445,8 @@ body.floating .banner-next {
   margin-left: -20%;
   background: #9c8a68;
 }
+
+/* placeholder shoulders of the empty photo */
 .cvphoto::after {
   content: "";
   position: absolute;
@@ -1111,10 +1457,14 @@ body.floating .banner-next {
   margin-left: -36%;
   background: #9c8a68;
 }
+
+/* name on the CV in big display type */
 .cvname {
   font: 600 2em var(--display);
   margin: 0;
 }
+
+/* job title under the name, small caps in brown */
 .cvrole {
   font: 0.9em var(--display);
   letter-spacing: 0.06em;
@@ -1122,6 +1472,8 @@ body.floating .banner-next {
   color: #8a5a3c;
   margin: 2px 0 0;
 }
+
+/* CV section heading, uppercase with a rule beneath */
 .cvsec h4 {
   font: 600 0.9em var(--display);
   letter-spacing: 0.1em;
@@ -1130,22 +1482,32 @@ body.floating .banner-next {
   padding-bottom: 3px;
   border-bottom: 2px solid #2a1d14;
 }
+
+/* grey bars standing in for lines of text */
 .cvsec i {
   display: block;
   height: 0.4em;
   margin: 0 0 0.5em;
   background: #cdbd9c;
 }
+
+/* every third placeholder line is shorter */
 .cvsec i:nth-child(3n) {
   width: 72%;
 }
+
+/* next placeholder line is nearly full width */
 .cvsec i:nth-child(3n + 1) {
   width: 90%;
 }
+
+/* sample stamp pinned to the bottom of the paper */
 .cvdoc .sample {
   align-self: flex-start;
   margin: auto 0 0;
 }
+
+/* CV paper is clickable and springs when it moves */
 .cvdoc {
   cursor: var(--hand);
   outline: none;
@@ -1154,6 +1516,8 @@ body.floating .banner-next {
     box-shadow 0.25s;
   z-index: 1;
 }
+
+/* hovered or focused CV straightens, lifts and glows */
 .cvdoc:hover,
 .cvdoc:focus-visible {
   transform: translateY(-6px) rotate(0deg) scale(1.05);
@@ -1163,6 +1527,8 @@ body.floating .banner-next {
     12px 16px 0 3px rgba(0, 0, 0, 0.5),
     0 0 90px rgba(255, 233, 184, 0.4);
 }
+
+/* keyboard focus gives the CV an amber outline */
 .cvdoc:focus-visible {
   box-shadow:
     inset 0 0 0 2px #d8c7a6,
@@ -1170,10 +1536,14 @@ body.floating .banner-next {
     12px 16px 0 3px rgba(0, 0, 0, 0.5),
     0 0 90px rgba(255, 233, 184, 0.4);
 }
+
+/* desk fades almost out while the CV is hovered */
 .cvscene:has(.cvdoc:hover, .cvdoc:focus-visible) .desk {
   opacity: 0.12;
   transition: opacity 0.25s;
 }
+
+/* zoomed-in CV with a deeper shadow */
 .cvdoc.zoom {
   cursor: var(--hand);
   box-shadow:
@@ -1182,17 +1552,25 @@ body.floating .banner-next {
     14px 18px 0 3px rgba(0, 0, 0, 0.55),
     0 0 140px rgba(255, 233, 184, 0.35);
 }
+
+/* darker overlay above the room while the CV is zoomed */
 body.cvzoom .overlay.floating {
   z-index: 7;
   background: rgba(8, 6, 14, 0.9);
   transition: background 0.25s;
 }
+
+/* dialog title bar hidden while the CV is zoomed */
 body.cvzoom .dialog-head {
   visibility: hidden;
 }
+
+/* desk hidden completely while the CV is zoomed */
 body.cvzoom .cvscene .desk {
   opacity: 0;
 }
+
+/* reduced motion: CV and desk stay still */
 @media (prefers-reduced-motion: reduce) {
   .cvdoc,
   .cvscene .desk {
@@ -1206,20 +1584,27 @@ body.cvzoom .cvscene .desk {
   pointer-events: auto;
   align-self: flex-start;
 }
+
+/* language flag button image size */
 .lang .lang-btn img {
   width: 44px;
   height: 30px;
 }
+
 /* =================================================================================================
    Phone only: the room is a backdrop, the three big buttons are the way in
    ================================================================================================= */
 
+/* phones: room as backdrop, stacked big nav buttons */
 @media (max-width: 640px) {
+  /* no grey flash on tap */
   *,
   *::before,
   *::after {
     -webkit-tap-highlight-color: transparent;
   }
+
+  /* no text selection or long-press menu on the room and controls */
   html,
   body,
   .app,
@@ -1232,18 +1617,26 @@ body.cvzoom .cvscene .desk {
     -webkit-user-select: none;
     user-select: none;
   }
+
+  /* selection stays invisible if it happens anyway */
   .app ::selection,
   .title ::selection {
     background: transparent;
   }
+
+  /* room canvas shows no focus ring and cannot be dragged */
   canvas {
     outline: none;
     -webkit-user-drag: none;
   }
+
+  /* room the title above and the buttons below need */
   .app {
     padding-top: 84px;
     padding-bottom: 204px;
   }
+
+  /* title bar centred near the top on one line */
   header {
     top: 18px;
     justify-content: center;
@@ -1252,14 +1645,20 @@ body.cvzoom .cvscene .desk {
     gap: 12px;
     text-align: center;
   }
+
+  /* language flag lined up with the title */
   .lang {
     align-self: center;
   }
+
+  /* smaller title with a pixel shadow */
   h1 {
     font-size: 2.6rem;
     line-height: 1;
     text-shadow: 3px 3px 0 #120e1a;
   }
+
+  /* nav pinned at the bottom as a column above the safe area */
   nav {
     bottom: calc(18px + env(safe-area-inset-bottom, 0px));
     left: 16px;
@@ -1269,6 +1668,8 @@ body.cvzoom .cvscene .desk {
     align-items: center;
     gap: 9px;
   }
+
+  /* big full-width-ish nav buttons sized for thumbs */
   nav button {
     width: 80%;
     font-size: 1.09rem;
@@ -1284,6 +1685,8 @@ body.cvzoom .cvscene .desk {
       5px 6px 0 3px rgba(0, 0, 0, 0.45);
     touch-action: manipulation;
   }
+
+  /* nav button presses down on tap */
   nav button:active {
     transform: translate(2px, 3px);
     box-shadow:
@@ -1291,20 +1694,27 @@ body.cvzoom .cvscene .desk {
       2px 3px 0 3px rgba(0, 0, 0, 0.45);
     background: #3b2d57;
   }
+
+  /* keyboard hints hidden on phones */
   nav small {
     display: none;
   }
 }
+
 /* =================================================================================================
    touch screens of any width: never select or highlight the room on tap or long-press
    ================================================================================================= */
 
+/* touch screens: no selection or tap highlight on the room */
 @media (pointer: coarse) {
+  /* no grey flash on tap */
   *,
   *::before,
   *::after {
     -webkit-tap-highlight-color: transparent;
   }
+
+  /* no text selection or long-press menu on the room and controls */
   .app,
   .stage,
   canvas,
@@ -1315,20 +1725,26 @@ body.cvzoom .cvscene .desk {
     -webkit-user-select: none;
     user-select: none;
   }
+
+  /* no focus ring on the room canvas */
   canvas {
     outline: none;
   }
 }
+
 /* =================================================================================================
    content-driven bits
    ================================================================================================= */
 
+/* real project thumbnail fills its frame */
 .pthumb img {
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
 }
+
+/* real CV photo fills the photo frame */
 .cvphoto img {
   position: absolute;
   inset: 0;
@@ -1336,45 +1752,67 @@ body.cvzoom .cvscene .desk {
   height: 100%;
   object-fit: cover;
 }
+
+/* placeholder silhouette hidden once a photo is set */
 .cvphoto.has::before,
 .cvphoto.has::after {
   display: none;
 }
+
+/* CV summary paragraph */
 .cvsum {
   margin: 0;
   font-size: 0.8em;
   line-height: 1.4;
 }
+
+/* CV section text, small and tight */
 .cvsec {
   font-size: 0.8em;
   line-height: 1.35;
 }
+
+/* smaller CV section headings */
 .cvsec h4 {
   font-size: 0.9em;
 }
+
+/* one CV entry, such as a job or a degree */
 .cvent {
   margin: 0 0 0.55em;
 }
+
+/* entry title in the display font */
 .cvent b {
   font-family: var(--display);
   font-weight: 600;
 }
+
+/* entry dates floated to the right in brown */
 .cvent .cvwhen {
   float: right;
   font: 0.85em var(--display);
   color: #8a5a3c;
 }
+
+/* bullet points under a CV entry */
 .cvent ul {
   margin: 0.15em 0 0;
   padding-left: 1.1em;
 }
+
+/* one skill line on the CV */
 .cvskill {
   margin: 0 0 0.3em;
 }
+
+/* skill group name in the display font */
 .cvskill b {
   font-family: var(--display);
   font-weight: 600;
 }
+
+/* download CV button at the bottom of the paper */
 .cvdl {
   display: inline-flex;
   align-items: center;
@@ -1393,14 +1831,20 @@ body.cvzoom .cvscene .desk {
     3px 3px 0 2px rgba(0, 0, 0, 0.35);
   cursor: var(--hand);
 }
+
+/* download button darkens on hover or focus */
 .cvdl:hover,
 .cvdl:focus-visible {
   background: #8a5a3c;
   outline: none;
 }
+
+/* sample stamp sits flush in the CV footer */
 .cvfoot .sample {
   margin: 0;
 }
+
+/* CV footer row: download button and sample stamp */
 .cvfoot {
   margin-top: auto;
   display: flex;
@@ -1408,6 +1852,8 @@ body.cvzoom .cvscene .desk {
   align-items: center;
   flex-wrap: wrap;
 }
+
+/* download button keeps its place inside the footer */
 .cvfoot .cvdl {
   margin-top: 0;
 }
@@ -1416,6 +1862,7 @@ body.cvzoom .cvscene .desk {
    Socials are pinned to a corkboard
    ================================================================================================= */
 
+/* corkboard behind the social links, in a wooden frame */
 .cork {
   position: relative;
   margin: 6px auto 0;
@@ -1433,9 +1880,13 @@ body.cvzoom .cvscene .desk {
     10px 12px 0 16px rgba(0, 0, 0, 0.4);
   animation: rise 0.25s steps(4) backwards;
 }
+
+/* social icons spaced inside the corkboard */
 .cork .socials {
   padding: 6px 4px 0;
 }
+
+/* social labels as paper notes, tilted against the logo */
 .cork .slabel {
   background: #f4ead8;
   color: #2a1d14;
@@ -1444,9 +1895,13 @@ body.cvzoom .cvscene .desk {
   border: 2px solid #120e1a;
   transform: rotate(calc(var(--tilt, 0deg) * -0.5));
 }
+
+/* logo box anchors its pushpin */
 .slogo {
   position: relative;
 }
+
+/* red pushpin stuck in the top of each social logo */
 .cork .slogo::before {
   content: "";
   position: absolute;
@@ -1463,6 +1918,8 @@ body.cvzoom .cvscene .desk {
     0 0 0 2px #120e1a,
     2px 3px 0 2px rgba(0, 0, 0, 0.35);
 }
+
+/* reduced motion: monitor, stand, corkboard and power light stay still */
 @media (prefers-reduced-motion: reduce) {
   .monitor,
   .stand,
@@ -1471,10 +1928,15 @@ body.cvzoom .cvscene .desk {
     animation: none;
   }
 }
+
+/* reduced motion: social icons appear without popping in */
 @media (prefers-reduced-motion: reduce) {
+  /* no pop-in for the social icons */
   .sicon {
     animation: none;
   }
+
+  /* no grow on hover for the social logos */
   .slogo canvas {
     transition: none;
   }
@@ -1484,9 +1946,12 @@ body.cvzoom .cvscene .desk {
    Project detail view: the clicked card grows into this centred modal while the room dims
    ================================================================================================= */
 
+/* card hidden while its copy grows into the detail view */
 .pcard.lifted {
   visibility: hidden;
 }
+
+/* thumbnail video or image fills the card frame */
 .pthumb video,
 .pthumb img {
   width: 100%;
@@ -1494,6 +1959,8 @@ body.cvzoom .cvscene .desk {
   display: block;
   object-fit: cover;
 }
+
+/* dark backdrop behind the project detail view, faded out */
 .pback {
   position: fixed;
   inset: 0;
@@ -1502,13 +1969,17 @@ body.cvzoom .cvscene .desk {
   opacity: 0;
   transition: opacity 0.25s steps(4);
 }
+
+/* backdrop fades in when the detail view opens */
 .pback.in {
   opacity: 1;
 }
+
 /* =================================================================================================
    .pmodal
    ================================================================================================= */
 
+/* project detail modal centred over the room */
 .pmodal {
   position: fixed;
   z-index: 31;
@@ -1530,10 +2001,14 @@ body.cvzoom .cvscene .desk {
   transition: transform 0.26s steps(6);
   cursor: var(--arrow);
 }
+
+/* links and buttons in the modal use the hand cursor */
 .pmodal a,
 .pmodal button {
   cursor: var(--hand);
 }
+
+/* square close button in the modal's top-right corner */
 .pclose {
   all: unset;
   position: absolute;
@@ -1548,11 +2023,15 @@ body.cvzoom .cvscene .desk {
   border: 2px solid #e8c98a;
   color: var(--ink);
 }
+
+/* close button turns amber on hover or focus */
 .pclose:hover,
 .pclose:focus-visible {
   color: var(--amber);
   border-color: var(--amber);
 }
+
+/* left column of the modal holding the media */
 .pmedia {
   position: relative;
   display: flex;
@@ -1563,12 +2042,16 @@ body.cvzoom .cvscene .desk {
   background: #0c0912;
   min-width: 0;
 }
+
+/* 16:9 media frame on a black background */
 .phero {
   aspect-ratio: 16 / 9;
   background: #000;
   border: 2px solid #3b2d57;
   overflow: hidden;
 }
+
+/* picture, video, embed or canvas fills the media frame */
 .phero img,
 .phero video,
 .phero iframe,
@@ -1579,13 +2062,19 @@ body.cvzoom .cvscene .desk {
   border: 0;
   object-fit: contain;
 }
+
+/* pixel art canvases stay crisp when scaled */
 .phero canvas {
   image-rendering: pixelated;
 }
+
+/* badge position on the modal's media */
 .pmedia .pbadge {
   top: 18px;
   left: 18px;
 }
+
+/* right column of the modal with the project text, scrolling */
 .pinfo {
   display: flex;
   flex-direction: column;
@@ -1594,30 +2083,42 @@ body.cvzoom .cvscene .desk {
   overflow-y: auto;
   min-width: 0;
 }
+
+/* project title in big light gold type */
 .pname {
   margin: 0 40px 0 0;
   font: 600 1.6rem var(--display);
   color: #ffe9b8;
 }
+
+/* project role in amber just under the title */
 .prole {
   margin: -6px 0 0;
   font: 600 0.95rem var(--display);
   color: var(--amber);
 }
+
+/* one-line project pitch in muted text */
 .plead {
   margin: 0;
   color: var(--muted);
 }
+
+/* project summary, keeping its line breaks */
 .psum {
   margin: 0;
   line-height: 1.5;
   white-space: pre-line;
 }
+
+/* highlight box with an amber bar on the left */
 .phigh {
   padding: 8px 12px;
   border-left: 4px solid var(--amber);
   background: #241d33;
 }
+
+/* small uppercase heading inside the text column */
 .pinfo h3 {
   margin: 0 0 5px;
   font: 600 0.8rem var(--display);
@@ -1625,9 +2126,13 @@ body.cvzoom .cvscene .desk {
   text-transform: uppercase;
   color: var(--muted);
 }
+
+/* no margin on highlight text */
 .phigh p {
   margin: 0;
 }
+
+/* row of project link buttons at the bottom */
 .plinks {
   display: flex;
   flex-wrap: wrap;
@@ -1635,6 +2140,8 @@ body.cvzoom .cvscene .desk {
   margin-top: auto;
   padding-top: 6px;
 }
+
+/* project link button with an outline */
 .pbtn {
   display: inline-flex;
   align-items: center;
@@ -1646,37 +2153,54 @@ body.cvzoom .cvscene .desk {
   border: 2px solid #3b2d57;
   background: #241d33;
 }
+
+/* main project link filled in gold */
 .pbtn.main {
   color: #1b1626;
   background: var(--gold);
   border-color: #120e1a;
 }
+
+/* link buttons get an amber border on hover or focus */
 .pbtn:hover,
 .pbtn:focus-visible {
   border-color: var(--amber);
 }
+
+/* main link turns amber on hover or focus */
 .pbtn.main:hover,
 .pbtn.main:focus-visible {
   background: var(--amber);
 }
+
+/* narrow screens: modal stacks media above text */
 @media (max-width: 720px) {
+  /* one column modal that scrolls as a whole */
   .pmodal {
     grid-template-columns: 1fr;
     width: 94vw;
     max-height: 88dvh;
     overflow-y: auto;
   }
+
+  /* divider under the media instead of beside it */
   .pmedia {
     border-right: 0;
     border-bottom: 3px solid #e8c98a;
   }
+
+  /* text column no longer scrolls on its own */
   .pinfo {
     overflow: visible;
   }
+
+  /* smaller project title */
   .pname {
     font-size: 1.3rem;
   }
 }
+
+/* reduced motion: modal and backdrop appear without fading */
 @media (prefers-reduced-motion: reduce) {
   .pmodal,
   .pback {
@@ -1688,34 +2212,49 @@ body.cvzoom .cvscene .desk {
    project slideshow (card thumbnail and detail view): arrows and dots show on hover, it moves on every 5 s
    ================================================================================================= */
 
+/* slideshow box the slides stack inside */
 .pcar {
   position: relative;
 }
+
+/* each slide fills the slideshow box */
 .pslide {
   position: absolute;
   inset: 0;
   display: block;
 }
+
+/* slide image, video or embed fills its slide */
 .pslide > * {
   display: block;
   width: 100%;
   height: 100%;
   border: 0;
 }
+
+/* card thumbnail slides crop to fill */
 .pthumb .pslide > * {
   object-fit: cover;
 }
+
+/* detail view slides show the whole picture */
 .phero .pslide > * {
   object-fit: contain;
 }
+
+/* new slide fades in */
 .pslide .pin {
   animation: pin 0.24s steps(3);
 }
+
+/* slide fade in */
 @keyframes pin {
   from {
     opacity: 0;
   }
 }
+
+/* round arrow buttons over the slideshow, hidden until hover */
 .parr {
   all: unset;
   position: absolute;
@@ -1733,21 +2272,31 @@ body.cvzoom .cvscene .desk {
   transition: opacity 0.15s steps(2);
   cursor: var(--hand);
 }
+
+/* previous arrow on the left edge */
 .parr.prev {
   left: 6px;
 }
+
+/* next arrow on the right edge */
 .parr.next {
   right: 6px;
 }
+
+/* arrow turns amber on hover or focus */
 .parr:hover,
 .parr:focus-visible {
   color: var(--amber);
   border-color: var(--amber);
 }
+
+/* bigger arrows in the detail view */
 .phero .parr {
   width: 34px;
   height: 34px;
 }
+
+/* row of dots along the bottom of the slideshow */
 .pdots {
   position: absolute;
   z-index: 1;
@@ -1760,6 +2309,8 @@ body.cvzoom .cvscene .desk {
   opacity: 0;
   transition: opacity 0.15s steps(2);
 }
+
+/* one dot per slide */
 .pdot {
   all: unset;
   width: 8px;
@@ -1768,13 +2319,19 @@ body.cvzoom .cvscene .desk {
   box-shadow: 0 0 0 2px #120e1a;
   cursor: var(--hand);
 }
+
+/* current slide's dot in amber */
 .pdot.on {
   background: var(--amber);
 }
+
+/* keyboard focus ring around a dot */
 .pdot:focus-visible {
   outline: 2px solid var(--amber);
   outline-offset: 2px;
 }
+
+/* arrows and dots show when the card or media is hovered or focused */
 .pcard:hover .parr,
 .pcard:hover .pdots,
 .pcard:focus-visible .pdots,
@@ -1784,6 +2341,7 @@ body.cvzoom .cvscene .desk {
 .phero:focus-within .pdots {
   opacity: 1;
 }
+
 /* touch screens have no hover: dots always show, and the detail view keeps its arrows */
 @media (hover: none) {
   .pdots,
@@ -1791,6 +2349,8 @@ body.cvzoom .cvscene .desk {
     opacity: 1;
   }
 }
+
+/* reduced motion: slides switch without fading */
 @media (prefers-reduced-motion: reduce) {
   .pslide .pin {
     animation: none;

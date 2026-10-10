@@ -2,6 +2,7 @@
    Shared by the room (index.html) and the local editor (admin/): palette, fonts, cursors, scrollbars.
    ================================================================================================= */
 
+/* palette, fonts, cursors and portrait size shared by every page */
 :root {
   --arrow: url(assets/cursor-arrow.png) 4 4, default; /* Seif's pixel cursors */
   --hand: url(assets/cursor-hand.png) 10 4, pointer;
@@ -23,6 +24,8 @@
   --track: #241d33;
   color-scheme: dark;
 }
+
+/* hidden elements stay hidden even when a rule sets display */
 [hidden] {
   display: none !important;
 }
@@ -35,6 +38,8 @@ body {
     url(assets/cursor-arrow.png) 4 4,
     default;
 }
+
+/* hand cursor on links, buttons and anything clickable */
 a,
 button,
 select,
@@ -59,14 +64,20 @@ label,
     scrollbar-color: var(--gold) var(--track);
   }
 }
+
+/* scrollbar size, both directions */
 ::-webkit-scrollbar {
   width: 14px;
   height: 14px;
 }
+
+/* scrollbar track: dark with an outline */
 ::-webkit-scrollbar-track {
   background: var(--track);
   box-shadow: inset 0 0 0 2px var(--outline);
 }
+
+/* scrollbar thumb: gold block with pixel bevel */
 ::-webkit-scrollbar-thumb {
   background: var(--gold);
   border: 2px solid var(--outline);
@@ -74,18 +85,27 @@ label,
     inset -3px -3px 0 var(--gold-dark),
     inset 3px 3px 0 var(--gold-light);
 }
+
+/* scrollbar thumb lightens on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: var(--gold-light);
 }
+
+/* scrollbar thumb darkens while dragged */
 ::-webkit-scrollbar-thumb:active {
   background: var(--gold-dark);
 }
+
+/* corner where the two scrollbars meet */
 ::-webkit-scrollbar-corner {
   background: var(--track);
 }
+
+/* no arrow buttons at the scrollbar ends */
 ::-webkit-scrollbar-button {
   display: none;
 }
+
 /* Pixelarticons (icons.js): crisp pixels, sit on the text line; a button holding one lines icon and label up */
 .pxi {
   display: inline-block;
@@ -93,21 +113,27 @@ label,
   vertical-align: middle;
   shape-rendering: crispEdges;
 }
+
+/* buttons with an icon: icon and label centred side by side */
 :where(button:has(> .pxi)) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
 }
+
 /* =================================================================================================
    flag picker (icons.js flagPicker): the current flag as a button, the four languages drop down under it
    ================================================================================================= */
 
+/* wrapper the language menu is positioned against */
 .flagpick {
   position: relative;
   display: inline-block;
   vertical-align: middle;
 }
+
+/* current flag button with outline and hard shadow */
 .lang-btn {
   display: block;
   padding: 0;
@@ -116,6 +142,8 @@ label,
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.45);
   cursor: var(--hand);
 }
+
+/* flag images: fixed size, sharp pixels */
 .lang-btn img,
 .lang-menu img {
   display: block;
@@ -123,11 +151,15 @@ label,
   height: 15px;
   image-rendering: pixelated;
 }
+
+/* flag button gets an amber border on hover or focus */
 .lang-btn:hover,
 .lang-btn:focus-visible {
   border-color: var(--amber);
   outline: none;
 }
+
+/* language dropdown: gold-framed panel under the flag */
 .lang-menu {
   position: absolute;
   top: calc(100% + 6px);
@@ -144,9 +176,13 @@ label,
   gap: 4px;
   z-index: 40;
 }
+
+/* closed language menu */
 .lang-menu[hidden] {
   display: none;
 }
+
+/* one language row: flag and name */
 .lang-menu button {
   display: flex;
   align-items: center;
@@ -163,15 +199,21 @@ label,
   box-shadow: none;
   cursor: var(--hand);
 }
+
+/* outline around the flags in the menu */
 .lang-menu img {
   box-shadow: 0 0 0 2px var(--outline);
 }
+
+/* language row turns amber on hover or focus */
 .lang-menu button:hover,
 .lang-menu button:focus-visible {
   color: var(--amber);
   border-color: var(--wall);
   outline: none;
 }
+
+/* language currently being edited */
 .lang-menu button.on {
   border-color: var(--amber);
 }
