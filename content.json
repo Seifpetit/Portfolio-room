@@ -118,33 +118,6 @@
           "gallery": [],
           "links": []
         }
-      },
-      {
-        "id": "project-five",
-        "name": "Project five",
-        "thumbnail": "",
-        "description": "A short line about what this does and who it is for.",
-        "tags": [
-          "Pixel art",
-          "Game"
-        ],
-        "badge": "Soon",
-        "cta": {
-          "label": "Preview",
-          "url": ""
-        },
-        "say": "Project five: placeholder line, the capybara will say something about this one.",
-        "detail": {
-          "summary": "Two or three sentences about what it is.",
-          "role": "Your role, one line",
-          "stack": [
-            "Pixel art",
-            "Game"
-          ],
-          "highlight": "The hardest or proudest part, one sentence.",
-          "gallery": [],
-          "links": []
-        }
       }
     ]
   },
