@@ -1,0 +1,167 @@
+/* Shared by the room (index.html) and the local editor (admin/): palette, fonts, cursors, scrollbars. */
+:root {
+  --arrow: url(assets/cursor-arrow.png) 4 4, default; /* Seif's pixel cursors */
+  --hand: url(assets/cursor-hand.png) 10 4, pointer;
+  --pw: clamp(72px, 12vw, 116px); /* dialogue portrait width; the head sits on top of the box */
+  --ph: calc(var(--pw) * 1.184);
+  --night: #1b1626; /* page and outside */
+  --wall: #3a2f4f;
+  --floor: #8a5a3c;
+  --ink: #f4ead8; /* text on dark */
+  --amber: #ffb347; /* monitor glow, accent */
+  --panel: #241d33;
+  --muted: #b9aecb;
+  --display: "Pixelify Sans", "Courier New", monospace;
+  --body: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --gold: #e8c98a; /* frames, buttons and scrollbar thumbs */
+  --gold-light: #ffe9b8;
+  --gold-dark: #b8935a;
+  --outline: #120e1a; /* the dark pixel outline around everything */
+  --track: #241d33;
+  color-scheme: dark;
+}
+[hidden] {
+  display: none !important;
+}
+
+/* Pixel cursors: arrow everywhere, hand on anything clickable. Written as direct urls (not the vars) so they
+   resolve from this file for pages in subfolders too. */
+html,
+body {
+  cursor:
+    url(assets/cursor-arrow.png) 4 4,
+    default;
+}
+a,
+button,
+select,
+summary,
+label,
+[role="button"],
+.clickable {
+  cursor:
+    url(assets/cursor-hand.png) 10 4,
+    pointer;
+}
+
+/* Pixel-art scrollbars: square gold thumb with a dark outline on a dark track, no rounded corners. */
+/* Firefox has no ::-webkit-scrollbar; it only gets the colours. Chrome ignores the pixel rules below
+   whenever scrollbar-color is set, so it is limited to browsers without them. */
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-color: var(--gold) var(--track);
+  }
+}
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+::-webkit-scrollbar-track {
+  background: var(--track);
+  box-shadow: inset 0 0 0 2px var(--outline);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border: 2px solid var(--outline);
+  box-shadow:
+    inset -3px -3px 0 var(--gold-dark),
+    inset 3px 3px 0 var(--gold-light);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-light);
+}
+::-webkit-scrollbar-thumb:active {
+  background: var(--gold-dark);
+}
+::-webkit-scrollbar-corner {
+  background: var(--track);
+}
+::-webkit-scrollbar-button {
+  display: none;
+}
+/* Pixelarticons (icons.js): crisp pixels, sit on the text line; a button holding one lines icon and label up */
+.pxi {
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+  shape-rendering: crispEdges;
+}
+:where(button:has(> .pxi)) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+/* flag picker (icons.js flagPicker): the current flag as a button, the four languages drop down under it */
+.flagpick {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+.lang-btn {
+  display: block;
+  padding: 0;
+  border: 2px solid var(--outline);
+  background: var(--outline);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.45);
+  cursor: var(--hand);
+}
+.lang-btn img,
+.lang-menu img {
+  display: block;
+  width: 22px;
+  height: 15px;
+  image-rendering: pixelated;
+}
+.lang-btn:hover,
+.lang-btn:focus-visible {
+  border-color: var(--amber);
+  outline: none;
+}
+.lang-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--panel);
+  border: 3px solid var(--gold);
+  box-shadow:
+    0 0 0 3px var(--outline),
+    4px 5px 0 3px rgba(0, 0, 0, 0.45);
+  display: grid;
+  gap: 4px;
+  z-index: 40;
+}
+.lang-menu[hidden] {
+  display: none;
+}
+.lang-menu button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 4px 8px 4px 4px;
+  font: 600 0.8rem var(--display);
+  letter-spacing: 0.04em;
+  text-transform: none;
+  white-space: nowrap;
+  color: var(--ink);
+  background: transparent;
+  border: 2px solid transparent;
+  box-shadow: none;
+  cursor: var(--hand);
+}
+.lang-menu img {
+  box-shadow: 0 0 0 2px var(--outline);
+}
+.lang-menu button:hover,
+.lang-menu button:focus-visible {
+  color: var(--amber);
+  border-color: var(--wall);
+  outline: none;
+}
+.lang-menu button.on {
+  border-color: var(--amber);
+}

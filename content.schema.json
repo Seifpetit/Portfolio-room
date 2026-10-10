@@ -5,54 +5,154 @@
   "required": ["schemaVersion", "site", "projects", "cv", "contact"],
   "additionalProperties": false,
   "properties": {
-    "schemaVersion": { "const": 1 },
+    "schemaVersion": {
+      "const": 1
+    },
     "site": {
-      "type": "object", "additionalProperties": false, "required": ["title", "description"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "description"],
       "properties": {
-        "title": { "type": "string", "maxLength": 60 },
-        "description": { "type": "string", "maxLength": 160 },
-        "previewImage": { "type": "string", "description": "path or URL, 1200x630, empty = none" }
+        "title": {
+          "$ref": "#/$defs/text",
+          "description": "at most 60 characters per language"
+        },
+        "description": {
+          "$ref": "#/$defs/text",
+          "description": "at most 160 characters per language"
+        },
+        "previewImage": {
+          "type": "string",
+          "description": "path or URL, 1200x630, empty = none"
+        }
       }
     },
     "projects": {
-      "type": "object", "additionalProperties": false, "required": ["intro", "items"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["items"],
       "properties": {
-        "placeholder": { "type": "boolean", "description": "true shows the purple 'Placeholder content' tag" },
-        "intro": { "type": "string", "description": "what Seif says on arrival; \\n = new line" },
+        "placeholder": {
+          "type": "boolean",
+          "description": "true shows the purple 'Placeholder content' tag"
+        },
+        "intro": {
+          "$ref": "#/$defs/text",
+          "description": "older files only: the editor moves it to ui.dialogue.<section>.intro"
+        },
         "items": {
-          "type": "array", "maxItems": 12,
+          "type": "array",
+          "maxItems": 12,
           "items": {
-            "type": "object", "additionalProperties": false, "required": ["id", "name", "description"],
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "name", "description"],
             "properties": {
-              "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
-              "name": { "type": "string", "maxLength": 28 },
-              "thumbnail": { "type": "string", "description": "16:9 image path/URL; empty = generated placeholder art" },
-              "description": { "type": "string", "maxLength": 80 },
-              "tags": { "type": "array", "maxItems": 3, "items": { "type": "string", "maxLength": 14 } },
-              "badge": { "type": "string", "maxLength": 10, "description": "Featured, New, Soon... or empty" },
-              "cta": {
-                "type": "object", "additionalProperties": false, "required": ["label", "url"],
-                "properties": { "label": { "type": "string", "maxLength": 14 }, "url": { "type": "string" } }
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9-]+$"
               },
-              "say": { "type": "string", "maxLength": 100, "description": "what Seif says when the card is hovered" },
-              "detail": {
-                "type": "object", "additionalProperties": false,
-                "description": "reserved for the project detail view (not shown yet)",
+              "name": {
+                "$ref": "#/$defs/text",
+                "description": "at most 28 characters per language"
+              },
+              "thumbnail": {
+                "type": "string",
+                "description": "16:9 photo, GIF or MP4/WebM clip (path or URL); empty = generated placeholder art"
+              },
+              "description": {
+                "$ref": "#/$defs/text",
+                "description": "at most 80 characters per language"
+              },
+              "tags": {
+                "type": "array",
+                "maxItems": 3,
+                "items": {
+                  "type": "string",
+                  "maxLength": 14
+                }
+              },
+              "badge": {
+                "type": "string",
+                "maxLength": 10,
+                "description": "Featured, New, Soon... or empty"
+              },
+              "cta": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["label", "url"],
                 "properties": {
-                  "summary": { "type": "string", "maxLength": 400 },
-                  "role": { "type": "string", "maxLength": 40, "description": "also shown on the card footer" },
-                  "stack": { "type": "array", "items": { "type": "string" } },
-                  "highlight": { "type": "string", "maxLength": 160 },
-                  "gallery": {
-                    "type": "array", "maxItems": 4,
+                  "label": {
+                    "$ref": "#/$defs/text",
+                    "description": "at most 14 characters per language"
+                  },
+                  "url": {
+                    "type": "string"
+                  }
+                }
+              },
+              "say": {
+                "$ref": "#/$defs/text",
+                "description": "what Seif says when the card is hovered; at most 100 characters per language"
+              },
+              "detail": {
+                "type": "object",
+                "additionalProperties": false,
+                "description": "the detail view the card grows into when clicked",
+                "properties": {
+                  "summary": {
+                    "$ref": "#/$defs/text",
+                    "description": "at most 400 characters per language"
+                  },
+                  "role": {
+                    "$ref": "#/$defs/text",
+                    "description": "also shown on the card footer; at most 40 characters per language"
+                  },
+                  "stack": {
+                    "type": "array",
                     "items": {
-                      "type": "object", "required": ["type", "src"], "additionalProperties": false,
-                      "properties": { "type": { "enum": ["image", "video"] }, "src": { "type": "string" }, "alt": { "type": "string" } }
+                      "type": "string"
+                    }
+                  },
+                  "highlight": {
+                    "$ref": "#/$defs/text",
+                    "description": "at most 160 characters per language"
+                  },
+                  "gallery": {
+                    "type": "array",
+                    "maxItems": 6,
+                    "items": {
+                      "type": "object",
+                      "required": ["type", "src"],
+                      "additionalProperties": false,
+                      "properties": {
+                        "type": {
+                          "enum": ["image", "video"]
+                        },
+                        "src": {
+                          "type": "string"
+                        },
+                        "alt": {
+                          "type": "string"
+                        }
+                      }
                     }
                   },
                   "links": {
                     "type": "array",
-                    "items": { "type": "object", "required": ["label", "url"], "additionalProperties": false, "properties": { "label": { "type": "string" }, "url": { "type": "string" } } }
+                    "items": {
+                      "type": "object",
+                      "required": ["label", "url"],
+                      "additionalProperties": false,
+                      "properties": {
+                        "label": {
+                          "type": "string"
+                        },
+                        "url": {
+                          "type": "string"
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -62,57 +162,245 @@
       }
     },
     "cv": {
-      "type": "object", "additionalProperties": false, "required": ["intro", "name", "role"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "role"],
       "properties": {
-        "placeholder": { "type": "boolean" },
-        "intro": { "type": "string" },
-        "photo": { "type": "string", "description": "square image path/URL, empty = silhouette" },
-        "name": { "type": "string", "maxLength": 32 },
-        "role": { "type": "string", "maxLength": 48 },
-        "summary": { "type": "string", "maxLength": 240 },
+        "placeholder": {
+          "type": "boolean"
+        },
+        "intro": {
+          "$ref": "#/$defs/text",
+          "description": "older files only: the editor moves it to ui.dialogue.<section>.intro"
+        },
+        "photo": {
+          "type": "string",
+          "description": "square image path/URL, empty = silhouette"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "role": {
+          "$ref": "#/$defs/text",
+          "description": "at most 48 characters per language"
+        },
+        "summary": {
+          "$ref": "#/$defs/text",
+          "description": "at most 240 characters per language"
+        },
         "experience": {
-          "type": "array", "maxItems": 3,
+          "type": "array",
+          "maxItems": 3,
           "items": {
-            "type": "object", "required": ["company", "role"], "additionalProperties": false,
+            "type": "object",
+            "required": ["company", "role"],
+            "additionalProperties": false,
             "properties": {
-              "company": { "type": "string" }, "role": { "type": "string" }, "start": { "type": "string" }, "end": { "type": "string" },
-              "bullets": { "type": "array", "maxItems": 2, "items": { "type": "string", "maxLength": 90 } }
+              "company": {
+                "type": "string"
+              },
+              "role": {
+                "$ref": "#/$defs/text"
+              },
+              "start": {
+                "type": "string"
+              },
+              "end": {
+                "type": "string"
+              },
+              "bullets": {
+                "type": "array",
+                "maxItems": 2,
+                "items": {
+                  "$ref": "#/$defs/text",
+                  "description": "at most 90 characters per language"
+                }
+              }
             }
           }
         },
         "education": {
-          "type": "array", "maxItems": 2,
+          "type": "array",
+          "maxItems": 2,
           "items": {
-            "type": "object", "required": ["school", "degree"], "additionalProperties": false,
-            "properties": { "school": { "type": "string" }, "degree": { "type": "string" }, "start": { "type": "string" }, "end": { "type": "string" } }
+            "type": "object",
+            "required": ["school", "degree"],
+            "additionalProperties": false,
+            "properties": {
+              "school": {
+                "type": "string"
+              },
+              "degree": {
+                "$ref": "#/$defs/text"
+              },
+              "start": {
+                "type": "string"
+              },
+              "end": {
+                "type": "string"
+              }
+            }
           }
         },
         "skills": {
-          "type": "array", "maxItems": 3,
-          "items": { "type": "object", "required": ["items"], "additionalProperties": false, "properties": { "group": { "type": "string" }, "items": { "type": "array", "items": { "type": "string" } } } }
+          "type": "array",
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "required": ["items"],
+            "additionalProperties": false,
+            "properties": {
+              "group": {
+                "$ref": "#/$defs/text"
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
         },
-        "languages": { "type": "array", "items": { "type": "string" } },
-        "pdf": { "type": "string", "description": "path/URL of the CV PDF; empty hides the Download button" }
+        "languages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pdf": {
+          "type": "string",
+          "description": "path/URL of the CV PDF; empty hides the Download button"
+        },
+        "say": {
+          "$ref": "#/$defs/text",
+          "description": "Seif's line while the CV paper is hovered; at most 100 characters per language"
+        }
       }
     },
     "contact": {
-      "type": "object", "additionalProperties": false, "required": ["intro", "links"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["links"],
       "properties": {
-        "placeholder": { "type": "boolean" },
-        "intro": { "type": "string" },
+        "placeholder": {
+          "type": "boolean"
+        },
+        "intro": {
+          "$ref": "#/$defs/text",
+          "description": "older files only: the editor moves it to ui.dialogue.<section>.intro"
+        },
         "links": {
-          "type": "array", "minItems": 1, "maxItems": 6,
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 6,
           "items": {
-            "type": "object", "required": ["id", "label", "url"], "additionalProperties": false,
+            "type": "object",
+            "required": ["id", "label", "url"],
+            "additionalProperties": false,
             "properties": {
-              "id": { "type": "string" },
-              "label": { "type": "string", "maxLength": 14 },
-              "url": { "type": "string", "description": "https://..., mailto:..., or tel:..." },
-              "icon": { "type": "string", "description": "linkedin | github | gmail | link (default)" },
-              "iconImage": { "type": "string", "description": "optional 24x24 pixel PNG, used when icon is not a built-in one" }
+              "id": {
+                "type": "string"
+              },
+              "label": {
+                "$ref": "#/$defs/text",
+                "description": "at most 14 characters per language"
+              },
+              "url": {
+                "type": "string",
+                "description": "https://..., mailto:..., or tel:..."
+              },
+              "icon": {
+                "type": "string",
+                "description": "linkedin | github | gmail | link (default)"
+              },
+              "iconImage": {
+                "type": "string",
+                "description": "optional 24x24 pixel PNG, used when icon is not a built-in one"
+              },
+              "say": {
+                "$ref": "#/$defs/text",
+                "description": "Seif's line while this pin is hovered; at most 100 characters per language"
+              }
             }
           }
         }
+      }
+    },
+    "ui": {
+      "type": "object",
+      "description": "Every fixed piece of room text, grouped by type, keyed by id. Missing lines use the defaults.",
+      "additionalProperties": false,
+      "properties": {
+        "dialogue": {
+          "$ref": "#/$defs/uiGroup"
+        },
+        "titles": {
+          "$ref": "#/$defs/uiGroup"
+        },
+        "buttons": {
+          "$ref": "#/$defs/uiGroup"
+        },
+        "hints": {
+          "$ref": "#/$defs/uiGroup"
+        },
+        "screenReader": {
+          "$ref": "#/$defs/uiGroup"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "text": {
+      "description": "Translatable text: a plain string (English) or one string per language (gaps use English).",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["en"],
+          "properties": {
+            "en": {
+              "type": "string"
+            },
+            "aeb": {
+              "type": "string"
+            },
+            "fr": {
+              "type": "string"
+            },
+            "de": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "uiLine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["section", "where", "text"],
+      "properties": {
+        "section": {
+          "enum": ["global", "projects", "cv", "contact"],
+          "description": "which editor page shows it; global lines are on the Translation screen"
+        },
+        "where": {
+          "type": "string",
+          "description": "where the line appears in the room (kept up to date by the editor)"
+        },
+        "text": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "uiGroup": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/uiLine"
       }
     }
   }

@@ -7,234 +7,15 @@
 <title>Seif's Room</title>
 <meta name="description" content="Seif's pixel-art portfolio room.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
-<style>
-/* Layout: one full-screen night room drawn on canvas; panels slide over it like game dialog boxes. Deliberately single-theme. */
-:root {
-  --arrow: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAcElEQVR42mNgGAV0AozIHBUF9f+ENNx5cJORGhYzDZSPmQZdUG/buxEu7uXsT/VgHw1qrEGNDKgV7KNBTTCoqRXsIy+oWSjRTEwhMxrUVAnq1hnbRqtF2gU1cvAeXT1zNKhp19ijViNw5AX1KKAbAAAv2SXhDjnDzwAAAABJRU5ErkJggg==) 4 4, default;      /* Seif's pixel cursors */
-  --hand: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAmElEQVR42mNgGAV0AozEKFJRUP+PTfzOg5uM5FrMNFA+HjCLWUjVsG3vRjjby9n/P7nBPhrUZAPklE9MsI+8oGYkpqDAlapxAS9nf4KFzGiqxlVQYFXTOmMbnF2d4QVnW4emIxStnok1tY8GNdZgxJWSkYMXWf1oWU1SUB9dPRMRjCQaiqx3NKgJNvaIKbeJAaNl9SigOwAAakwxK+pP0akAAAAASUVORK5CYII=) 10 4, pointer;
-  --night: #1b1626;      /* page and outside */
-  --wall: #3a2f4f;
-  --floor: #8a5a3c;
-  --ink: #f4ead8;        /* text on dark */
-  --amber: #ffb347;      /* monitor glow, accent */
-  --panel: #241d33;
-  --muted: #b9aecb;
-  --display: "Pixelify Sans", "Courier New", monospace;
-  --body: "Atkinson Hyperlegible", system-ui, sans-serif;
-  color-scheme: dark;
-}
-[hidden] { display: none !important; }
-html, body { height: 100%; }
-html, body { cursor: var(--arrow); }
-a, button, [role="button"], summary, label { cursor: var(--hand); }
-body { background: var(--night); color: var(--ink); font-family: var(--body); overflow: hidden; }
-.app { height: 100%; position: relative; display: flex; flex-direction: column; padding-block: 8px; padding-inline: 16px; box-sizing: border-box; }
-header { position: absolute; top: 10px; left: 16px; right: 16px; z-index: 1; pointer-events: none; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
-h1 { font-family: var(--display); font-weight: 600; font-size: 1.35rem; margin: 0; letter-spacing: .02em; }
-h1 span { color: var(--amber); }
-/* Title screen: shown on first load over the blurred room, gone on the first click, tap or key */
-.title { position: fixed; inset: 0; z-index: 20; display: grid; place-content: center; justify-items: center; gap: clamp(18px, 4vh, 40px); padding: 16px; text-align: center; background: rgba(12, 9, 18, .62); -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px); cursor: var(--hand); transition: opacity .35s steps(4); }
-.title::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(0,0,0,.22) 0 2px, transparent 2px 4px); }
-.title.out { opacity: 0; pointer-events: none; }
-.title:not(.ready) { cursor: var(--arrow); }
-.title-name { visibility: hidden; } .fonts .title-name { visibility: visible; } /* no flash of a fallback font */
-.title-name span { color: var(--amber); }
-.title-hint, .title-load { grid-area: 2 / 1; }
-.title:not(.ready) .title-hint, .title.ready .title-load { visibility: hidden; }
-.title-load { position: relative; align-self: center; width: min(240px, 60vw); height: 14px; background: #241d33; box-shadow: 0 0 0 3px #120e1a, inset 0 0 0 2px #3b2d57; }
-.title-load i { position: absolute; left: 2px; top: 2px; bottom: 2px; width: 0; max-width: calc(100% - 4px); background: repeating-linear-gradient(90deg, var(--amber) 0 8px, #e8902a 8px 10px); transition: width .2s steps(3); }
-.title-name { position: relative; margin: 0; font: 600 clamp(3.4rem, 13vw, 8.5rem)/.95 var(--display); color: #e6ecea; letter-spacing: .02em; text-shadow: 0 6px 0 #120e1a, 6px 0 0 #120e1a, -6px 0 0 #120e1a, 0 -6px 0 #120e1a, 6px 6px 0 #120e1a, -6px 6px 0 #120e1a, 6px -6px 0 #120e1a, -6px -6px 0 #120e1a, 0 12px 0 #120e1a, 6px 12px 0 #120e1a, -6px 12px 0 #120e1a; animation: rise .5s steps(5) backwards, titlefloat 3.6s ease-in-out .5s infinite; }
-@keyframes titlefloat { 50% { transform: translateY(-5px); } }
-.title-hint { position: relative; margin: 0; font: 400 clamp(1.1rem, 3.4vw, 1.9rem) var(--display); color: #d9d2e6; letter-spacing: .04em; text-shadow: 3px 3px 0 #120e1a; animation: hintpulse 1.8s steps(3) infinite .6s; }
-@keyframes hintpulse { 50% { opacity: .35; } }
-.title-hint .touch { display: none; }
-@media (hover: none) { .title-hint .mouse { display: none; } .title-hint .touch { display: inline; } }
-@media (max-width: 520px) { .title-name { text-shadow: 0 4px 0 #120e1a, 4px 0 0 #120e1a, -4px 0 0 #120e1a, 0 -4px 0 #120e1a, 4px 4px 0 #120e1a, -4px 4px 0 #120e1a, 4px -4px 0 #120e1a, -4px -4px 0 #120e1a, 0 8px 0 #120e1a; } }
-@media (prefers-reduced-motion: reduce) { .title-name, .title-hint { animation: none; } }
-.stage { flex: 1; min-height: 0; display: grid; place-items: center; }
-canvas { touch-action: none; cursor: var(--hand); image-rendering: pixelated; max-width: 100%; border-radius: 4px; background: #2a2133; box-shadow: 0 0 0 4px #120e1a, 0 18px 40px rgba(0,0,0,.45); }
-nav { position: absolute; bottom: 12px; left: 16px; right: 16px; z-index: 1; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-nav button { font: 600 .85rem var(--display); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); background: rgba(27,22,38,.8); border: 2px solid var(--wall); padding: 6px 12px; border-radius: 2px; cursor: var(--hand); }
-nav button:hover, nav button:focus-visible { border-color: var(--amber); color: var(--amber); outline: none; }
-nav small { display: none; width: 100%; text-align: center; color: var(--muted); font-size: .75rem; }
-
-.overlay { z-index: 5; position: fixed; inset: 0; background: rgba(12, 9, 18, .62); display: grid; place-items: end center; padding: 16px; padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
-.dialog { width: min(640px, 100%); max-height: 78%; overflow: auto; background: var(--panel); border: 4px solid var(--ink); box-shadow: 0 0 0 4px var(--night), 8px 8px 0 4px rgba(0,0,0,.35); padding: 18px 20px 20px; box-sizing: border-box; animation: rise .22s steps(4); }
-@keyframes rise { from { transform: translateY(24px); opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .dialog { animation: none; } }
-.dialog-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 6px; }
-.dialog h2 { font: 600 1.3rem var(--display); margin: 0; color: var(--amber); }
-.close { font: 600 .8rem var(--display); text-transform: uppercase; letter-spacing: .06em; background: var(--ink); color: var(--night); border: 0; padding: 6px 10px; cursor: var(--hand); }
-.close:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
-.sample { display: inline-block; font: .72rem var(--display); letter-spacing: .08em; text-transform: uppercase; color: var(--night); background: var(--muted); padding: 2px 6px; margin-bottom: 12px; }
-.dialog p { line-height: 1.55; margin: 0 0 12px; max-width: 62ch; }
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
-.card { border: 2px solid var(--wall); padding: 12px; min-width: 0; }
-.card h3 { font: 600 1rem var(--display); margin: 0 0 4px; }
-.card p { font-size: .88rem; color: var(--muted); margin: 0; }
-.links { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
-.links li { display: flex; justify-content: space-between; gap: 12px; border-bottom: 2px dotted var(--wall); padding-block: 6px; flex-wrap: wrap; }
-.links b { font-family: var(--display); font-weight: 600; }
-a { color: var(--amber); }
-.cv-rows { display: grid; gap: 8px; margin-bottom: 12px; }
-.cv-rows div { display: grid; grid-template-columns: 7.5em 1fr; gap: 10px; }
-.cv-rows dt, .cv-rows span:first-child { font-family: var(--display); color: var(--muted); }
-
-/* RPG dialogue banner: slides up when the character reaches an object */
-.banner { z-index: 4; position: fixed; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; padding: 0 16px calc(14px + env(safe-area-inset-bottom, 0px)); pointer-events: none; }
-.banner-inner { position: relative; width: min(760px, 100%); pointer-events: auto; cursor: var(--hand); animation: slideup .28s steps(5); }
-@keyframes slideup { from { transform: translateY(60%); opacity: 0; } }
-.banner-box { margin-left: clamp(80px, 17vw, 140px); min-height: 104px; background: linear-gradient(#2b2140, #1c1530); border: 3px solid #e8c98a; outline: 3px solid #120e1a; box-shadow: 0 0 0 6px #120e1a, inset 0 0 0 3px #3b2d57, 6px 8px 0 6px rgba(0,0,0,.4); padding: 26px 22px 20px; box-sizing: border-box; position: relative; }
-.banner-name { position: absolute; top: -18px; left: 16px; font: 600 1rem var(--display); letter-spacing: .06em; color: #ffe9b8; background: #4a2f3a; border: 3px solid #e8c98a; outline: 3px solid #120e1a; padding: 2px 16px; }
-.banner-text { font: 400 1.18rem/1.5 var(--display); color: var(--ink); margin: 0; min-height: 3em; white-space: pre-line; }
-.banner-next { position: absolute; right: 14px; bottom: 8px; font-size: .9rem; color: var(--amber); animation: blink 1s steps(2) infinite; }
-@keyframes blink { 50% { opacity: 0; } }
-.banner-portrait { position: absolute; left: 0; bottom: 0; width: clamp(96px, 19vw, 168px); image-rendering: pixelated; filter: drop-shadow(4px 0 0 #120e1a) drop-shadow(-4px 0 0 #120e1a) drop-shadow(0 -4px 0 #120e1a); pointer-events: none; }
-@media (prefers-reduced-motion: reduce) { .banner-inner, .banner-next { animation: none; } }
-
-/* Projects: listing-style pixel cards */
-.dialog.wide { width: min(1100px, 100%); max-height: 100%; align-self: end; overflow: visible; background: none; border: 0; box-shadow: none; padding: 8px 4px 24px; animation: none; }
-.overlay.floating { place-items: center; grid-template-columns: minmax(0, 1fr); background: rgba(8, 6, 14, .72); }
-.dialog.wide { min-width: 0; justify-self: center; }
-.dialog.wide .dialog-head { margin-bottom: 4px; }
-.dialog.wide h2 { font-size: 1.6rem; text-shadow: 3px 3px 0 #120e1a; }
-.dialog.wide .sample-note { text-shadow: 2px 2px 0 #120e1a; }
-.dialog.wide .sample { text-shadow: none; }
-body.floating header, body.floating nav { visibility: hidden; }
-body.floating .banner { z-index: 6; }
-body.floating .banner-inner { animation: none; cursor: var(--arrow); }
-body.floating .banner-next { display: none; }
-.overlay.floating { padding-bottom: calc(190px + env(safe-area-inset-bottom, 0px)); }
-@media (max-width: 520px) { .overlay.floating { padding-bottom: calc(176px + env(safe-area-inset-bottom, 0px)); } .banner-text { font-size: .95rem; } .banner-box { padding: 22px 14px 14px; min-height: 92px; } }
-
-.sample-note { margin: 0 0 14px !important; color: var(--muted); }
-.pcards { display: flex; gap: 18px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; padding: 6px 6px 12px; }
-.pcards > .pcard { flex: 0 0 240px; scroll-snap-align: start; }
-/* timid pixel scrollbar (custom, so it looks the same everywhere): shows while scrolling, then fades out */
-.pcards { scrollbar-width: none; }
-.pcards::-webkit-scrollbar { display: none; }
-.pscroll { position: relative; height: 8px; margin: 2px 8px 0; opacity: 0; transition: opacity .25s steps(3); background: repeating-linear-gradient(90deg, rgba(185,174,203,.14) 0 4px, transparent 4px 8px); touch-action: none; }
-.pscroll.on { opacity: .75; transition: opacity .08s steps(2); }
-.pscroll:hover { opacity: .9; }
-.pscroll i { position: absolute; top: 0; bottom: 0; left: 0; background: #8f84a3; box-shadow: inset 2px 2px 0 #cfc5dd, inset -2px -2px 0 #4a3f5e, 0 0 0 2px #120e1a; cursor: var(--hand); }
-.pcard { all: unset; box-sizing: border-box; display: flex; flex-direction: column; background: #1c1530; border: 3px solid #e8c98a; box-shadow: 0 0 0 3px #120e1a, 5px 6px 0 3px rgba(0,0,0,.45); cursor: var(--hand); text-align: left; color: var(--ink); animation: pop .5s backwards; }
-/* sticker pop: each card slaps in with an overshoot and a wobble, in chunky steps */
-@keyframes pop {
-  0% { transform: scale(.25) rotate(-12deg); opacity: 0; animation-timing-function: steps(3); }
-  40% { transform: scale(1.14) rotate(5deg); opacity: 1; border-color: #fff; animation-timing-function: steps(2); }
-  60% { transform: scale(.93) rotate(-3deg); animation-timing-function: steps(2); }
-  78% { transform: scale(1.04) rotate(1deg); animation-timing-function: steps(2); }
-  100% { transform: none; }
-}
-.pcard:nth-child(1) { animation-delay: .15s; } .pcard:nth-child(2) { animation-delay: .27s; } .pcard:nth-child(3) { animation-delay: .39s; } .pcard:nth-child(4) { animation-delay: .51s; } .pcard:nth-child(5) { animation-delay: .63s; } .pcard:nth-child(6) { animation-delay: .75s; }
-.pcard:hover, .pcard:focus-visible { transform: translate(-2px, -3px); border-color: var(--amber); box-shadow: 0 0 0 3px #120e1a, 8px 10px 0 3px rgba(0,0,0,.45); }
-.pcard:focus-visible { outline: 3px solid var(--amber); outline-offset: 4px; }
-.pcard:active { transform: translate(1px, 1px); }
-.pthumb { position: relative; display: block; aspect-ratio: 2 / 1; border-bottom: 3px solid #e8c98a; background: #0c0912; overflow: hidden; }
-.pthumb canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
-.pbadge { position: absolute; top: 8px; left: 8px; font: 600 .7rem var(--display); letter-spacing: .08em; text-transform: uppercase; color: #1b1626; background: var(--amber); border: 2px solid #120e1a; padding: 1px 7px; }
-.pbody { display: flex; flex-direction: column; gap: 5px; padding: 10px 12px 6px; flex: 1; }
-.ptitle { font: 600 1.1rem var(--display); color: #ffe9b8; }
-.pdesc { font-size: .84rem; line-height: 1.35; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.ptags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; padding-top: 4px; }
-.ptags span { font: .7rem var(--display); letter-spacing: .04em; color: var(--ink); background: #3b2d57; border: 2px solid #120e1a; padding: 1px 6px; }
-.pfoot { display: flex; justify-content: space-between; align-items: center; padding: 6px 12px 10px; border-top: 2px dotted #3b2d57; font: 600 .85rem var(--display); }
-.pfoot > span:first-child { color: var(--amber); }
-.pcta { color: #7ff3ff; }
-@media (max-width: 640px) { .pcards { gap: 14px; scroll-snap-type: x mandatory; } .pcards > .pcard { flex: 0 0 72%; scroll-snap-align: center; } .dialog.wide { padding: 8px 0 8px; align-self: end; } }
-@media (prefers-reduced-motion: reduce) { .pcard { animation: none; } .pcard:hover { transform: none; } }
-
-/* Socials: big frameless pixel logos, each tilted a little */
-.socials { display: grid; grid-template-columns: auto auto; justify-content: center; gap: 22px clamp(36px, 8vw, 72px); padding: 18px 8px 10px; }
-.socials .sicon.mail { grid-column: 1 / -1; justify-self: center; }
-.sicon { display: flex; flex-direction: column; align-items: center; gap: 16px; text-decoration: none; color: var(--ink); animation: pop .5s backwards; outline: none; }
-.sicon:nth-child(1) { animation-delay: .15s; } .sicon:nth-child(2) { animation-delay: .3s; } .sicon:nth-child(3) { animation-delay: .45s; }
-.slogo { display: grid; place-items: center; width: clamp(84px, 18vw, 112px); aspect-ratio: 1; transform: rotate(var(--tilt, 0deg)); }
-.slogo canvas { width: 100%; max-width: none; background: none; box-shadow: none; border-radius: 0; cursor: var(--hand); image-rendering: pixelated; transition: transform .32s cubic-bezier(.3, 1.9, .5, 1), filter .2s; filter: drop-shadow(3px 3px 0 #120e1a); }
-.slogo.li canvas { --glow: #2f8fff; } .slogo.gh canvas { --glow: #b9f5ff; } .slogo.gm canvas { --glow: #ff6b5e; }
-.sicon:hover .slogo canvas, .sicon:focus-visible .slogo canvas { transform: scale(1.16); filter: drop-shadow(3px 3px 0 #120e1a) drop-shadow(0 0 6px var(--glow)) drop-shadow(0 0 14px var(--glow)); }
-.sicon:focus-visible .slabel { color: var(--amber); text-decoration: underline; }
-.slabel { font: 600 1.05rem var(--display); letter-spacing: .06em; text-shadow: 2px 2px 0 #120e1a; }
-.dialog.wide .dialog-head { gap: 56px; }
-.dialog.wide[data-panel=socials] { width: auto; }
-.slabel { font: 600 1.05rem var(--display); letter-spacing: .06em; text-shadow: 2px 2px 0 #120e1a; }
-
-
-/* Projects sit on a pixel computer screen */
-.monitor { position: relative; padding: 14px; background: #3a3350; box-shadow: inset 4px 4px 0 #5a5175, inset -4px -4px 0 #231d33, 0 0 0 4px #120e1a, 8px 10px 0 4px rgba(0,0,0,.4); animation: poweron .45s steps(5) backwards; }
-.monitor::after { content: ""; position: absolute; right: 18px; bottom: 4px; width: 6px; height: 6px; background: #5cf2c6; box-shadow: 0 0 0 2px #120e1a, 0 0 8px #5cf2c6; animation: blink 2.4s steps(2) infinite; }
-.screen { position: relative; background: radial-gradient(ellipse at 50% 40%, #12384a 0, #0b2030 55%, #08141f 100%); box-shadow: inset 0 0 0 3px #120e1a, inset 0 0 28px rgba(92,242,198,.18); padding: 26px 12px 22px; overflow: hidden; }
-.screen::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 2; background: repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 4px); }
-.screen .sample-note { margin: 0 6px 18px !important; color: #9ff5dc; font-family: var(--display); }
-.screen .sample-note::before { content: "C:\\SEIF\\PROJECTS> "; color: #5cf2c6; }
-.screen .pscroll i { background: #3fae90; box-shadow: inset 2px 2px 0 #9ff5dc, inset -2px -2px 0 #1d5a4b, 0 0 0 2px #120e1a; }
-.stand { width: 64px; height: 18px; margin: 0 auto; background: #2c2640; box-shadow: inset 4px 0 0 #4a4263, 0 0 0 4px #120e1a; position: relative; z-index: -1; animation: poweron .45s steps(5) backwards; }
-.stand::after { content: ""; position: absolute; left: -48px; right: -48px; top: 18px; height: 12px; background: #3a3350; box-shadow: inset 0 4px 0 #5a5175, 0 0 0 4px #120e1a; }
-.stand + * { margin-top: 0; }
-.monitor + .stand { margin-bottom: 34px; }
-.monitor .pcard:nth-child(1) { animation-delay: 0.52s; } .monitor .pcard:nth-child(2) { animation-delay: 0.64s; } .monitor .pcard:nth-child(3) { animation-delay: 0.76s; } .monitor .pcard:nth-child(4) { animation-delay: 0.88s; } .monitor .pcard:nth-child(5) { animation-delay: 1.00s; } .monitor .pcard:nth-child(6) { animation-delay: 1.12s; } 
-@keyframes poweron { 0% { transform: scale(1, .02); filter: brightness(3); opacity: 0; } 40% { transform: scale(1, .02); filter: brightness(3); opacity: 1; } 70% { transform: scale(1, 1.03); } }
-
-
-/* CV: a vertical paper on the bureau, the desk and trophies barely there behind it */
-.cvscene { position: relative; width: min(900px, 100%); height: clamp(380px, calc(100dvh - 232px), 860px); margin: 0 auto; display: grid; place-items: center; }
-.cvscene .desk { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; image-rendering: pixelated; opacity: .26; background: none; box-shadow: none; border-radius: 0; animation: rise .3s steps(4) backwards; -webkit-mask-image: radial-gradient(ellipse at 50% 55%, #000 45%, transparent 80%); mask-image: radial-gradient(ellipse at 50% 55%, #000 45%, transparent 80%); }
-.cvdoc { position: relative; height: 100%; width: auto; aspect-ratio: 1 / 1.41; max-width: 92vw; box-sizing: border-box; padding: clamp(18px, 3.4vh, 34px) clamp(18px, 3vh, 32px) clamp(14px, 2.6vh, 26px); font-size: clamp(14px, 2.1vh, 19px); container-type: inline-size; background: #f4ead8; color: #2a1d14; transform: rotate(-1.5deg); box-shadow: inset 0 0 0 2px #d8c7a6, 0 0 0 3px #120e1a, 8px 10px 0 3px rgba(0,0,0,.45), 0 0 70px rgba(255,233,184,.28); animation: pop .55s .2s backwards; display: flex; flex-direction: column; gap: .8em; overflow: hidden; }
-.cvdoc::after { content: ""; position: absolute; right: 0; bottom: 0; border: 9px solid; border-color: #d8c7a6 #1c1530 #1c1530 #d8c7a6; }
-.cvtop { display: flex; gap: 1em; align-items: center; }
-.cvphoto { flex: 0 0 26cqw; height: 31cqw; background: #c9b896; box-shadow: inset 0 0 0 2px #2a1d14; position: relative; overflow: hidden; }
-.cvphoto::before { content: ""; position: absolute; left: 50%; top: 18%; width: 40%; height: 34%; margin-left: -20%; background: #9c8a68; }
-.cvphoto::after { content: ""; position: absolute; left: 50%; bottom: 0; width: 72%; height: 30%; margin-left: -36%; background: #9c8a68; }
-.cvname { font: 600 2em var(--display); margin: 0; }
-.cvrole { font: .9em var(--display); letter-spacing: .06em; text-transform: uppercase; color: #8a5a3c; margin: 2px 0 0; }
-.cvsec h4 { font: 600 .9em var(--display); letter-spacing: .1em; text-transform: uppercase; margin: 0 0 5px; padding-bottom: 3px; border-bottom: 2px solid #2a1d14; }
-.cvsec i { display: block; height: .4em; margin: 0 0 .5em; background: #cdbd9c; }
-.cvsec i:nth-child(3n) { width: 72%; } .cvsec i:nth-child(3n+1) { width: 90%; }
-.cvdoc .sample { align-self: flex-start; margin: auto 0 0; }
-.cvdoc { cursor: var(--hand); outline: none; transition: transform .35s cubic-bezier(.3, 1.4, .5, 1), box-shadow .25s; z-index: 1; }
-.cvdoc:hover, .cvdoc:focus-visible { transform: translateY(-6px) rotate(0deg) scale(1.05); box-shadow: inset 0 0 0 2px #d8c7a6, 0 0 0 3px #120e1a, 12px 16px 0 3px rgba(0,0,0,.5), 0 0 90px rgba(255,233,184,.4); }
-.cvdoc:focus-visible { box-shadow: inset 0 0 0 2px #d8c7a6, 0 0 0 3px var(--amber), 12px 16px 0 3px rgba(0,0,0,.5), 0 0 90px rgba(255,233,184,.4); }
-.cvscene:has(.cvdoc:hover, .cvdoc:focus-visible) .desk { opacity: .12; transition: opacity .25s; }
-.cvdoc.zoom { cursor: var(--hand); box-shadow: inset 0 0 0 2px #d8c7a6, 0 0 0 3px #120e1a, 14px 18px 0 3px rgba(0,0,0,.55), 0 0 140px rgba(255,233,184,.35); }
-body.cvzoom .overlay.floating { z-index: 7; background: rgba(8, 6, 14, .9); transition: background .25s; }
-body.cvzoom .dialog-head { visibility: hidden; }
-body.cvzoom .cvscene .desk { opacity: 0; }
-@media (prefers-reduced-motion: reduce) { .cvdoc, .cvscene .desk { animation: none; transition: none; } }
-
-
-/* content-driven bits */
-.pthumb img { width: 100%; height: 100%; display: block; object-fit: cover; }
-.cvphoto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.cvphoto.has::before, .cvphoto.has::after { display: none; }
-.cvsum { margin: 0; font-size: .8em; line-height: 1.4; }
-.cvsec { font-size: .8em; line-height: 1.35; }
-.cvsec h4 { font-size: .9em; }
-.cvent { margin: 0 0 .55em; }
-.cvent b { font-family: var(--display); font-weight: 600; }
-.cvent .cvwhen { float: right; font: .85em var(--display); color: #8a5a3c; }
-.cvent ul { margin: .15em 0 0; padding-left: 1.1em; }
-.cvskill { margin: 0 0 .3em; }
-.cvskill b { font-family: var(--display); font-weight: 600; }
-.cvdl { align-self: flex-start; margin-top: auto; font: 600 .8em var(--display); letter-spacing: .06em; text-transform: uppercase; text-decoration: none; color: #f4ead8; background: #2a1d14; padding: .4em .9em; box-shadow: 0 0 0 2px #120e1a, 3px 3px 0 2px rgba(0,0,0,.35); cursor: var(--hand); }
-.cvdl:hover, .cvdl:focus-visible { background: #8a5a3c; outline: none; }
-.cvfoot .sample { margin: 0; }
-.cvfoot { margin-top: auto; display: flex; gap: .8em; align-items: center; flex-wrap: wrap; }
-.cvfoot .cvdl { margin-top: 0; }
-
-/* Socials are pinned to a corkboard */
-.cork { position: relative; margin: 6px auto 0; width: fit-content; max-width: 100%; padding: 26px clamp(18px, 5vw, 44px) 18px; background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAIAAADYYG7QAAAF8ElEQVR42rVZzW5aRxQeLpDApQJ8uRBEYidQKtU0UtLWXdQLS+22UheR+gJ5gW7yAHmKPEQeI4usrCqbXtUSou6NEzuYjMGx51pBkbv4rOPjM3MvxFVnYQEzc+b8fvOdce7Z4w2llFIqDPxoNGnV/fHUtOp+v99WSg2HB5gdT41SqlX31dURBr5SaqKNWm5AzqAXTrQZTw0+YCqKtVIq322UDmfJercx0aZSKoaBnztXSimtT7Q+IUEP7q+udla0PgkD3yRz+t0k887tRhB8QVNRrJu1MnT1y8XO7QbJiWJ971a1UiqaZA6zuahmrXw4S3LPn2zZJsJbg17Ip9KcxK3PmOUehVind/PftCtwCR9+ufjVl+29N0fcgkqpWCkVYejhLIEb6Bi/XBRyxlOD9fiAXafmY3PFhzYTbbh8jBzlUJpBsMDpHrgEa4R7olgP1gL780I3e07PYxv35+ZGb3OjBxUvZ4/PolhjDc1iauvhHf6VtpAq46mJYo1EXuwhcoxQFEURBn49qFIBikHl2e+3p/qY1r/cHjkd0++3IQqHXlGI5jKSNMPnAinseJH8DCFeGPhwbBj4L7dHfI424CQeO7iaBxeq8PMwfv15QF4nXVt1f9AL7XgppXJPHw0ysgy6AjDTUI5PkVM5AHJpL17tKaUGa0Ga5NQc+iz8JZxFdDjYZKO8fUThv6uCQYmC7Tx1uCrkGKCunbueCPlEG1sb5BlfluYhp3581IMqwhSNJnQQrwMPFiBtx1PT77d5CnMthc+pGpwahMGFzAuXxBr2DIcHkANE5RJSc0iEVmBaGmQjBM705xHheS3Ogo+vKGRnGVlAJ/Hkvd4Va6cpN7Jgny3gSyRmmiq0S6RwNJoAvchJgj6ILR6MjmIdjSb1oMpTDGRtPDV2UhOWEjzyxIxijQRC5rXqvvOeseN+QdAGa0GzVv5n/GHn78Pz83NwBk45TDLf3Z/x/X656JeLsJVoCTGNw1ny/v0HLictuJPjs3u3qtiF9R4PwWAtcIY/DHx4i//44tUe8olXCrZDjl1EBA00JWhJFOvc8ydbhKfOq3QhCczmUk44dsIYlPNotUjGCwsYntqYYWeAQC+UZwbfsmHMcy4lvEaa2xdTWoZCAmdemxs9YQmu+jT2soDCCpwQ/k+7+Oh3YAHfxTmxMxnyP3Trp2dzXhFRrEWt3e3Umiu+Seack9ssvd9vo+OhlfSVt03ok0QNok0wybwAysIvZ1AqjhwcysisZVJV8JAMaKW+0cMnPkfETyT4wopDdNJmxbUtDqXcTc0hIsj88uI8UNyL3O5rkyrH5WoH6HOp/vKMjzd0tMyzeQ+vz7QwDXqhKF1IFFwKR9aDar/fBiLYIAT5dHTB7l2cSOP0Fi4jBAvixCWKyA6HB07DnG7L8ecYWkE9XnbP9X8Mj5zMU2c4PBDqo/QyaLUgKsusFGvAet3PMdkcUtwhFIuFZDKjnKnpzv/0ddN+E6Gxuz8TkEqLwWD47Hq3cWo+ivX0fpU2/hqNX789wlOOSeZeNsI6GTu1KKL3oM4EUwgNOczZY9inSBziLUFGf5kGNnYZEkwsCZX5X77t8HD8+H03/+kTPIGXQ8QI74figZFvxO88XjzJxMXMb+Klyv6zBjVlTh5yQdOu3i0Z1eNdvmeNJs73kQyGhEi16j5wlm9Hql3SoGoJbfHCuF+EDPWy3m2YZE7BAkfZ3nnHy4Q6BJusVW5cdnn0qkzrK6UifiH5vAZNMgcfupJDaG7++PPN67dHlVJxe+dd5UZhvdvAUqp2Uf/Qph5UuRn2elIOuiIdORPELkk/+BUhevKFZcJLjKLD3w+dySq+pvIhSF+YjMtQRCdnEshOxud//+077uco1sikB/dXtT5p1sqg2Hc7NQRUVK/9n4bd/Rlgdzw1nK0LvB5PjX+z4N8sYA2lV+7powH87HyUIHaxsHu8Bml0nph79niDH5CNRoBy/pC4DHQRvSRSlcE2C7j07bcSO8chaOvhHazBX/vFyW5axJ0lVKEjYOG/8IknrGStfa8AAAAASUVORK5CYII=) 0 0 / 144px 144px; image-rendering: pixelated; box-shadow: inset 0 0 0 3px #5b3418, inset 6px 6px 0 3px rgba(0,0,0,.22), 0 0 0 10px #8a5530, 0 0 0 13px #5b3418, 0 0 0 16px #120e1a, 10px 12px 0 16px rgba(0,0,0,.4); animation: rise .25s steps(4) backwards; }
-.cork .socials { padding: 6px 4px 0; }
-.cork .slabel { background: #f4ead8; color: #2a1d14; text-shadow: none; padding: 1px 8px; border: 2px solid #120e1a; transform: rotate(calc(var(--tilt, 0deg) * -.5)); }
-.slogo { position: relative; }
-.cork .slogo::before { content: ""; position: absolute; top: -2px; left: 50%; width: 10px; height: 10px; margin-left: -5px; z-index: 1; background: #e5483f; box-shadow: inset 3px 3px 0 #ff8a7a, inset -2px -2px 0 #8f1f2a, 0 0 0 2px #120e1a, 2px 3px 0 2px rgba(0,0,0,.35); }
-@media (prefers-reduced-motion: reduce) { .monitor, .stand, .cork, .monitor::after { animation: none; } }
-@media (prefers-reduced-motion: reduce) { .sicon { animation: none; } .slogo canvas { transition: none; } }
-</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="room.css">
 
 <div class="app">
   <header>
     <h1>Seif's <span>Room</span></h1>
+    <div class="lang" id="lang"></div>
   </header>
   <div class="stage" id="stage"><canvas id="c" aria-label="A pixel room. Tap a spot to walk there."></canvas></div>
   <nav aria-label="Shortcuts">
@@ -247,493 +28,554 @@ body.cvzoom .cvscene .desk { opacity: 0; }
 
 <div class="title" id="title" role="dialog" aria-label="Seif's Room. Click anywhere to start.">
   <h2 class="title-name">Seif's <span>Room</span></h2>
-  <p class="title-hint"><span class="mouse">Click</span><span class="touch">Tap</span> anywhere to move</p>
+  <p class="title-hint">
+    <span class="mouse">Click anywhere to move</span><span class="touch">Tap anywhere to move</span>
+  </p>
   <div class="title-load" role="progressbar" aria-label="Loading the room"><i id="load-bar"></i></div>
 </div>
 
 <div class="overlay" id="overlay" hidden>
   <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
-    <div class="dialog-head"><h2 id="dlg-title"></h2><button class="close" id="close" type="button" aria-label="Back to the room">&larr; Back</button></div>
+    <div class="dialog-head">
+      <h2 id="dlg-title"></h2>
+      <button class="close" id="close" type="button" aria-label="Back to the room">Back</button>
+    </div>
     <div id="dlg-body"></div>
   </section>
 </div>
 
 <div class="banner" id="banner" hidden>
   <div class="banner-inner" id="banner-inner" role="status">
-    <img class="banner-portrait" src="assets/portrait.png" alt="The capybara, in a teal hoodie and glasses, talking">
     <div class="banner-box">
+      <img class="banner-portrait" src="assets/portrait.png" alt="The capybara, in a teal hoodie and glasses, talking">
       <div class="banner-name">Seif</div>
       <p class="banner-text" id="banner-text"></p>
-      <span class="banner-next" aria-hidden="true">&#9660;</span>
+      <span class="banner-next" aria-hidden="true"></span>
     </div>
   </div>
 </div>
 
-<script type="application/json" id="content-default">{"schemaVersion": 1, "site": {"title": "Seif's Room", "description": "Seif's pixel-art portfolio room. Walk around, open the tech lab, the CV and the contact board.", "previewImage": ""}, "projects": {"placeholder": true, "intro": "The tech lab, this is where the experiments grow...\nLet me pull up the projects.", "items": [{"id": "project-one", "name": "Project one", "thumbnail": "", "description": "A short line about what this does and who it is for.", "tags": ["JS", "Canvas", "API"], "badge": "Featured", "cta": {"label": "Live demo", "url": ""}, "say": "Project one: placeholder line, the capybara will say something about this one.", "detail": {"summary": "Two or three sentences about what it is.", "role": "Your role, one line", "stack": ["JS", "Canvas", "API"], "highlight": "The hardest or proudest part, one sentence.", "gallery": [], "links": []}}, {"id": "project-two", "name": "Project two", "thumbnail": "", "description": "A short line about what this does and who it is for.", "tags": ["Python", "ML"], "badge": "New", "cta": {"label": "Repo", "url": ""}, "say": "Project two: placeholder line, the capybara will say something about this one.", "detail": {"summary": "Two or three sentences about what it is.", "role": "Your role, one line", "stack": ["Python", "ML"], "highlight": "The hardest or proudest part, one sentence.", "gallery": [], "links": []}}, {"id": "project-three", "name": "Project three", "thumbnail": "", "description": "A short line about what this does and who it is for.", "tags": ["React", "Node"], "badge": "", "cta": {"label": "Live demo", "url": ""}, "say": "Project three: placeholder line, the capybara will say something about this one.", "detail": {"summary": "Two or three sentences about what it is.", "role": "Your role, one line", "stack": ["React", "Node"], "highlight": "The hardest or proudest part, one sentence.", "gallery": [], "links": []}}, {"id": "project-four", "name": "Project four", "thumbnail": "", "description": "A short line about what this does and who it is for.", "tags": ["Rust", "CLI"], "badge": "", "cta": {"label": "Repo", "url": ""}, "say": "Project four: placeholder line, the capybara will say something about this one.", "detail": {"summary": "Two or three sentences about what it is.", "role": "Your role, one line", "stack": ["Rust", "CLI"], "highlight": "The hardest or proudest part, one sentence.", "gallery": [], "links": []}}, {"id": "project-five", "name": "Project five", "thumbnail": "", "description": "A short line about what this does and who it is for.", "tags": ["Pixel art", "Game"], "badge": "Soon", "cta": {"label": "Preview", "url": ""}, "say": "Project five: placeholder line, the capybara will say something about this one.", "detail": {"summary": "Two or three sentences about what it is.", "role": "Your role, one line", "stack": ["Pixel art", "Game"], "highlight": "The hardest or proudest part, one sentence.", "gallery": [], "links": []}}, {"id": "project-six", "name": "Project six", "thumbnail": "", "description": "A short line about what this does and who it is for.", "tags": ["Three.js", "Shader"], "badge": "", "cta": {"label": "Live demo", "url": ""}, "say": "Project six: placeholder line, the capybara will say something about this one.", "detail": {"summary": "Two or three sentences about what it is.", "role": "Your role, one line", "stack": ["Three.js", "Shader"], "highlight": "The hardest or proudest part, one sentence.", "gallery": [], "links": []}}]}, "cv": {"placeholder": true, "intro": "My bureau. Every paper here is part of the story...\nHere is the CV.", "photo": "", "name": "Seif", "role": "Role placeholder", "summary": "Two or three sentences about you.", "experience": [{"company": "Company", "role": "Your role", "start": "2023", "end": "Now", "bullets": ["One thing you did or shipped.", "Another one."]}], "education": [{"school": "School", "degree": "Degree", "start": "2019", "end": "2023"}], "skills": [{"group": "Tools", "items": ["JavaScript", "Python", "Git"]}], "languages": [], "pdf": ""}, "contact": {"placeholder": true, "intro": "The corkboard. Everywhere you can find me online is pinned up here...", "links": [{"id": "linkedin", "label": "LinkedIn", "url": "https://www.linkedin.com/", "icon": "linkedin"}, {"id": "github", "label": "GitHub", "url": "https://github.com/Seifpetit", "icon": "github"}, {"id": "email", "label": "Gmail", "url": "mailto:", "icon": "gmail"}]}}</script>
-
-
-
-<script>
-(() => {
-  // ---------- Scene config (room pixels; room.png is 568x368, the 2752x1536 room-wide-hd.png cropped and averaged 4x) ----------
-  const ROOM_W = 568, ROOM_H = 368, K = 3; // K = internal resolution multiplier
-  // Floor corners measured from room.png: back, right, front, left (the AI-drawn floor is not a perfect parallelogram)
-  const CORNERS = { top: [260, 85], right: [555, 228], bottom: [310, 350], left: [15, 207] };
-  const N = 26; // floor grid is N x N tiles
-
-  const SPRITES = { room: "assets/room.png", walk: "assets/capybara-walk-sheet.png", idle: "assets/capybara-idle3.png", interact: "assets/capybara-interact.png", idle2: "assets/capybara-idle2.png", "occ-gear": "assets/occ-gear.png", "occ-plant": "assets/occ-plant.png", "occ-bureau": "assets/occ-bureau.png" };
-  // capybara.png: 4 cols x 2 rows of 64x64 frames, one walk cycle drawn facing right; mirrored for left
-  const CHAR = { frame: 64, cols: 4, frames: 8, footY: 60, scale: 1.15, facesLeft: false };
-
-  // Objects are painted into the room; each has an outline for hover glow and taps, and a spot to stand on
-  const d2 = (pts) => pts.map(([x, y]) => [x / 2, y / 2]);
-  const OBJECTS = [
-    { id: "projects", label: "Projects", poly: d2([[375,135],[420,128],[445,150],[455,115],[530,105],[600,110],[660,170],[670,260],[600,265],[560,290],[505,300],[470,300],[445,290],[375,250]]), stand: [270, 165] },
-    { id: "cv", label: "CV", poly: d2([[880,430],[960,400],[1040,355],[1075,375],[1075,470],[960,545],[900,540],[878,500]]), stand: [430, 238] },
-    { id: "socials", label: "Contact", poly: d2([[1012,245],[1065,232],[1110,272],[1105,350],[1060,355],[1012,320]]), stand: [470, 190] },
-  ];
-  // Floor areas that are not walkable (furniture footprints)
-  const BLOCKED = [
-    d2([[25,420],[70,435],[150,405],[190,390],[220,370],[240,365],[320,375],[400,410],[465,380],[470,340],[440,290],[380,260],[300,225],[260,235],[200,300],[90,330]]),
-    d2([[370,260],[415,300],[445,295],[505,305],[560,290],[600,275],[675,265],[690,215],[650,190],[520,195],[440,215],[385,230]]),
-    d2([[395,570],[420,520],[470,490],[610,500],[700,545],[745,625],[755,650],[650,705],[620,700],[540,640],[470,610],[420,595]]),
-    d2([[830,345],[870,330],[890,350],[880,365],[840,365]]),
-    d2([[878,450],[950,425],[1080,455],[1090,500],[960,550],[905,540],[878,500]]),
-  ];
-
-  // ---------- Geometry ----------
-  const { top: P00, right: P10, left: P01, bottom: P11 } = CORNERS;
-  const toScreen = (u, v) => [0, 1].map((k) => P00[k] * (1 - u) * (1 - v) + P10[k] * u * (1 - v) + P01[k] * (1 - u) * v + P11[k] * u * v);
-  const center = (i, j) => toScreen((i + 0.5) / N, (j + 0.5) / N);
-  const inPoly = ([x, y], poly) => { let c = false; for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) { const [xi, yi] = poly[i], [xj, yj] = poly[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; };
-
-  // tiles where he'd be mostly hidden behind tall furniture (computed by occ.py)
-  const SQUEEZE = [];
-  const blocked = new Set(SQUEEZE);
-  for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) if (BLOCKED.some((p) => inPoly(center(i, j), p))) blocked.add(i + "," + j);
-  const walkable = (i, j) => i >= 0 && j >= 0 && i < N && j < N && !blocked.has(i + "," + j);
-
-  function bfs(si, sj) {
-    const dist = new Map([[si + "," + sj, 0]]), prev = new Map(), q = [[si, sj]];
-    while (q.length) {
-      const [i, j] = q.shift();
-      for (const [di, dj] of [[1,0],[-1,0],[0,1],[0,-1]]) {
-        const ni = i + di, nj = j + dj, k = ni + "," + nj;
-        if (!walkable(ni, nj) || dist.has(k)) continue;
-        dist.set(k, dist.get(i + "," + j) + 1); prev.set(k, [i, j]); q.push([ni, nj]);
+<script type="application/json" id="content-default">
+{
+  "schemaVersion": 1,
+  "site": {
+    "title": "Seif's Room",
+    "description": "Seif's pixel-art portfolio room. Walk around, open the tech lab, the CV and the contact board.",
+    "previewImage": ""
+  },
+  "projects": {
+    "placeholder": true,
+    "items": [
+      {
+        "id": "project-one",
+        "name": "Project one",
+        "thumbnail": "",
+        "description": "A short line about what this does and who it is for.",
+        "tags": [
+          "JS",
+          "Canvas",
+          "API"
+        ],
+        "badge": "Featured",
+        "cta": {
+          "label": "Live demo",
+          "url": ""
+        },
+        "say": "Project one: placeholder line, the capybara will say something about this one.",
+        "detail": {
+          "summary": "Two or three sentences about what it is.",
+          "role": "Your role, one line",
+          "stack": [
+            "JS",
+            "Canvas",
+            "API"
+          ],
+          "highlight": "The hardest or proudest part, one sentence.",
+          "gallery": [],
+          "links": []
+        }
+      },
+      {
+        "id": "project-two",
+        "name": "Project two",
+        "thumbnail": "",
+        "description": "A short line about what this does and who it is for.",
+        "tags": [
+          "Python",
+          "ML"
+        ],
+        "badge": "New",
+        "cta": {
+          "label": "Repo",
+          "url": ""
+        },
+        "say": "Project two: placeholder line, the capybara will say something about this one.",
+        "detail": {
+          "summary": "Two or three sentences about what it is.",
+          "role": "Your role, one line",
+          "stack": [
+            "Python",
+            "ML"
+          ],
+          "highlight": "The hardest or proudest part, one sentence.",
+          "gallery": [],
+          "links": []
+        }
+      },
+      {
+        "id": "project-three",
+        "name": "Project three",
+        "thumbnail": "",
+        "description": "A short line about what this does and who it is for.",
+        "tags": [
+          "React",
+          "Node"
+        ],
+        "badge": "",
+        "cta": {
+          "label": "Live demo",
+          "url": ""
+        },
+        "say": "Project three: placeholder line, the capybara will say something about this one.",
+        "detail": {
+          "summary": "Two or three sentences about what it is.",
+          "role": "Your role, one line",
+          "stack": [
+            "React",
+            "Node"
+          ],
+          "highlight": "The hardest or proudest part, one sentence.",
+          "gallery": [],
+          "links": []
+        }
+      },
+      {
+        "id": "project-four",
+        "name": "Project four",
+        "thumbnail": "",
+        "description": "A short line about what this does and who it is for.",
+        "tags": [
+          "Rust",
+          "CLI"
+        ],
+        "badge": "",
+        "cta": {
+          "label": "Repo",
+          "url": ""
+        },
+        "say": "Project four: placeholder line, the capybara will say something about this one.",
+        "detail": {
+          "summary": "Two or three sentences about what it is.",
+          "role": "Your role, one line",
+          "stack": [
+            "Rust",
+            "CLI"
+          ],
+          "highlight": "The hardest or proudest part, one sentence.",
+          "gallery": [],
+          "links": []
+        }
+      },
+      {
+        "id": "project-five",
+        "name": "Project five",
+        "thumbnail": "",
+        "description": "A short line about what this does and who it is for.",
+        "tags": [
+          "Pixel art",
+          "Game"
+        ],
+        "badge": "Soon",
+        "cta": {
+          "label": "Preview",
+          "url": ""
+        },
+        "say": "Project five: placeholder line, the capybara will say something about this one.",
+        "detail": {
+          "summary": "Two or three sentences about what it is.",
+          "role": "Your role, one line",
+          "stack": [
+            "Pixel art",
+            "Game"
+          ],
+          "highlight": "The hardest or proudest part, one sentence.",
+          "gallery": [],
+          "links": []
+        }
+      },
+      {
+        "id": "project-six",
+        "name": "Project six",
+        "thumbnail": "",
+        "description": "A short line about what this does and who it is for.",
+        "tags": [
+          "Three.js",
+          "Shader"
+        ],
+        "badge": "",
+        "cta": {
+          "label": "Live demo",
+          "url": ""
+        },
+        "say": "Project six: placeholder line, the capybara will say something about this one.",
+        "detail": {
+          "summary": "Two or three sentences about what it is.",
+          "role": "Your role, one line",
+          "stack": [
+            "Three.js",
+            "Shader"
+          ],
+          "highlight": "The hardest or proudest part, one sentence.",
+          "gallery": [],
+          "links": []
+        }
+      }
+    ]
+  },
+  "cv": {
+    "placeholder": true,
+    "photo": "",
+    "name": "Seif",
+    "role": "Role placeholder",
+    "summary": "Two or three sentences about you.",
+    "experience": [
+      {
+        "company": "Company",
+        "role": "Your role",
+        "start": "2023",
+        "end": "Now",
+        "bullets": [
+          "One thing you did or shipped.",
+          "Another one."
+        ]
+      }
+    ],
+    "education": [
+      {
+        "school": "School",
+        "degree": "Degree",
+        "start": "2019",
+        "end": "2023"
+      }
+    ],
+    "skills": [
+      {
+        "group": "Tools",
+        "items": [
+          "JavaScript",
+          "Python",
+          "Git"
+        ]
+      }
+    ],
+    "languages": [],
+    "pdf": ""
+  },
+  "contact": {
+    "placeholder": true,
+    "links": [
+      {
+        "id": "linkedin",
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/",
+        "icon": "linkedin"
+      },
+      {
+        "id": "github",
+        "label": "GitHub",
+        "url": "https://github.com/Seifpetit",
+        "icon": "github"
+      },
+      {
+        "id": "email",
+        "label": "Gmail",
+        "url": "mailto:",
+        "icon": "gmail"
+      }
+    ]
+  },
+  "ui": {
+    "dialogue": {
+      "projects.intro": {
+        "section": "projects",
+        "where": "Dialogue banner when Seif reaches the tech lab (Projects).",
+        "text": {
+          "en": "The tech lab, this is where the experiments grow...\nLet me pull up the projects."
+        }
+      },
+      "cv.intro": {
+        "section": "cv",
+        "where": "Dialogue banner when Seif reaches the bureau (CV).",
+        "text": {
+          "en": "My bureau. Every paper here is part of the story...\nHere is the CV."
+        }
+      },
+      "contact.intro": {
+        "section": "contact",
+        "where": "Dialogue banner when Seif reaches the corkboard (Contact).",
+        "text": {
+          "en": "The corkboard. Everywhere you can find me online is pinned up here..."
+        }
+      },
+      "projects.hoverFallback": {
+        "section": "projects",
+        "where": "Dialogue banner while a project card with no line of its own is hovered ({name} = project name).",
+        "text": {
+          "en": "{name}: ask me about this one."
+        }
+      }
+    },
+    "titles": {
+      "site.name": {
+        "section": "global",
+        "where": "Room title (top left, top centre on phones) and start screen title. The {braced} part is amber.",
+        "text": {
+          "en": "Seif's {Room}"
+        }
+      },
+      "name.projects": {
+        "section": "global",
+        "where": "Room label over the tech lab, the Projects shortcut button and the Projects panel title.",
+        "text": {
+          "en": "Projects"
+        }
+      },
+      "name.cv": {
+        "section": "global",
+        "where": "Room label over the bureau, the CV shortcut button and the CV panel title.",
+        "text": {
+          "en": "CV"
+        }
+      },
+      "name.contact": {
+        "section": "global",
+        "where": "Room label over the corkboard, the Contact shortcut button and the Contact panel title.",
+        "text": {
+          "en": "Contact"
+        }
+      },
+      "banner.name": {
+        "section": "global",
+        "where": "Name plate on the dialogue banner.",
+        "text": {
+          "en": "Seif"
+        }
+      },
+      "cv.experience": {
+        "section": "cv",
+        "where": "Section heading on the CV paper.",
+        "text": {
+          "en": "Experience"
+        }
+      },
+      "cv.education": {
+        "section": "cv",
+        "where": "Section heading on the CV paper.",
+        "text": {
+          "en": "Education"
+        }
+      },
+      "cv.skills": {
+        "section": "cv",
+        "where": "Section heading on the CV paper.",
+        "text": {
+          "en": "Skills"
+        }
+      },
+      "cv.languages": {
+        "section": "cv",
+        "where": "Section heading on the CV paper (shown when languages are filled in).",
+        "text": {
+          "en": "Languages"
+        }
+      },
+      "projects.detail.highlight": {
+        "section": "projects",
+        "where": "Heading of the highlight box in a project's detail view.",
+        "text": {
+          "en": "Highlight"
+        }
+      },
+      "projects.detail.stack": {
+        "section": "projects",
+        "where": "Heading above the tech chips in a project's detail view.",
+        "text": {
+          "en": "Built with"
+        }
+      }
+    },
+    "buttons": {
+      "panel.back": {
+        "section": "global",
+        "where": "Back button at the top right of every panel.",
+        "text": {
+          "en": "Back"
+        }
+      },
+      "projects.ctaFallback": {
+        "section": "projects",
+        "where": "Link text at the bottom right of a project card that has no button text.",
+        "text": {
+          "en": "Open"
+        }
+      },
+      "cv.download": {
+        "section": "cv",
+        "where": "Button at the bottom of the CV paper (shown once a PDF is set).",
+        "text": {
+          "en": "Download CV"
+        }
+      },
+      "projects.detail.close": {
+        "section": "projects",
+        "where": "Close button at the top right of a project's detail view.",
+        "text": {
+          "en": "Close"
+        }
+      }
+    },
+    "hints": {
+      "start.click": {
+        "section": "global",
+        "where": "Hint under the title on the start screen, on computers.",
+        "text": {
+          "en": "Click anywhere to move"
+        }
+      },
+      "start.tap": {
+        "section": "global",
+        "where": "Hint under the title on the start screen, on phones and tablets.",
+        "text": {
+          "en": "Tap anywhere to move"
+        }
+      },
+      "placeholder.tag": {
+        "section": "global",
+        "where": "Purple tag in the panels while \"Show Placeholder content tag\" is ticked.",
+        "text": {
+          "en": "Placeholder content"
+        }
+      },
+      "projects.prompt": {
+        "section": "projects",
+        "where": "Green terminal prompt at the top of the Projects screen.",
+        "text": {
+          "en": "C:\\SEIF\\PROJECTS>"
+        }
+      },
+      "projects.pick": {
+        "section": "projects",
+        "where": "Line after the terminal prompt on the Projects screen.",
+        "text": {
+          "en": "Pick a project."
+        }
+      },
+      "contact.pick": {
+        "section": "contact",
+        "where": "Line above the corkboard in the Contact panel.",
+        "text": {
+          "en": "Pick where to find me."
+        }
+      }
+    },
+    "screenReader": {
+      "sr.start": {
+        "section": "global",
+        "where": "Read aloud for the start screen.",
+        "text": {
+          "en": "Seif's Room. Click anywhere to start."
+        }
+      },
+      "sr.loading": {
+        "section": "global",
+        "where": "Read aloud for the loading bar on the start screen.",
+        "text": {
+          "en": "Loading the room"
+        }
+      },
+      "sr.room": {
+        "section": "global",
+        "where": "Read aloud for the room picture.",
+        "text": {
+          "en": "A pixel room. Tap a spot to walk there."
+        }
+      },
+      "sr.shortcuts": {
+        "section": "global",
+        "where": "Read aloud for the row of shortcut buttons.",
+        "text": {
+          "en": "Shortcuts"
+        }
+      },
+      "sr.back": {
+        "section": "global",
+        "where": "Read aloud for the Back button.",
+        "text": {
+          "en": "Back to the room"
+        }
+      },
+      "sr.portrait": {
+        "section": "global",
+        "where": "Read aloud for Seif's portrait on the dialogue banner.",
+        "text": {
+          "en": "The capybara, in a teal hoodie and glasses, talking"
+        }
+      },
+      "sr.language": {
+        "section": "global",
+        "where": "Read aloud for the flag button. {name} becomes the language name.",
+        "text": {
+          "en": "Language: {name}"
+        }
+      },
+      "sr.cv": {
+        "section": "cv",
+        "where": "Read aloud for the CV paper.",
+        "text": {
+          "en": "CV. Press Enter to zoom."
+        }
+      },
+      "sr.photo": {
+        "section": "cv",
+        "where": "Read aloud for the CV photo. {name} becomes your name.",
+        "text": {
+          "en": "Photo of {name}"
+        }
+      },
+      "sr.noPhoto": {
+        "section": "cv",
+        "where": "Read aloud for the empty CV photo.",
+        "text": {
+          "en": "Photo placeholder"
+        }
+      },
+      "sr.projectDetail": {
+        "section": "projects",
+        "where": "Read aloud when a project's detail view opens ({name} = project name).",
+        "text": {
+          "en": "Project details: {name}"
+        }
+      },
+      "projects.media.prev": {
+        "section": "projects",
+        "where": "Read aloud for the left arrow on a project's pictures in the detail view.",
+        "text": {
+          "en": "Previous picture"
+        }
+      },
+      "projects.media.next": {
+        "section": "projects",
+        "where": "Read aloud for the right arrow on a project's pictures in the detail view.",
+        "text": {
+          "en": "Next picture"
+        }
       }
     }
-    return { dist, path: (ti, tj) => { const out = []; let c = [ti, tj]; while (c && !(c[0] === si && c[1] === sj)) { out.unshift(c); c = prev.get(c[0] + "," + c[1]); } return out; } };
   }
-
-  // Tall furniture: when the character's feet are behind an object's front edge, repaint its pixels (assets/occ-*.png) over him
-  const OCC = [["gear", 2], ["plant", 3], ["bureau", 4]].map(([id, bi]) => {
-    const poly = BLOCKED[bi], xs = poly.map((p) => p[0]);
-    return { id, poly, minX: Math.min(...xs), maxX: Math.max(...xs) };
-  });
-  // lowest screen y of the footprint outline at x (its front edge)
-  function frontY(o, x) {
-    x = Math.min(Math.max(x, o.minX + 0.5), o.maxX - 0.5); let best = -Infinity;
-    for (let i = 0, j = o.poly.length - 1; i < o.poly.length; j = i++) {
-      const [x1, y1] = o.poly[j], [x2, y2] = o.poly[i];
-      if ((x1 <= x && x <= x2) || (x2 <= x && x <= x1)) best = Math.max(best, x1 === x2 ? Math.max(y1, y2) : y1 + (y2 - y1) * (x - x1) / (x2 - x1));
-    }
-    return best;
-  }
-  // ---------- State ----------
-  const start = (() => { let b = null; for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) { if (!walkable(i, j)) continue; const c = center(i, j), e = Math.hypot(c[0] - 300, c[1] - 215); if (!b || e < b.e) b = { i, j, e }; } return [b.i, b.j]; })();
-  const player = { gi: start[0], gj: start[1], pos: center(start[0], start[1]), path: [], left: true, moving: false, t: 0, pending: null };
-  let marker = null, hover = null;
-  const SPEED = 80; // room px per second
-
-  function goTo(px, py, obj) {
-    const target = obj ? obj.stand : [px, py];
-    const { dist, path } = bfs(player.gi, player.gj);
-    let best = null;
-    for (const k of dist.keys()) {
-      const [i, j] = k.split(",").map(Number), c = center(i, j), e = Math.hypot(c[0] - target[0], c[1] - target[1]);
-      if (!best || e < best.e) best = { i, j, e };
-    }
-    if (!best) return;
-    player.path = path(best.i, best.j).map(([i, j]) => ({ i, j, p: center(i, j) }));
-    player.pending = obj || null;
-    marker = obj ? null : { p: center(best.i, best.j), t: 0 };
-    if (!player.path.length) arrive();
-  }
-  function arrive() {
-    marker = null;
-    if (player.pending) {
-      const o = player.pending; player.pending = null;
-      const cx = o.poly.reduce((a, p) => a + p[0], 0) / o.poly.length; player.left = cx < player.pos[0] - 10; // turn toward the object
-      setTimeout(() => talk(o.id), 150);
-    }
-  }
-
-  // ---------- Title screen: the first click, tap or key only dismisses it ----------
-  const title = document.getElementById("title");
-  function startRoom(e) {
-    if (!title || title.classList.contains("out")) return;
-    if (!title.classList.contains("ready")) { if (e) { e.preventDefault(); e.stopPropagation(); } return; } // still loading: keep the title up
-    if (e) { e.preventDefault(); e.stopPropagation(); }
-    title.classList.add("out"); removeEventListener("keydown", startRoom, true);
-    setTimeout(() => title.remove(), 400);
-  }
-  if (title) { title.addEventListener("pointerdown", startRoom); addEventListener("keydown", startRoom, true); }
-  // show the title in its pixel font only, never a fallback flash (give up waiting after 1.5 s)
-  Promise.race([document.fonts ? document.fonts.load('600 1em "Pixelify Sans"') : 0, new Promise((r) => setTimeout(r, 1500))]).then(() => document.documentElement.classList.add("fonts"));
-
-  // ---------- Canvas ----------
-  const canvas = document.getElementById("c"), ctx = canvas.getContext("2d"), stage = document.getElementById("stage");
-  canvas.width = ROOM_W * K; canvas.height = ROOM_H * K;
-  function resize() {
-    const r = stage.getBoundingClientRect();
-    const s = Math.max(1, Math.min(r.width / ROOM_W, r.height / ROOM_H));
-    canvas.style.width = Math.floor(ROOM_W * s) + "px"; canvas.style.height = Math.floor(ROOM_H * s) + "px";
-  }
-  new ResizeObserver(resize).observe(stage);
-
-  const imgs = {};
-  let loaded = 0; const total = Object.keys(SPRITES).length + 1, bar = document.getElementById("load-bar");
-  const tick = () => { loaded++; if (bar) bar.style.width = (100 * loaded / total) + "%"; };
-  // content.json next to index.html wins; if it can't be read (opened as a plain file, or missing) the placeholder content built in stays
-  const contentLoad = fetch("content.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : Promise.reject(r.status))).then((j) => { if (j && j.schemaVersion === 1) { CONTENT = j; applyContent(); } else console.warn("content.json: unsupported schemaVersion"); }).catch((e) => console.warn("content.json not loaded, using built-in placeholder content", e)).finally(tick);
-  const loads = [contentLoad].concat(Object.entries(SPRITES).map(([k, src]) => new Promise((res) => { const im = new Image(); im.onload = () => { imgs[k] = im; tick(); res(); }; im.onerror = () => { tick(); res(); }; im.src = src; })));
-
-  function roomPoint(e) {
-    const r = canvas.getBoundingClientRect();
-    return [(e.clientX - r.left) / r.width * ROOM_W, (e.clientY - r.top) / r.height * ROOM_H];
-  }
-  const objectAt = (p) => OBJECTS.find((o) => inPoly(p, o.poly));
-  canvas.addEventListener("pointerdown", (e) => {
-    if (!overlay.hidden) return;
-    endTalk(false);
-    const p = roomPoint(e);
-    goTo(p[0], p[1], objectAt(p));
-  });
-  canvas.addEventListener("pointermove", (e) => { const o = objectAt(roomPoint(e)); hover = o ? o.id : null; canvas.style.cursor = o ? "var(--hand)" : "var(--arrow)"; });
-  canvas.addEventListener("pointerleave", () => { hover = null; });
-
-  const path = (poly) => { ctx.beginPath(); poly.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath(); };
-
-  function drawHover(t) {
-    const o = OBJECTS.find((o) => o.id === hover); if (!o || !imgs.room) return;
-    // brighten the painted object inside its outline
-    ctx.save(); path(o.poly); ctx.clip();
-    ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = 0.16 + 0.06 * Math.sin(t * 5);
-    ctx.drawImage(imgs.room, 0, 0); ctx.restore();
-  }
-
-  let idleVar = null, nextVar = 3, busyAt = null, freeAt = null;
-  const INTRO = 8, LOOP = [8, 9, 10, 11, 12, 13, 14, 13, 12, 11, 10, 9], OUTRO = [15, 6, 5, 4, 3, 2, 1, 0];
-  // interacting: reach in (0-7), keep working (8-14 back and forth) while the banner or panel is up, then turn back
-  function interactFrame() {
-    const busy = !!talkState || !overlay.hidden;
-    if (busy && busyAt === null) { busyAt = clock; freeAt = null; }
-    if (!busy && busyAt !== null) { busyAt = null; freeAt = clock; }
-    if (busyAt !== null) { const k = Math.floor((clock - busyAt) * 10); return k < INTRO ? k : LOOP[Math.floor((k - INTRO) * 0.6) % LOOP.length]; }
-    if (freeAt !== null) { const k = Math.floor((clock - freeAt) * 14); if (k < OUTRO.length) return OUTRO[k]; freeAt = null; }
-    return null;
-  }
-  function drawPlayer() {
-    const walking = player.moving, [x, y] = player.pos;
-    const act = walking || !imgs.interact ? (busyAt = freeAt = null) : interactFrame();
-    // idle: base loop, with a variation sheet played once now and then
-    if (walking || act !== null) idleVar = null;
-    else if (!idleVar && imgs.idle2 && clock > nextVar) idleVar = clock;
-    if (idleVar !== null && clock - idleVar >= CHAR.frames / 6) { idleVar = null; nextVar = clock + 4 + Math.random() * 5; }
-    const im = walking ? imgs.walk : act !== null ? imgs.interact : (idleVar !== null ? imgs.idle2 : (imgs.idle || imgs.walk));
-    ctx.fillStyle = "rgba(10,6,16,.35)"; ctx.beginPath(); ctx.ellipse(x, y, 14, 5, 0, 0, 7); ctx.fill();
-    if (!im) return;
-    const f = CHAR.frame, s = CHAR.scale;
-    const n = walking ? Math.floor(player.t * 10) % CHAR.frames : act !== null ? act : (idleVar !== null ? Math.min(CHAR.frames - 1, Math.floor((clock - idleVar) * 6)) : imgs.idle ? Math.floor(clock * 5) % 16 : 0);
-    const sx = (n % CHAR.cols) * f, sy = Math.floor(n / CHAR.cols) * f;
-    const flip = CHAR.facesLeft ? !player.left : player.left;
-    ctx.save(); ctx.translate(x, y - CHAR.footY * s); if (flip) ctx.scale(-1, 1);
-    ctx.drawImage(im, sx, sy, f, f, -f * s / 2, 0, f * s, f * s); ctx.restore();
-  }
-
-  function drawOccluders() {
-    const [x, y] = player.pos;
-    for (const o of OCC) {
-      const im = imgs["occ-" + o.id]; if (!im) continue;
-      if (x + 18 < o.minX || x - 20 > o.maxX || y >= frontY(o, x)) continue; // sprite clear of it, or standing in front
-      ctx.drawImage(im, 0, 0);
-    }
-  }
-
-  function drawLabels(t) {
-    ctx.font = `600 12px "Pixelify Sans", monospace`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    for (const o of OBJECTS) {
-      const xs = o.poly.map((p) => p[0]), ys = o.poly.map((p) => p[1]);
-      const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = Math.min(...ys) - 14 + Math.sin(t * 2.4 + cx) * 1.6;
-      const text = (hover === o.id ? "▸ " : "") + o.label, w = ctx.measureText(text).width + 14;
-      ctx.fillStyle = "rgba(14,10,22,.85)"; ctx.fillRect(cx - w / 2, cy - 10, w, 20);
-      ctx.fillStyle = hover === o.id ? "#7ff3ff" : "#f4ead8"; ctx.fillText(text, cx, cy + 1);
-    }
-  }
-
-  let last = performance.now(), clock = 0;
-  function frame(now) {
-    const dt = Math.min(0.05, (now - last) / 1000); last = now; clock += dt;
-    if (player.path.length) {
-      const n = player.path[0], dx = n.p[0] - player.pos[0], dy = n.p[1] - player.pos[1], d = Math.hypot(dx, dy), step = SPEED * dt;
-      player.moving = true; player.t += dt; if (Math.abs(dx) > 0.01) player.left = dx < 0;
-      if (d <= step) { player.pos = n.p.slice(); player.gi = n.i; player.gj = n.j; player.path.shift(); if (!player.path.length) { player.moving = false; arrive(); } }
-      else player.pos = [player.pos[0] + dx / d * step, player.pos[1] + dy / d * step];
-    } else player.moving = false;
-
-    ctx.setTransform(K, 0, 0, K, 0, 0); ctx.imageSmoothingEnabled = false;
-    ctx.clearRect(0, 0, ROOM_W, ROOM_H);
-    if (imgs.room) ctx.drawImage(imgs.room, 0, 0);
-    drawHover(clock);
-    if (marker) { marker.t += dt; const r = 6 + Math.abs(Math.sin(marker.t * 4)) * 3; ctx.strokeStyle = "#7ff3ff"; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.ellipse(marker.p[0], marker.p[1], r * 1.8, r * 0.9, 0, 0, 7); ctx.stroke(); }
-    drawPlayer();
-    drawOccluders();
-    drawLabels(clock);
-    requestAnimationFrame(frame);
-  }
-
-  // ---------- Dialogue banner ----------
-  const FLOAT = new Set(["projects", "cv", "socials"]); // panels whose content floats over the dimmed room, banner kept
-  // all text, links and images shown in the panels come from content.json (see CONTENT-CONTRACT.md)
-  let CONTENT = JSON.parse(document.getElementById("content-default").textContent);
-  const LINES = {};
-  function applyContent() {
-    LINES.projects = [CONTENT.projects.intro]; LINES.cv = [CONTENT.cv.intro]; LINES.socials = [CONTENT.contact.intro];
-    if (CONTENT.site && CONTENT.site.title) document.title = CONTENT.site.title;
-    const d = document.querySelector('meta[name="description"]'); if (d && CONTENT.site && CONTENT.site.description) d.content = CONTENT.site.description;
-  }
-  applyContent();
-  const safeUrl = (u) => /^(https?:|mailto:|tel:|\.{0,2}\/?[\w%-][\w%./-]*$)/i.test(u || "") ? u : "";
-  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-  const BUILD = {
-    projects() {
-      const P = CONTENT.projects, f = document.createDocumentFragment(), mon = el("div", "monitor"), scr = el("div", "screen");
-      const note = el("p", "sample-note"); if (P.placeholder) note.append(el("span", "sample", "Placeholder content"), " "); note.append("Pick a project."); scr.append(note);
-      const row = el("div", "pcards");
-      P.items.forEach((it, i) => {
-        const card = el("button", "pcard"); card.type = "button"; card.dataset.say = it.say || (it.name + ": ask me about this one.");
-        const th = el("span", "pthumb");
-        if (it.thumbnail) { const im = el("img"); im.src = it.thumbnail; im.alt = ""; im.loading = "lazy"; th.append(im); }
-        else { const c = el("canvas"); c.width = 48; c.height = 32; c.dataset.seed = i + 3; th.append(c); }
-        if (it.badge) th.append(el("span", "pbadge", it.badge));
-        const body = el("span", "pbody"), tags = el("span", "ptags"); (it.tags || []).forEach((t) => tags.append(el("span", null, t)));
-        body.append(el("span", "ptitle", it.name), el("span", "pdesc", it.description), tags);
-        const foot = el("span", "pfoot"); foot.append(el("span", null, (it.detail && it.detail.role) || ""), el("span", "pcta", (it.cta && it.cta.label ? it.cta.label : "Open") + " \u25B8"));
-        card.append(th, body, foot);
-        const url = safeUrl(it.cta && it.cta.url); if (url) card.addEventListener("click", () => window.open(url, "_blank", "noopener"));
-        row.append(card);
-      });
-      scr.append(row); const bar = el("div", "pscroll"); bar.setAttribute("aria-hidden", "true"); bar.append(el("i")); scr.append(bar);
-      mon.append(scr); const stand = el("div", "stand"); stand.setAttribute("aria-hidden", "true"); f.append(mon, stand); return f;
-    },
-    cv() {
-      const C = CONTENT.cv, f = document.createDocumentFragment(), scene = el("div", "cvscene"), desk = el("canvas", "desk");
-      desk.width = 200; desk.height = 140; desk.setAttribute("aria-hidden", "true");
-      const doc = el("article", "cvdoc"); doc.tabIndex = 0; doc.setAttribute("aria-label", "CV. Press Enter to zoom.");
-      const top = el("div", "cvtop"), ph = el("div", "cvphoto"); ph.setAttribute("role", "img"); ph.setAttribute("aria-label", C.photo ? "Photo of " + C.name : "Photo placeholder");
-      if (C.photo) { ph.classList.add("has"); const im = el("img"); im.src = C.photo; im.alt = ""; ph.append(im); }
-      const who = el("div"); who.append(el("p", "cvname", C.name), el("p", "cvrole", C.role)); top.append(ph, who); doc.append(top);
-      if (C.summary) doc.append(el("p", "cvsum", C.summary));
-      const sec = (title, kids) => { if (!kids.length) return; const s2 = el("div", "cvsec"); s2.append(el("h4", null, title)); kids.forEach((k) => s2.append(k)); doc.append(s2); };
-      sec("Experience", (C.experience || []).map((x) => { const e = el("div", "cvent"); e.append(el("span", "cvwhen", [x.start, x.end].filter(Boolean).join(" - ")), el("b", null, x.role), " \u00B7 " + x.company); if ((x.bullets || []).length) { const ul = el("ul"); x.bullets.forEach((b) => ul.append(el("li", null, b))); e.append(ul); } return e; }));
-      sec("Education", (C.education || []).map((x) => { const e = el("div", "cvent"); e.append(el("span", "cvwhen", [x.start, x.end].filter(Boolean).join(" - ")), el("b", null, x.degree), " \u00B7 " + x.school); return e; }));
-      sec("Skills", (C.skills || []).map((g) => { const e = el("p", "cvskill"); if (g.group) e.append(el("b", null, g.group + ": ")); e.append((g.items || []).join(", ")); return e; }));
-      if ((C.languages || []).length) sec("Languages", [el("p", "cvskill", C.languages.join(", "))]);
-      const foot = el("div", "cvfoot"), pdf = safeUrl(C.pdf);
-      if (pdf) { const a = el("a", "cvdl", "Download CV"); a.href = pdf; a.download = ""; a.addEventListener("click", (e) => e.stopPropagation()); a.addEventListener("keydown", (e) => e.stopPropagation()); foot.append(a); }
-      if (C.placeholder) foot.append(el("span", "sample", "Placeholder content"));
-      if (foot.children.length) doc.append(foot);
-      scene.append(desk, doc); f.append(scene); return f;
-    },
-    socials() {
-      const K = CONTENT.contact, f = document.createDocumentFragment(), note = el("p", "sample-note");
-      if (K.placeholder) note.append(el("span", "sample", "Placeholder content"), " "); note.append("Pick where to find me."); f.append(note);
-      const cork = el("div", "cork"), grid = el("div", "socials"), n = K.links.length;
-      K.links.forEach((l, i) => {
-        const a = el("a", "sicon"); const url = safeUrl(l.url); a.href = url || "#"; if (/^https?:/i.test(url)) { a.target = "_blank"; a.rel = "noopener"; }
-        if (n % 2 === 1 && i === n - 1 && n > 1) a.classList.add("mail"); // an odd last icon sits centered underneath
-        const lg = el("span", "slogo " + ({ linkedin: "li", github: "gh", gmail: "gm" }[l.icon] || "gm")), cv = el("canvas"); cv.width = 24; cv.height = 24; cv.setAttribute("aria-hidden", "true");
-        if (LOGOS[l.icon]) cv.dataset.logo = l.icon; else if (l.iconImage) cv.dataset.img = l.iconImage; else cv.dataset.logo = "link";
-        lg.append(cv); a.append(lg, el("span", "slabel", l.label)); grid.append(a);
-      });
-      cork.append(grid); f.append(cork); return f;
-    },
-  };
-  const banner = document.getElementById("banner"), bText = document.getElementById("banner-text");
-  let talkState = null, hoverCard = null; // hoverCard: project card under the pointer, shown once his intro line is done
-  function talk(id) {
-    talkState = { id, i: 0, shown: 0, timer: null };
-    banner.hidden = false; say();
-    if (FLOAT.has(id)) openPanel(id); // cards and icons pop up right away while he talks
-  }
-  function say() {
-    const st = talkState, line = LINES[st.id][st.i]; st.shown = 0; bText.textContent = "";
-    clearInterval(st.timer);
-    st.timer = setInterval(() => { bText.textContent = line.slice(0, ++st.shown); if (st.shown >= line.length) { clearInterval(st.timer); st.hold = setTimeout(() => { st.held = true; if (hoverCard && talkState === st) bText.textContent = hoverCard.dataset.say; }, 1200); } }, 28);
-  }
-  function advance() {
-    const st = talkState; if (!st) return;
-    const line = LINES[st.id][st.i];
-    if (st.shown < line.length) {
-      clearInterval(st.timer); st.shown = line.length; bText.textContent = line;
-      if (FLOAT.has(st.id)) st.hold = setTimeout(() => { st.held = true; if (hoverCard && talkState === st) bText.textContent = hoverCard.dataset.say; }, 1200);
-      return;
-    }
-    if (FLOAT.has(st.id)) return; // the floating content is already up
-    if (st.i < LINES[st.id].length - 1) { st.i++; say(); return; }
-    endTalk(true);
-  }
-  function endTalk(open) {
-    if (!talkState) return; clearInterval(talkState.timer);
-    const id = talkState.id; talkState = null;
-    banner.hidden = !(open && FLOAT.has(id)); // floating panels keep the capybara talking under the floating cards
-    if (open) openPanel(id);
-  }
-  document.getElementById("banner-inner").addEventListener("pointerdown", advance);
-  addEventListener("keydown", (e) => { if (talkState && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); advance(); } else if (talkState && e.key === "Escape") endTalk(false); });
-
-  // ---------- Panels ----------
-  const overlay = document.getElementById("overlay");
-  const titles = { projects: "Projects", cv: "CV", socials: "Contact" };
-  let opener = null;
-  // placeholder pixel-art thumbnails: a tiny night scene per seed
-  function drawThumb(cv, seed) {
-    const g = cv.getContext("2d"), W = cv.width, H = cv.height; let r = seed * 9301 + 49297;
-    const rnd = () => (r = (r * 9301 + 49297) % 233280) / 233280;
-    const pals = [["#1b2a49", "#2f4f7a", "#7ff3ff", "#ffb347"], ["#2b1b3f", "#5a2f6a", "#ff7ab8", "#ffe9b8"], ["#12302c", "#1f6b5c", "#7bffb0", "#ffd36b"], ["#3a1f2b", "#8a4a3a", "#ffb347", "#7ff3ff"]];
-    const p = pals[seed % pals.length];
-    for (let y = 0; y < H; y++) { g.fillStyle = y < H * 0.45 ? p[0] : p[1]; g.fillRect(0, y, W, 1); if (y % 4 === 0) { g.fillStyle = p[1]; for (let x = (y / 4) % 2; x < W; x += 2) if (y < H * 0.45 + 3 && y > H * 0.3) g.fillRect(x, y, 1, 1); } }
-    g.fillStyle = p[3]; g.fillRect(6 + Math.floor(rnd() * 30), 3 + Math.floor(rnd() * 5), 4, 4);
-    for (let i = 0; i < 6; i++) { const w = 5 + Math.floor(rnd() * 7), h = 8 + Math.floor(rnd() * 14), x = i * 8 - 2; g.fillStyle = "#0c0912"; g.fillRect(x, H - h, w, h); g.fillStyle = p[2]; for (let k = 0; k < 4; k++) if (rnd() > .45) g.fillRect(x + 1 + Math.floor(rnd() * (w - 2)), H - h + 1 + Math.floor(rnd() * (h - 2)), 1, 1); }
-    g.fillStyle = "#0c0912"; g.fillRect(0, H - 3, W, 3);
-  }
-  // brand logos rendered at 24px then snapped to hard pixels (no anti-aliasing), shown scaled up
-  const LOGOS = {
-    github: { bg: "#1c1530", circle: true, fg: "#f4ead8", d: "M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" },
-    link: { bg: "#241d33", circle: true, fg: "#f4ead8", d: "M8 6h10v10h-2.5V9.8L7.8 17.5 6 15.7 13.7 8H8z" },
-    gmail: { bg: "#ffffff", fg: "#ea4335", d: "M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z", box: [1.6, 4.2, 20.8, 16.8] },
-    linkedin: { bg: "#ffffff", fg: "#0a66c2", d: "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" },
-  };
-  function drawLogo(cv) {
-    if (cv.dataset.img) { const im = new Image(); im.onload = () => { const g = cv.getContext("2d"); g.imageSmoothingEnabled = false; g.drawImage(im, 0, 0, cv.width, cv.height); }; im.src = cv.dataset.img; return; }
-    const L = LOGOS[cv.dataset.logo], g = cv.getContext("2d"), n = cv.width;
-    g.clearRect(0, 0, n, n); g.save(); g.scale(n / 24, n / 24);
-    if (L.bg) { g.fillStyle = L.bg; if (L.circle) { g.beginPath(); g.arc(12, 12.3, 11, 0, 7); g.fill(); } else g.fillRect(...(L.box || [2, 2, 20, 20])); }
-    g.fillStyle = L.fg; g.fill(new Path2D(L.d)); g.restore();
-    const im = g.getImageData(0, 0, n, n), p = im.data, cols = [L.fg, L.bg].filter(Boolean).map((h) => [1, 3, 5].map((k) => parseInt(h.slice(k, k + 2), 16)));
-    for (let k = 0; k < p.length; k += 4) {
-      if (p[k + 3] < 110) { p[k + 3] = 0; continue; }
-      let best = cols[0], bd = 1e9;
-      for (const c of cols) { const d = (p[k] - c[0]) ** 2 + (p[k + 1] - c[1]) ** 2 + (p[k + 2] - c[2]) ** 2; if (d < bd) { bd = d; best = c; } }
-      p[k] = best[0]; p[k + 1] = best[1]; p[k + 2] = best[2]; p[k + 3] = 255;
-    }
-    g.putImageData(im, 0, 0);
-  }
-  // the bureau behind the CV: desk top, scattered papers, a grey and a gold trophy
-  function drawDesk(cv) {
-    const g = cv.getContext("2d"), W = cv.width, H = cv.height, R = (c, x, y, w, h) => { g.fillStyle = c; g.fillRect(x, y, w, h); };
-    g.clearRect(0, 0, W, H);
-    R("#6a4430", 0, 66, W, 58); R("#8a5a3c", 0, 66, W, 4); R("#3a2419", 0, 124, W, 16); R("#4e3021", 0, 124, W, 3);
-    for (let x = 6; x < W; x += 23) R("#7a4e36", x, 76 + (x % 7), 14, 1); // wood grain
-    const paper = (x, y, w, h) => { R("#120e1a", x - 1, y - 1, w + 2, h + 2); R("#d9ccb0", x, y, w, h); for (let k = y + 4; k < y + h - 3; k += 4) R("#b8a888", x + 3, k, w - 8 - (k % 3) * 2, 1); };
-    paper(20, 86, 30, 22); paper(54, 96, 26, 18); paper(128, 92, 28, 20); paper(150, 84, 26, 24);
-    const trophy = (x, y, c, hi, lo) => {
-      R("#120e1a", x - 1, y - 1, 20, 18); R(c, x, y, 18, 16); R(hi, x + 2, y + 2, 3, 10); R(lo, x + 13, y + 2, 4, 13); // cup
-      R("#120e1a", x - 6, y + 2, 6, 9); R(c, x - 5, y + 3, 4, 7); R(lo, x - 4, y + 4, 2, 5); // handles
-      R("#120e1a", x + 18, y + 2, 6, 9); R(c, x + 19, y + 3, 4, 7); R(lo, x + 20, y + 4, 2, 5);
-      R("#120e1a", x + 6, y + 16, 6, 9); R(lo, x + 7, y + 16, 4, 8); // stem
-      R("#120e1a", x + 1, y + 24, 16, 8); R("#2a2238", x + 2, y + 25, 14, 6); R(hi, x + 3, y + 25, 12, 1);
-    };
-    trophy(30, 46, "#9aa0ab", "#d4d8de", "#636874");
-    trophy(152, 42, "#e0a83a", "#ffe08a", "#9a6418");
-  }
-  // a long CV shrinks its own text until it fits the paper
-  function fitCv() {
-    const doc = document.querySelector("#dlg-body .cvdoc"); if (!doc) return;
-    doc.style.fontSize = ""; let fs = parseFloat(getComputedStyle(doc).fontSize);
-    while (doc.scrollHeight > doc.clientHeight + 1 && fs > 8) { fs -= 0.5; doc.style.fontSize = fs + "px"; }
-  }
-  addEventListener("resize", () => { if (!overlay.hidden) fitCv(); });
-  function openPanel(id) {
-    opener = document.activeElement;
-    document.getElementById("dlg-title").textContent = titles[id];
-    document.getElementById("dlg-body").replaceChildren(BUILD[id]());
-    const floating = FLOAT.has(id);
-    document.querySelector(".dialog").classList.toggle("wide", floating);
-    document.querySelector(".dialog").dataset.panel = id;
-    overlay.classList.toggle("floating", floating); document.body.classList.toggle("floating", floating);
-    document.querySelectorAll("#dlg-body canvas[data-logo], #dlg-body canvas[data-img]").forEach(drawLogo);
-    document.querySelectorAll("#dlg-body .slogo").forEach((el) => el.style.setProperty("--tilt", (Math.random() * 14 - 7).toFixed(1) + "deg")); // a little random tilt each time
-    if (floating) {
-      banner.hidden = false; if (!talkState) bText.textContent = LINES[id].join("\n");
-      // hovering or focusing a card swaps the capybara's line (placeholder per project for now)
-      document.querySelectorAll("#dlg-body [data-say]").forEach((c) => {
-        const typing = () => talkState && !talkState.held; // still typing, or holding the finished intro for a moment
-        const say = () => { hoverCard = c; if (!typing()) bText.textContent = c.dataset.say; };
-        const back = () => { if (hoverCard === c) hoverCard = null; if (!typing()) bText.textContent = LINES[id].join("\n"); };
-        c.addEventListener("pointerenter", say); c.addEventListener("focus", say);
-        c.addEventListener("pointerleave", back); c.addEventListener("blur", back);
-      });
-    }
-    document.querySelectorAll("#dlg-body canvas.desk").forEach(drawDesk);
-    const doc = document.querySelector("#dlg-body .cvdoc");
-    if (doc) {
-      doc.addEventListener("click", () => cvZoom(!doc.classList.contains("zoom")));
-      doc.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); cvZoom(!doc.classList.contains("zoom")); } });
-    }
-    document.querySelectorAll("#dlg-body canvas[data-seed]").forEach((cv) => drawThumb(cv, +cv.dataset.seed));
-    const row = document.querySelector("#dlg-body .pcards"), bar = document.querySelector("#dlg-body .pscroll");
-    if (row && bar) {
-      const thumb = bar.firstElementChild; let hide;
-      const place = () => {
-        const max = row.scrollWidth - row.clientWidth, w = Math.max(24, bar.clientWidth * row.clientWidth / row.scrollWidth);
-        thumb.style.width = w + "px"; thumb.style.transform = `translateX(${Math.round(max ? (bar.clientWidth - w) * row.scrollLeft / max : 0)}px)`;
-        bar.hidden = max <= 0;
-      };
-      const flash = () => { bar.classList.add("on"); clearTimeout(hide); hide = setTimeout(() => bar.classList.remove("on"), 600); };
-      row.addEventListener("scroll", () => { place(); flash(); }, { passive: true });
-      // a mouse wheel scrolls the row sideways
-      row.addEventListener("wheel", (e) => { if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { row.scrollLeft += e.deltaY; e.preventDefault(); } }, { passive: false });
-      // drag the thumb, or tap the track to jump
-      bar.addEventListener("pointerdown", (e) => {
-        e.stopPropagation(); bar.setPointerCapture(e.pointerId);
-        const r = bar.getBoundingClientRect(), w = thumb.offsetWidth;
-        const go = (ev) => { row.scrollLeft = (ev.clientX - r.left - w / 2) / (r.width - w) * (row.scrollWidth - row.clientWidth); };
-        go(e); bar.onpointermove = go; bar.onpointerup = () => { bar.onpointermove = null; };
-      });
-      requestAnimationFrame(place);
-    }
-    overlay.hidden = false; document.getElementById("close").focus(); fitCv();
-    if (document.fonts) document.fonts.ready.then(fitCv);
-  }
-  // focusing the CV brings the paper front and center, over the banner, as big as the screen allows
-  function cvZoom(on) {
-    const doc = document.querySelector("#dlg-body .cvdoc"); if (!doc) return;
-    doc.classList.toggle("zoom", on); document.body.classList.toggle("cvzoom", on);
-    if (!on) { doc.style.transform = ""; return; }
-    const r = doc.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-    const k = Math.min(innerHeight * .94 / doc.offsetHeight, innerWidth * .94 / doc.offsetWidth);
-    doc.style.transform = `translate(${innerWidth / 2 - cx}px, ${innerHeight / 2 - cy}px) scale(${k.toFixed(3)})`;
-  }
-  addEventListener("resize", () => { if (document.body.classList.contains("cvzoom")) { cvZoom(false); cvZoom(true); } });
-  function closePanel() { cvZoom(false); hoverCard = null; if (talkState) { clearInterval(talkState.timer); clearTimeout(talkState.hold); talkState = null; } overlay.hidden = true; if (document.body.classList.contains("floating")) banner.hidden = true; document.body.classList.remove("floating"); if (opener && opener.focus) opener.focus(); }
-  document.getElementById("close").addEventListener("click", closePanel);
-  overlay.addEventListener("pointerdown", (e) => { if (document.body.classList.contains("cvzoom") && !e.target.closest(".cvdoc")) { cvZoom(false); return; } if (e.target === overlay || (overlay.classList.contains("floating") && e.target.matches(".dialog, #dlg-body"))) closePanel(); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && document.body.classList.contains("cvzoom")) { e.stopImmediatePropagation(); cvZoom(false); } }, true);
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !overlay.hidden) closePanel(); });
-  document.querySelectorAll("[data-open]").forEach((b) => b.addEventListener("click", () => { endTalk(false); openPanel(b.dataset.open); }));
-
-  // Debug: add #debug to the URL to see the walkable grid and object outlines
-  if (location.hash === "#debug") {
-    window.__debug = () => {
-      for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) { const c = center(i, j); ctx.fillStyle = walkable(i, j) ? "rgba(0,255,120,.6)" : "rgba(255,0,0,.6)"; ctx.fillRect(c[0] - 2, c[1] - 2, 4, 4); }
-      ctx.strokeStyle = "#ff0"; ctx.lineWidth = 1; OBJECTS.forEach((o) => { path(o.poly); ctx.stroke(); ctx.fillStyle = "#ff0"; ctx.fillRect(o.stand[0] - 3, o.stand[1] - 3, 6, 6); });
-    };
-    const orig = drawLabels; drawLabels = (t) => { orig(t); window.__debug(); };
-  }
-
-  resize();
-  Promise.all(loads).then(() => { requestAnimationFrame(frame); setTimeout(() => title && title.classList.add("ready"), 150); });
-})();
+}
 </script>
+
+
+
+<script src="icons.js"></script>
+<script src="room.js"></script>
