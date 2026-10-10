@@ -1,3 +1,7 @@
+/* =================================================================================================
+   Room styles
+   ================================================================================================= */
+
 /* Room styles. Layout: one full-screen night room drawn on canvas;
    panels slide over it like game dialog boxes. Deliberately single-theme. */
 
@@ -43,7 +47,10 @@ h1 {
 h1 span {
   color: var(--amber);
 }
-/* Title screen: shown on first load over the blurred room, gone on the first click, tap or key */
+/* =================================================================================================
+   Title screen: shown on first load over the blurred room, gone on the first click, tap or key
+   ================================================================================================= */
+
 .title {
   position: fixed;
   inset: 0;
@@ -111,6 +118,10 @@ h1 span {
   background: repeating-linear-gradient(90deg, var(--amber) 0 8px, #e8902a 8px 10px);
   transition: width 0.2s steps(3);
 }
+/* =================================================================================================
+   .title-name
+   ================================================================================================= */
+
 .title-name {
   position: relative;
   margin: 0;
@@ -133,7 +144,10 @@ h1 span {
     rise 0.5s steps(5) backwards,
     titlefloat 3.6s linear 0.5s infinite;
 }
-/* a full sine, sampled so it never eases to a stop at the top or bottom */
+/* =================================================================================================
+   a full sine, sampled so it never eases to a stop at the top or bottom
+   ================================================================================================= */
+
 @keyframes titlefloat {
   0% {
     transform: translateY(-0px);
@@ -408,7 +422,10 @@ a {
   color: var(--muted);
 }
 
-/* RPG dialogue banner: slides up when the character reaches an object */
+/* =================================================================================================
+   RPG dialogue banner: slides up when the character reaches an object
+   ================================================================================================= */
+
 .banner {
   z-index: 4;
   position: fixed;
@@ -495,7 +512,10 @@ a {
   }
 }
 
-/* Projects: listing-style pixel cards */
+/* =================================================================================================
+   Projects: listing-style pixel cards
+   ================================================================================================= */
+
 .dialog.wide {
   width: min(1100px, 100%);
   max-height: 100%;
@@ -575,7 +595,10 @@ body.floating .banner-next {
   flex: 0 0 240px;
   scroll-snap-align: start;
 }
-/* timid pixel scrollbar (custom, so it looks the same everywhere): shows while scrolling, then fades out */
+/* =================================================================================================
+   timid pixel scrollbar (custom, so it looks the same everywhere): shows while scrolling, then fades out
+   ================================================================================================= */
+
 .pcards {
   scrollbar-width: none;
 }
@@ -626,7 +649,10 @@ body.floating .banner-next {
   color: var(--ink);
   animation: pop 0.5s backwards;
 }
-/* sticker pop: each card slaps in with an overshoot and a wobble, in chunky steps */
+/* =================================================================================================
+   sticker pop: each card slaps in with an overshoot and a wobble, in chunky steps
+   ================================================================================================= */
+
 @keyframes pop {
   0% {
     transform: scale(0.25) rotate(-12deg);
@@ -782,7 +808,10 @@ body.floating .banner-next {
   }
 }
 
-/* Socials: big frameless pixel logos, each tilted a little */
+/* =================================================================================================
+   Socials: big frameless pixel logos, each tilted a little
+   ================================================================================================= */
+
 .socials {
   display: grid;
   grid-template-columns: auto auto;
@@ -868,7 +897,10 @@ body.floating .banner-next {
   text-shadow: 2px 2px 0 #120e1a;
 }
 
-/* Projects sit on a pixel computer screen */
+/* =================================================================================================
+   Projects sit on a pixel computer screen
+   ================================================================================================= */
+
 .monitor {
   position: relative;
   padding: 14px;
@@ -983,7 +1015,10 @@ body.floating .banner-next {
   }
 }
 
-/* CV: a vertical paper on the bureau, the desk and trophies barely there behind it */
+/* =================================================================================================
+   CV: a vertical paper on the bureau, the desk and trophies barely there behind it
+   ================================================================================================= */
+
 .cvscene {
   position: relative;
   width: min(900px, 100%);
@@ -1007,6 +1042,10 @@ body.floating .banner-next {
   -webkit-mask-image: radial-gradient(ellipse at 50% 55%, #000 45%, transparent 80%);
   mask-image: radial-gradient(ellipse at 50% 55%, #000 45%, transparent 80%);
 }
+/* =================================================================================================
+   .cvdoc
+   ================================================================================================= */
+
 .cvdoc {
   position: relative;
   height: 100%;
@@ -1171,7 +1210,10 @@ body.cvzoom .cvscene .desk {
   width: 44px;
   height: 30px;
 }
-/* Phone only: the room is a backdrop, the three big buttons are the way in */
+/* =================================================================================================
+   Phone only: the room is a backdrop, the three big buttons are the way in
+   ================================================================================================= */
+
 @media (max-width: 640px) {
   *,
   *::before,
@@ -1253,7 +1295,10 @@ body.cvzoom .cvscene .desk {
     display: none;
   }
 }
-/* touch screens of any width: never select or highlight the room on tap or long-press */
+/* =================================================================================================
+   touch screens of any width: never select or highlight the room on tap or long-press
+   ================================================================================================= */
+
 @media (pointer: coarse) {
   *,
   *::before,
@@ -1274,7 +1319,10 @@ body.cvzoom .cvscene .desk {
     outline: none;
   }
 }
-/* content-driven bits */
+/* =================================================================================================
+   content-driven bits
+   ================================================================================================= */
+
 .pthumb img {
   width: 100%;
   height: 100%;
@@ -1364,7 +1412,10 @@ body.cvzoom .cvscene .desk {
   margin-top: 0;
 }
 
-/* Socials are pinned to a corkboard */
+/* =================================================================================================
+   Socials are pinned to a corkboard
+   ================================================================================================= */
+
 .cork {
   position: relative;
   margin: 6px auto 0;
@@ -1429,7 +1480,10 @@ body.cvzoom .cvscene .desk {
   }
 }
 
-/* Project detail view: the clicked card grows into this centred modal while the room dims */
+/* =================================================================================================
+   Project detail view: the clicked card grows into this centred modal while the room dims
+   ================================================================================================= */
+
 .pcard.lifted {
   visibility: hidden;
 }
@@ -1451,6 +1505,10 @@ body.cvzoom .cvscene .desk {
 .pback.in {
   opacity: 1;
 }
+/* =================================================================================================
+   .pmodal
+   ================================================================================================= */
+
 .pmodal {
   position: fixed;
   z-index: 31;
@@ -1626,7 +1684,10 @@ body.cvzoom .cvscene .desk {
   }
 }
 
-/* project slideshow (card thumbnail and detail view): arrows and dots show on hover, it moves on every 5 s */
+/* =================================================================================================
+   project slideshow (card thumbnail and detail view): arrows and dots show on hover, it moves on every 5 s
+   ================================================================================================= */
+
 .pcar {
   position: relative;
 }

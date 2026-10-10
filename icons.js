@@ -1,3 +1,7 @@
+// =================================================================================================
+// PXI
+// =================================================================================================
+
 // Pixel art icons from Pixelarticons by Gerrit Halfmann (https://pixelarticons.com), MIT licensed:
 // Copyright (c) 2019 Gerrit Halfmann. Only the icons this site uses are copied here, as 24x24 path data.
 // Shared by the room (index.html) and the local editor (admin/).
@@ -74,7 +78,9 @@ function pxi(name, size = 24, cls = "") {
   svg.append(path);
   return svg;
 }
-// ---------- Language flags (room header and editor fields) ----------
+// =================================================================================================
+// LANGUAGE FLAGS (ROOM HEADER AND EDITOR FIELDS)
+// =================================================================================================
 
 // pixel-art flags, 22x15 pixels each, painted from a colour rule per pixel (px, py are pixel centres)
 const FLAG_W = 22,
@@ -127,6 +133,10 @@ function flagUrl(code) {
     }
   return (l.url = cv.toDataURL());
 }
+// =================================================================================================
+// flagPicker()
+// =================================================================================================
+
 // Flag dropdown: a button with the current language's flag, and a menu of the four languages under it.
 // get() returns the current language code; pick(code) runs when one is chosen; aria(lang) names the button.
 function flagPicker(get, pick, aria = (l) => "Language: " + l.name) {

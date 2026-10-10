@@ -1,4 +1,7 @@
-/* Shared by the room (index.html) and the local editor (admin/): palette, fonts, cursors, scrollbars. */
+/* =================================================================================================
+   Shared by the room (index.html) and the local editor (admin/): palette, fonts, cursors, scrollbars.
+   ================================================================================================= */
+
 :root {
   --arrow: url(assets/cursor-arrow.png) 4 4, default; /* Seif's pixel cursors */
   --hand: url(assets/cursor-hand.png) 10 4, pointer;
@@ -45,6 +48,10 @@ label,
 }
 
 /* Pixel-art scrollbars: square gold thumb with a dark outline on a dark track, no rounded corners. */
+/* =================================================================================================
+   Firefox has no ::-webkit-scrollbar; it only gets the colours
+   ================================================================================================= */
+
 /* Firefox has no ::-webkit-scrollbar; it only gets the colours. Chrome ignores the pixel rules below
    whenever scrollbar-color is set, so it is limited to browsers without them. */
 @supports not selector(::-webkit-scrollbar) {
@@ -92,7 +99,10 @@ label,
   justify-content: center;
   gap: 6px;
 }
-/* flag picker (icons.js flagPicker): the current flag as a button, the four languages drop down under it */
+/* =================================================================================================
+   flag picker (icons.js flagPicker): the current flag as a button, the four languages drop down under it
+   ================================================================================================= */
+
 .flagpick {
   position: relative;
   display: inline-block;

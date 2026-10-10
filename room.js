@@ -1,5 +1,8 @@
 (() => {
-  // ---------- Scene config ----------
+  // ===============================================================================================
+  // SCENE CONFIG
+  // ===============================================================================================
+
   // Room pixels: room.png is 568x368, the 2752x1536 room-wide-hd.png cropped and averaged 4x.
   const ROOM_W = 568,
     ROOM_H = 368,
@@ -25,6 +28,10 @@
 
   // Objects are painted into the room; each has an outline for hover glow and taps, and a spot to stand on
   const d2 = (pts) => pts.map(([x, y]) => [x / 2, y / 2]);
+  // ===============================================================================================
+  // OBJECTS
+  // ===============================================================================================
+
   const OBJECTS = [
     {
       id: "projects",
@@ -73,6 +80,10 @@
       stand: [470, 190],
     },
   ];
+  // ===============================================================================================
+  // BLOCKED
+  // ===============================================================================================
+
   // Floor areas that are not walkable (furniture footprints)
   const BLOCKED = [
     d2([
@@ -139,7 +150,10 @@
     ]),
   ];
 
-  // ---------- Geometry ----------
+  // ===============================================================================================
+  // GEOMETRY
+  // ===============================================================================================
+
   const { top: P00, right: P10, left: P01, bottom: P11 } = CORNERS;
   // Maps floor coordinates (u, v in 0..1) to room pixels with the bilinear floor-corner mapping.
   const toScreen = (u, v) =>
@@ -164,6 +178,10 @@
     for (let j = 0; j < N; j++) if (BLOCKED.some((p) => inPoly(center(i, j), p))) blocked.add(i + "," + j);
   // True when tile (i, j) is on the grid and not blocked by furniture.
   const walkable = (i, j) => i >= 0 && j >= 0 && i < N && j < N && !blocked.has(i + "," + j);
+
+  // ===============================================================================================
+  // bfs()
+  // ===============================================================================================
 
   // Breadth-first search over the walkable tiles from (si, sj); returns the parent map used to build paths.
   function bfs(si, sj) {
@@ -224,7 +242,10 @@
     }
     return best;
   }
-  // ---------- State ----------
+  // ===============================================================================================
+  // STATE
+  // ===============================================================================================
+
   const start = (() => {
     let b = null;
     for (let i = 0; i < N; i++)
@@ -279,7 +300,10 @@
     }
   }
 
-  // ---------- Title screen: the first click, tap or key only dismisses it ----------
+  // ===============================================================================================
+  // TITLE SCREEN: THE FIRST CLICK, TAP OR KEY ONLY DISMISSES IT
+  // ===============================================================================================
+
   const title = document.getElementById("title");
   // Dismisses the title screen on the first click, tap or key once everything has loaded.
   function startRoom(e) {
@@ -309,7 +333,10 @@
     new Promise((r) => setTimeout(r, 1500)),
   ]).then(() => document.documentElement.classList.add("fonts"));
 
-  // ---------- Canvas ----------
+  // ===============================================================================================
+  // CANVAS
+  // ===============================================================================================
+
   const canvas = document.getElementById("c"),
     ctx = canvas.getContext("2d"),
     stage = document.getElementById("stage");
@@ -433,6 +460,10 @@
       if (!curVar || curVar.key !== "drink") wantDrink = true;
     }
   });
+  // ===============================================================================================
+  // interactFrame()
+  // ===============================================================================================
+
   // interacting: reach in (0-7), keep working (8-14 back and forth) while the banner or panel is up, then turn back
   function interactFrame() {
     const busy = !!talkState || !overlay.hidden;
@@ -455,6 +486,10 @@
     }
     return null;
   }
+  // ===============================================================================================
+  // drawPlayer()
+  // ===============================================================================================
+
   // Draws the capybara: walk, idle, idle variation or interact frames, mirrored when facing left.
   function drawPlayer() {
     const walking = player.moving,
@@ -558,6 +593,10 @@
 
   let last = performance.now(),
     clock = 0;
+  // ===============================================================================================
+  // frame()
+  // ===============================================================================================
+
   // Main animation loop: moves the capybara along its path and redraws the scene each frame.
   function frame(now) {
     const dt = Math.min(0.05, (now - last) / 1000);
@@ -604,14 +643,20 @@
     requestAnimationFrame(frame);
   }
 
-  // ---------- Dialogue banner ----------
+  // ===============================================================================================
+  // DIALOGUE BANNER
+  // ===============================================================================================
+
   const FLOAT = new Set(["projects", "cv", "socials"]); // panels whose content floats over the dimmed room, banner kept
   // all text, links and images shown in the panels come from content.json (see CONTENT-CONTRACT.md)
   const DEFAULT = JSON.parse(document.getElementById("content-default").textContent);
   let CONTENT = DEFAULT;
   const LINES = {};
 
-  // ---------- Language and UI copy ----------
+  // ===============================================================================================
+  // LANGUAGE AND UI COPY
+  // ===============================================================================================
+
   // every piece of room text lives in content.json: section copy in its section, the rest under "ui",
   // grouped by type. A translatable value is a plain string or { en, aeb, fr, de }; English fills the gaps.
   let LANG = "en";
@@ -637,6 +682,10 @@
   const NAME = { projects: "name.projects", cv: "name.cv", socials: "name.contact" };
   // Sets an attribute on the first element matching a selector, if it is there.
   const attr = (sel, a, v) => document.querySelector(sel)?.setAttribute(a, v);
+  // ===============================================================================================
+  // applyStatic()
+  // ===============================================================================================
+
   // Writes every fixed piece of page text (titles, buttons, hints, screen-reader names) in the current language.
   function applyStatic() {
     const parts = ui("site.name").split(/[{}]/); // "Seif's {Room}": the braced part is amber
@@ -683,7 +732,15 @@
   };
   // True for a video file path (MP4 or WebM).
   const isVid = (p) => /\.(mp4|webm)(\?|#|$)/i.test(p || "");
+  // ===============================================================================================
+  // BUILD
+  // ===============================================================================================
+
   const BUILD = {
+    // =============================================================================================
+    // projects()
+    // =============================================================================================
+
     // Builds the Projects panel: a CRT screen with a horizontal row of project cards.
     projects() {
       const P = CONTENT.projects,
@@ -696,6 +753,10 @@
       note.append(ui("projects.pick"));
       scr.append(note);
       const row = el("div", "pcards");
+      // ===========================================================================================
+      // P.items.forEach(...)
+      // ===========================================================================================
+
       P.items.forEach((it, i) => {
         const card = el("button", "pcard");
         card.type = "button";
@@ -737,6 +798,10 @@
       f.append(mon, stand);
       return f;
     },
+    // =============================================================================================
+    // cv()
+    // =============================================================================================
+
     // Builds the CV panel: the paper document over the faint bureau.
     cv() {
       const C = CONTENT.cv,
@@ -830,6 +895,10 @@
       f.append(scene);
       return f;
     },
+    // =============================================================================================
+    // socials()
+    // =============================================================================================
+
     // Builds the Contact panel: pixel icons pinned on the corkboard.
     socials() {
       const K = CONTENT.contact,
@@ -841,6 +910,10 @@
       const cork = el("div", "cork"),
         grid = el("div", "socials"),
         n = K.links.length;
+      // ===========================================================================================
+      // K.links.forEach(...)
+      // ===========================================================================================
+
       K.links.forEach((l, i) => {
         const a = el("a", "sicon");
         const url = safeUrl(l.url);
@@ -897,6 +970,10 @@
       }
     }, 28);
   }
+  // ===============================================================================================
+  // advance()
+  // ===============================================================================================
+
   // Click or key on the banner: finish the line, go to the next one, or end the talk.
   function advance() {
     const st = talkState;
@@ -938,9 +1015,16 @@
     } else if (talkState && e.key === "Escape") endTalk(false);
   });
 
-  // ---------- Panels ----------
+  // ===============================================================================================
+  // PANELS
+  // ===============================================================================================
+
   const overlay = document.getElementById("overlay");
   let opener = null;
+  // ===============================================================================================
+  // drawThumb()
+  // ===============================================================================================
+
   // placeholder pixel-art thumbnails: a tiny night scene per seed
   function drawThumb(cv, seed) {
     const g = cv.getContext("2d"),
@@ -980,6 +1064,10 @@
     g.fillStyle = "#0c0912";
     g.fillRect(0, H - 3, W, 3);
   }
+  // ===============================================================================================
+  // LOGOS
+  // ===============================================================================================
+
   // brand logos rendered at 24px then snapped to hard pixels (no anti-aliasing), shown scaled up
   const LOGOS = {
     github: {
@@ -1018,6 +1106,10 @@
         "2 0 22.222 0h.003z",
     },
   };
+  // ===============================================================================================
+  // drawLogo()
+  // ===============================================================================================
+
   // Draws a contact icon: a built-in logo, the link's own image, or the generic link pin.
   function drawLogo(cv) {
     if (cv.dataset.img) {
@@ -1071,6 +1163,10 @@
     }
     g.putImageData(im, 0, 0);
   }
+  // ===============================================================================================
+  // drawDesk()
+  // ===============================================================================================
+
   // the bureau behind the CV: desk top, scattered papers, a grey and a gold trophy
   function drawDesk(cv) {
     const g = cv.getContext("2d"),
@@ -1131,6 +1227,10 @@
   addEventListener("resize", () => {
     if (!overlay.hidden) fitCv();
   });
+  // ===============================================================================================
+  // openPanel()
+  // ===============================================================================================
+
   // Opens a panel (projects, cv or socials) and wires up its hover lines, scrollbar and zoom.
   function openPanel(id) {
     opener = document.activeElement;
@@ -1242,8 +1342,105 @@
     if (document.fonts) document.fonts.ready.then(fitCv);
   }
   // focusing the CV brings the paper front and center, over the banner, as big as the screen allows
-  // ---------- Project detail view ----------
+  function cvZoom(on) {
+    const doc = document.querySelector("#dlg-body .cvdoc");
+    if (!doc) return;
+    doc.classList.toggle("zoom", on);
+    document.body.classList.toggle("cvzoom", on);
+    if (!on) {
+      doc.style.transform = "";
+      return;
+    }
+    const r = doc.getBoundingClientRect(),
+      cx = r.left + r.width / 2,
+      cy = r.top + r.height / 2;
+    const k = Math.min((innerHeight * 0.94) / doc.offsetHeight, (innerWidth * 0.94) / doc.offsetWidth);
+    doc.style.transform = `translate(${innerWidth / 2 - cx}px, ${innerHeight / 2 - cy}px) scale(${k.toFixed(3)})`;
+  }
+  addEventListener("resize", () => {
+    if (document.body.classList.contains("cvzoom")) {
+      cvZoom(false);
+      cvZoom(true);
+    }
+  });
+  // Closes the panel and returns to the room.
+  function closePanel() {
+    if (closeProject) closeProject(true);
+    cvZoom(false);
+    hoverCard = null;
+    if (talkState) {
+      clearInterval(talkState.timer);
+      clearTimeout(talkState.hold);
+      talkState = null;
+    }
+    overlay.hidden = true;
+    if (document.body.classList.contains("floating")) banner.hidden = true;
+    document.body.classList.remove("floating");
+    if (opener && opener.focus) opener.focus();
+  }
+  document.getElementById("close").addEventListener("click", closePanel);
+  overlay.addEventListener("pointerdown", (e) => {
+    if (document.body.classList.contains("cvzoom") && !e.target.closest(".cvdoc")) {
+      cvZoom(false);
+      return;
+    }
+    if (e.target === overlay || (overlay.classList.contains("floating") && e.target.matches(".dialog, #dlg-body")))
+      closePanel();
+  });
+  document.addEventListener(
+    "keydown",
+    (e) => {
+      if (e.key === "Escape" && document.body.classList.contains("cvzoom")) {
+        e.stopImmediatePropagation();
+        cvZoom(false);
+      }
+    },
+    true,
+  );
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !overlay.hidden) closePanel();
+  });
+  document.querySelectorAll("[data-open]").forEach((b) =>
+    b.addEventListener("click", () => {
+      endTalk(false);
+      openPanel(b.dataset.open);
+    }),
+  );
+
+  // Debug: add #debug to the URL to see the walkable grid and object outlines
+  if (location.hash === "#debug") {
+    window.__debug = () => {
+      for (let i = 0; i < N; i++)
+        for (let j = 0; j < N; j++) {
+          const c = center(i, j);
+          ctx.fillStyle = walkable(i, j) ? "rgba(0,255,120,.6)" : "rgba(255,0,0,.6)";
+          ctx.fillRect(c[0] - 2, c[1] - 2, 4, 4);
+        }
+      ctx.strokeStyle = "#ff0";
+      ctx.lineWidth = 1;
+      OBJECTS.forEach((o) => {
+        path(o.poly);
+        ctx.stroke();
+        ctx.fillStyle = "#ff0";
+        ctx.fillRect(o.stand[0] - 3, o.stand[1] - 3, 6, 6);
+      });
+    };
+    const orig = drawLabels;
+    drawLabels = (t) => {
+      orig(t);
+      window.__debug();
+    };
+  }
+
+  // ===============================================================================================
+  // PROJECT DETAIL VIEW
+  // ===============================================================================================
+
   let closeProject = null; // closes the open project detail view, null when none is open
+  // ===============================================================================================
+  // mediaEl()
+  // ===============================================================================================
+
   // One gallery item as an image or GIF, an MP4/WebM clip or a YouTube/Vimeo player; null for a bad address.
   function mediaEl(g, name) {
     const src = safeUrl(g.src);
@@ -1286,6 +1483,10 @@
     return shots;
   }
   const SLIDE_MS = 5000; // a project frame moves to its next picture or clip after this long
+  // ===============================================================================================
+  // carousel()
+  // ===============================================================================================
+
   // Fills box with a slideshow of shots: arrows on each side and a dot per item (shown on hover), and it moves
   // on by itself every 5 s. On a card (inCard) the controls are plain spans, since the card itself is a button.
   function carousel(box, shots, name, start, inCard) {
@@ -1376,6 +1577,10 @@
     a.append(pxi("external-link", 12));
     return a;
   }
+  // ===============================================================================================
+  // openProject()
+  // ===============================================================================================
+
   // Grows project card i into a centred detail view while the room dims; it shrinks back into the card on close.
   function openProject(it, card, i) {
     if (closeProject) closeProject(true);
@@ -1480,97 +1685,9 @@
     back.addEventListener("click", () => closeProject());
     setTimeout(() => x.focus({ preventScroll: true }), 60);
   }
-  function cvZoom(on) {
-    const doc = document.querySelector("#dlg-body .cvdoc");
-    if (!doc) return;
-    doc.classList.toggle("zoom", on);
-    document.body.classList.toggle("cvzoom", on);
-    if (!on) {
-      doc.style.transform = "";
-      return;
-    }
-    const r = doc.getBoundingClientRect(),
-      cx = r.left + r.width / 2,
-      cy = r.top + r.height / 2;
-    const k = Math.min((innerHeight * 0.94) / doc.offsetHeight, (innerWidth * 0.94) / doc.offsetWidth);
-    doc.style.transform = `translate(${innerWidth / 2 - cx}px, ${innerHeight / 2 - cy}px) scale(${k.toFixed(3)})`;
-  }
-  addEventListener("resize", () => {
-    if (document.body.classList.contains("cvzoom")) {
-      cvZoom(false);
-      cvZoom(true);
-    }
-  });
-  // Closes the panel and returns to the room.
-  function closePanel() {
-    if (closeProject) closeProject(true);
-    cvZoom(false);
-    hoverCard = null;
-    if (talkState) {
-      clearInterval(talkState.timer);
-      clearTimeout(talkState.hold);
-      talkState = null;
-    }
-    overlay.hidden = true;
-    if (document.body.classList.contains("floating")) banner.hidden = true;
-    document.body.classList.remove("floating");
-    if (opener && opener.focus) opener.focus();
-  }
-  document.getElementById("close").addEventListener("click", closePanel);
-  overlay.addEventListener("pointerdown", (e) => {
-    if (document.body.classList.contains("cvzoom") && !e.target.closest(".cvdoc")) {
-      cvZoom(false);
-      return;
-    }
-    if (e.target === overlay || (overlay.classList.contains("floating") && e.target.matches(".dialog, #dlg-body")))
-      closePanel();
-  });
-  document.addEventListener(
-    "keydown",
-    (e) => {
-      if (e.key === "Escape" && document.body.classList.contains("cvzoom")) {
-        e.stopImmediatePropagation();
-        cvZoom(false);
-      }
-    },
-    true,
-  );
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !overlay.hidden) closePanel();
-  });
-  document.querySelectorAll("[data-open]").forEach((b) =>
-    b.addEventListener("click", () => {
-      endTalk(false);
-      openPanel(b.dataset.open);
-    }),
-  );
-
-  // Debug: add #debug to the URL to see the walkable grid and object outlines
-  if (location.hash === "#debug") {
-    window.__debug = () => {
-      for (let i = 0; i < N; i++)
-        for (let j = 0; j < N; j++) {
-          const c = center(i, j);
-          ctx.fillStyle = walkable(i, j) ? "rgba(0,255,120,.6)" : "rgba(255,0,0,.6)";
-          ctx.fillRect(c[0] - 2, c[1] - 2, 4, 4);
-        }
-      ctx.strokeStyle = "#ff0";
-      ctx.lineWidth = 1;
-      OBJECTS.forEach((o) => {
-        path(o.poly);
-        ctx.stroke();
-        ctx.fillStyle = "#ff0";
-        ctx.fillRect(o.stand[0] - 3, o.stand[1] - 3, 6, 6);
-      });
-    };
-    const orig = drawLabels;
-    drawLabels = (t) => {
-      orig(t);
-      window.__debug();
-    };
-  }
-
-  // ---------- Language flags ----------
+  // ===============================================================================================
+  // LANGUAGE FLAGS
+  // ===============================================================================================
 
   // the flag in the header switches the room's language (remembered on this device)
   const langBox = document.getElementById("lang");
