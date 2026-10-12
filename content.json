@@ -249,43 +249,143 @@
     ]
   },
   "cv": {
-    "placeholder": true,
-    "photo": "",
-    "name": "Seif",
-    "role": "Role placeholder",
-    "summary": "Two or three sentences about you.",
+    "placeholder": false,
+    "photo": "content/1791836394781.png",
+    "name": "Seif Jlassi",
+    "role": {
+      "en": "Full-stack developer · tools & interactive web",
+      "de": "Full-Stack-Entwickler · Tools & interaktives Web",
+      "fr": "Développeur full-stack · outils & web interactif"
+    },
+    "summary": {
+      "en": "I build tools that make complex systems easy to see and use: a map for unfamiliar codebases, an AI workspace for ad experiments, and this room with its own editor. I work across the stack, from canvas to Node and Git.",
+      "de": "Ich baue Tools, die komplexe Systeme sichtbar und einfach machen: eine Karte für fremden Code, einen KI-Workspace für Werbetests und diesen Raum mit eigenem Editor. Ich arbeite im ganzen Stack, von Canvas bis Node und Git.",
+      "fr": "Je crée des outils qui rendent les systèmes complexes lisibles : une carte pour du code inconnu, un espace IA pour tester des pubs, et cette chambre avec son éditeur. Je travaille sur tout le stack, du canvas à Node et Git."
+    },
     "experience": [
       {
-        "company": "Company",
-        "role": "Your role",
-        "start": "2023",
-        "end": "Now",
+        "company": "Code Atlas",
+        "role": {
+          "en": "Solo developer",
+          "de": "Solo-Entwickler",
+          "fr": "Développeur solo"
+        },
+        "start": "",
+        "end": "",
         "bullets": [
-          "One thing you did or shipped.",
-          "Another one."
+          {
+            "en": "Static-analysis pipeline that maps JS and Python repos into dependency graphs.",
+            "de": "Statische Analyse, die JS- und Python-Repos als Abhängigkeitsgraphen darstellt.",
+            "fr": "Analyse statique qui transforme des dépôts JS et Python en graphes de dépendances."
+          },
+          {
+            "en": "Risk signals and refactor simulations in a React Flow UI, with no AI involved.",
+            "de": "Risikosignale und Refactoring-Simulationen in einer React-Flow-UI, ganz ohne KI.",
+            "fr": "Signaux de risque et simulations de refactoring dans une UI React Flow, sans IA."
+          }
+        ]
+      },
+      {
+        "company": "PRISM",
+        "role": {
+          "en": "Solo developer",
+          "de": "Solo-Entwickler",
+          "fr": "Développeur solo"
+        },
+        "start": "",
+        "end": "",
+        "bullets": [
+          {
+            "en": "AI workspace turning product data into audiences, angles, offers and ad sets.",
+            "de": "KI-Workspace, der Produktdaten in Zielgruppen, Angebote und Anzeigengruppen umsetzt.",
+            "fr": "Espace IA qui transforme les données produit en audiences, angles, offres et pubs."
+          },
+          {
+            "en": "Every AI step is stored and logged in PostgreSQL, so results stay traceable.",
+            "de": "Jeder KI-Schritt wird in PostgreSQL gespeichert und protokolliert, also nachvollziehbar.",
+            "fr": "Chaque étape IA est stockée et journalisée dans PostgreSQL : tout reste traçable."
+          }
+        ]
+      },
+      {
+        "company": "Seif's Room",
+        "role": {
+          "en": "Solo developer",
+          "de": "Solo-Entwickler",
+          "fr": "Développeur solo"
+        },
+        "start": "",
+        "end": "",
+        "bullets": [
+          {
+            "en": "Pixel-art portfolio with canvas rendering, pathfinding and a visual zone editor.",
+            "de": "Pixel-Art-Portfolio mit Canvas-Rendering, Wegfindung und visuellem Zonen-Editor.",
+            "fr": "Portfolio pixel art : rendu canvas, recherche de chemin et éditeur visuel de zones."
+          },
+          {
+            "en": "4-language CMS with conflict-safe saves and one-click Git publishing.",
+            "de": "CMS in 4 Sprachen mit konfliktsicherem Speichern und Git-Veröffentlichung per Klick.",
+            "fr": "CMS en 4 langues, sauvegarde sans conflit et publication Git en un clic."
+          }
         ]
       }
     ],
-    "education": [
-      {
-        "school": "School",
-        "degree": "Degree",
-        "start": "2019",
-        "end": "2023"
-      }
-    ],
+    "education": [],
     "skills": [
       {
-        "group": "Tools",
+        "group": {
+          "en": "Frontend",
+          "de": "Frontend",
+          "fr": "Frontend"
+        },
         "items": [
           "JavaScript",
+          "TypeScript",
+          "React",
+          "React Flow",
+          "Canvas 2D",
+          "HTML",
+          "CSS"
+        ]
+      },
+      {
+        "group": {
+          "en": "Backend & AI",
+          "de": "Backend & KI",
+          "fr": "Backend & IA"
+        },
+        "items": [
+          "Node.js",
           "Python",
-          "Git"
+          "PostgreSQL",
+          "OpenAI / Claude APIs"
+        ]
+      },
+      {
+        "group": {
+          "en": "Tools",
+          "de": "Tools",
+          "fr": "Outils"
+        },
+        "items": [
+          "Git",
+          "GitHub Pages",
+          "Static analysis"
         ]
       }
     ],
-    "languages": [],
-    "pdf": ""
+    "languages": [
+      "Arabic (Tunisian)",
+      "French",
+      "English",
+      "German (B2-C1)"
+    ],
+    "pdf": "",
+    "say": {
+      "en": "My CV. The projects on the left screen say more than this paper, though.",
+      "de": "Mein Lebenslauf. Die Projekte auf dem Bildschirm sagen aber mehr als dieses Blatt.",
+      "fr": "Mon CV. Mais les projets sur l'écran en disent plus que cette feuille."
+    }
   },
   "contact": {
     "placeholder": false,
@@ -317,7 +417,7 @@
           "de": "Gmail",
           "fr": "Gmail"
         },
-        "url": "seifjlassi00@gmail.com",
+        "url": "mailto:seifjlassi00@gmail.com",
         "icon": "gmail"
       }
     ]
