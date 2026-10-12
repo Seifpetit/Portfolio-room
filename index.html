@@ -51,14 +51,7 @@
 
   <!-- Shortcut buttons: open a panel without walking there -->
   <nav aria-label="Shortcuts">
-    <!-- Opens the Projects panel -->
-    <button type="button" data-open="projects">Projects</button>
-
-    <!-- Opens the CV panel -->
-    <button type="button" data-open="cv">CV</button>
-
-    <!-- Opens the Contact panel -->
-    <button type="button" data-open="socials">Contact</button>
+    <!-- One button per zone goes here, added by the room code from the zone list below -->
 
     <!-- Hint under the buttons -->
     <small>In a hurry? These open the same panels without walking.</small>
@@ -83,7 +76,7 @@
   <div class="title-load" role="progressbar" aria-label="Loading the room"><i id="load-bar"></i></div>
 </div>
 
-<!-- Panel window (Projects, CV or Contact), built by room.js when an object is reached -->
+<!-- Panel window (Projects, CV, Contact or any other zone), opened by the room code when a zone is reached -->
 <div class="overlay" id="overlay" hidden>
   <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
     <!-- Panel head: title and Back button -->
@@ -95,7 +88,7 @@
       <button class="close" id="close" type="button" aria-label="Back to the room">Back</button>
     </div>
 
-    <!-- Panel content, built by room.js -->
+    <!-- Panel content, built by the zone's own file in room/zones/ -->
     <div id="dlg-body"></div>
   </section>
 </div>
@@ -646,7 +639,20 @@
 <!-- Icons and language flags, shared with the editor -->
 <script src="icons.js"></script>
 
-<!-- The room: drawing, walking, dialogue and panels -->
-<script src="room.js"></script>
+<!-- The room's scene: size, sprites, furniture footprints and the zone registry -->
+<script src="room/room-scene.js"></script>
+
+<!-- Interactive zones: one file each in room/zones/, one line here turns a zone on (see room/zones/README.md) -->
+<script src="room/zones/projects.js"></script>
+<script src="room/zones/cv.js"></script>
+<script src="room/zones/socials.js"></script>
+
+<!-- The room: walking, drawing, dialogue and panels -->
+<script src="room/room-walk.js"></script>
+<script src="room/room-title.js"></script>
+<script src="room/room-canvas.js"></script>
+<script src="room/room-talk.js"></script>
+<script src="room/room-panels.js"></script>
+<script src="room/room-boot.js"></script>
 </body>
 </html>

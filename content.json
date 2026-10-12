@@ -1,121 +1,248 @@
 {
   "schemaVersion": 1,
   "site": {
-    "title": "Seif's Room",
-    "description": "Seif's pixel-art portfolio room. Walk around, open the tech lab, the CV and the contact board.",
-    "previewImage": ""
+    "title": {
+      "en": "Seif's Room",
+      "de": "Seifs Raum",
+      "fr": "La chambre de Seif"
+    },
+    "description": {
+      "en": "My Portfolio Room",
+      "de": "Mein Portfolio-Raum",
+      "fr": "Mon portfolio en pixel art"
+    },
+    "previewImage": "content/demo.gif"
   },
   "projects": {
-    "placeholder": true,
-    "intro": "The tech lab, this is where the experiments grow...\nLet me pull up the projects.",
+    "placeholder": false,
     "items": [
       {
         "id": "project-one",
-        "name": "Project one",
-        "thumbnail": "",
-        "description": "A short line about what this does and who it is for.",
-        "tags": [
-          "JS",
-          "Canvas",
-          "API"
-        ],
-        "badge": "Featured",
-        "cta": {
-          "label": "Live demo",
-          "url": ""
+        "name": {
+          "en": "Code Atlas",
+          "de": "Code Atlas",
+          "fr": "Code Atlas"
         },
-        "say": "Project one: placeholder line, the capybara will say something about this one.",
+        "thumbnail": "content/projects/project-one/timeline.gif",
+        "description": {
+          "en": "Explore unfamiliar codebases through visual maps, dependencies and risk signals.",
+          "de": "Unbekannte Codebasen über visuelle Karten, Abhängigkeiten und Risiken erkunden.",
+          "fr": "Explore du code inconnu via des cartes visuelles, dépendances et risques."
+        },
+        "tags": [
+          "DevTools",
+          "Graphs",
+          "Analysis"
+        ],
+        "badge": "",
+        "cta": {
+          "label": {
+            "en": "Live Demo",
+            "de": "Live-Demo",
+            "fr": "Démo en ligne"
+          },
+          "url": "https://code-atlas.up.railway.app/"
+        },
+        "say": {
+          "en": "New repo? I built this to see its structure before diving into the code.",
+          "de": "Neues Repo? Damit sehe ich seine Struktur, bevor ich in den Code eintauche.",
+          "fr": "Nouveau repo ? Je l'ai créé pour voir sa structure avant de plonger dans le code."
+        },
         "detail": {
-          "summary": "Two or three sentences about what it is.",
-          "role": "Your role, one line",
+          "summary": {
+            "en": "Code Atlas turns JavaScript and Python repositories into navigable visual maps. Explore files, functions, dependencies and structural clusters, then inspect risk signals and simulated refactoring effects. It is designed to accelerate the first hours in an unfamiliar codebase, not to replace reading or reviewing source code.",
+            "de": "Code Atlas verwandelt JavaScript- und Python-Repositories in navigierbare visuelle Karten. Erkunde Dateien, Funktionen, Abhängigkeiten und strukturelle Cluster und prüfe dann Risikosignale und simulierte Refactorings. Es soll die ersten Stunden in einer fremden Codebasis beschleunigen, nicht das Lesen oder Reviewen des Codes ersetzen.",
+            "fr": "Code Atlas transforme des dépôts JavaScript et Python en cartes visuelles navigables. Explore fichiers, fonctions, dépendances et groupes structurels, puis examine les signaux de risque et l'effet simulé d'un refactoring. Il accélère les premières heures dans un code inconnu, sans remplacer la lecture ni la relecture du code."
+          },
+          "role": {
+            "en": "Solo builder",
+            "de": "Solo-Entwickler",
+            "fr": "Développeur solo"
+          },
           "stack": [
-            "JS",
-            "Canvas",
-            "API"
+            "React",
+            "React Flow",
+            "JavaScript",
+            "Python"
           ],
-          "highlight": "The hardest or proudest part, one sentence.",
-          "gallery": [],
-          "links": []
+          "highlight": {
+            "en": "Built a deterministic code-analysis pipeline that transforms source code into dependency graphs, risk signals and refactor simulations, without relying on AI.",
+            "de": "Eine deterministische Code-Analyse-Pipeline, die Quellcode ohne KI in Abhängigkeitsgraphen, Risikosignale und Refactoring-Simulationen umwandelt.",
+            "fr": "Un pipeline d'analyse de code déterministe qui transforme le code en graphes de dépendances, signaux de risque et simulations de refactoring, sans IA."
+          },
+          "gallery": [
+            {
+              "type": "image",
+              "src": "content/projects/project-one/navigation.gif",
+              "alt": ""
+            },
+            {
+              "type": "image",
+              "src": "content/projects/project-one/source.gif",
+              "alt": ""
+            },
+            {
+              "type": "image",
+              "src": "content/projects/project-one/timeline.gif",
+              "alt": ""
+            },
+            {
+              "type": "image",
+              "src": "content/projects/project-one/demo.gif",
+              "alt": ""
+            }
+          ],
+          "links": [
+            {
+              "label": "GitHub Repository",
+              "url": "https://github.com/Seifpetit/code-atlas"
+            }
+          ]
         }
       },
       {
         "id": "project-two",
-        "name": "Project two",
-        "thumbnail": "",
-        "description": "A short line about what this does and who it is for.",
-        "tags": [
-          "Python",
-          "ML"
-        ],
-        "badge": "New",
-        "cta": {
-          "label": "Repo",
-          "url": ""
+        "name": {
+          "en": "PRISM",
+          "de": "PRISM",
+          "fr": "PRISM"
         },
-        "say": "Project two: placeholder line, the capybara will say something about this one.",
+        "thumbnail": "content/projects/project-two/prism-creatives.webm",
+        "description": {
+          "en": "An AI workspace for building and testing structured e-commerce ad strategies.",
+          "de": "KI-Workspace zum Bauen und Testen strukturierter E-Commerce-Werbestrategien.",
+          "fr": "Un espace IA pour créer et tester des stratégies pub e-commerce structurées."
+        },
+        "tags": [
+          "AI",
+          "SaaS",
+          "E-commerce"
+        ],
+        "badge": "Featured",
+        "cta": {
+          "label": {
+            "en": "Repo",
+            "de": "Repo",
+            "fr": "Dépôt"
+          },
+          "url": "https://github.com/Seifpetit/PRISM"
+        },
+        "say": {
+          "en": "Your best ad ever, and zero idea why... PRISM gets your marketing in order",
+          "de": "Deine beste Anzeige aller Zeiten, und keine Ahnung warum... PRISM ordnet dein Marketing.",
+          "fr": "Ta meilleure pub, et aucune idée de pourquoi... PRISM met de l'ordre dans ton marketing."
+        },
         "detail": {
-          "summary": "Two or three sentences about what it is.",
-          "role": "Your role, one line",
+          "summary": {
+            "en": "PRISM helps e-commerce teams turn product information into structured marketing experiments. It organizes audiences, angles and offers, then combines them into campaign-ready ad sets. AI-assisted generation stays connected to persistent records and inspectable execution logs, so the workflow is more than a one-off prompt.",
+            "de": "PRISM hilft E-Commerce-Teams, Produktinformationen in strukturierte Marketing-Experimente zu verwandeln. Es ordnet Zielgruppen, Blickwinkel und Angebote und kombiniert sie zu einsatzbereiten Anzeigengruppen. Die KI-Generierung bleibt mit dauerhaften Datensätzen und nachvollziehbaren Ausführungsprotokollen verbunden, also mehr als ein einmaliger Prompt.",
+            "fr": "PRISM aide les équipes e-commerce à transformer les infos produit en expériences marketing structurées. Il organise audiences, angles et offres, puis les combine en ensembles de pubs prêts à lancer. La génération assistée par IA reste liée à des données persistantes et à des journaux d'exécution consultables : bien plus qu'un simple prompt."
+          },
+          "role": {
+            "en": "Solo builder",
+            "de": "Solo-Entwickler",
+            "fr": "Développeur solo"
+          },
           "stack": [
-            "Python",
-            "ML"
+            "React",
+            "TypeScript",
+            "Node.js",
+            "PostgreSQL",
+            "OpenAI/Claude API"
           ],
-          "highlight": "The hardest or proudest part, one sentence.",
-          "gallery": [],
+          "highlight": {
+            "en": "Designed an inspectable AI workflow that turns product context into structured campaign decisions while preserving their relationships and generation traces.",
+            "de": "Ein nachvollziehbarer KI-Workflow, der Produktkontext in strukturierte Kampagnenentscheidungen umwandelt und ihre Beziehungen und Herkunft bewahrt.",
+            "fr": "Un workflow IA transparent qui transforme le contexte produit en décisions de campagne structurées, en gardant leurs liens et leur historique."
+          },
+          "gallery": [
+            {
+              "type": "video",
+              "src": "content/projects/project-two/prism-creatives.webm",
+              "alt": ""
+            },
+            {
+              "type": "image",
+              "src": "content/projects/project-two/prism-pipeline.gif",
+              "alt": ""
+            },
+            {
+              "type": "image",
+              "src": "content/projects/project-two/prism-performance.gif",
+              "alt": ""
+            }
+          ],
           "links": []
         }
       },
       {
         "id": "project-three",
-        "name": "Project three",
-        "thumbnail": "",
-        "description": "A short line about what this does and who it is for.",
-        "tags": [
-          "React",
-          "Node"
-        ],
-        "badge": "",
-        "cta": {
-          "label": "Live demo",
-          "url": ""
+        "name": {
+          "en": "Seif's Room",
+          "de": "Seifs Raum",
+          "fr": "La chambre de Seif"
         },
-        "say": "Project three: placeholder line, the capybara will say something about this one.",
-        "detail": {
-          "summary": "Two or three sentences about what it is.",
-          "role": "Your role, one line",
-          "stack": [
-            "React",
-            "Node"
-          ],
-          "highlight": "The hardest or proudest part, one sentence.",
-          "gallery": [],
-          "links": []
-        }
-      },
-      {
-        "id": "project-four",
-        "name": "Project four",
-        "thumbnail": "",
-        "description": "A short line about what this does and who it is for.",
-        "tags": [
-          "Rust",
-          "CLI"
-        ],
-        "badge": "",
-        "cta": {
-          "label": "Repo",
-          "url": ""
+        "thumbnail": "content/projects/project-three/demo.mp4",
+        "description": {
+          "en": "An interactive pixel-art room powered by a custom editor and Git publishing.",
+          "de": "Ein interaktiver Pixel-Art-Raum mit eigenem Editor und Git-Veröffentlichung.",
+          "fr": "Une chambre interactive en pixel art, avec son éditeur et publication via Git."
         },
-        "say": "Project four: placeholder line, the capybara will say something about this one.",
+        "tags": [
+          "JavaScript",
+          "Canvas",
+          "Node.js"
+        ],
+        "badge": "New",
+        "cta": {
+          "label": {
+            "en": "Repo",
+            "de": "Repo",
+            "fr": "Dépôt"
+          },
+          "url": "https://github.com/Seifpetit/Portfolio-room"
+        },
+        "say": {
+          "en": "Welcome to my room! I also built the editor behind it. Everything you see is mine to change.",
+          "de": "Willkommen in meinem Raum! Den Editor dahinter habe ich auch gebaut. Alles hier kann ich ändern.",
+          "fr": "Bienvenue dans ma chambre ! J'ai aussi créé l'éditeur derrière. Je peux tout y changer."
+        },
         "detail": {
-          "summary": "Two or three sentences about what it is.",
-          "role": "Your role, one line",
+          "summary": {
+            "en": "An interactive portfolio built as an explorable isometric room. Visitors navigate between projects, my CV and contact through a pixel-art environment. Behind it sits a private authoring system for managing content, translations, spatial zones etc... Changes are published through an automated Git workflow, keeping the public site static while making the experience easy to extend.",
+            "de": "Ein interaktives Portfolio als begehbarer isometrischer Raum. Besucher wechseln in einer Pixel-Art-Umgebung zwischen Projekten, Lebenslauf und Kontakt. Dahinter steht ein privates Autorensystem für Inhalte, Übersetzungen, Raumzonen und mehr. Änderungen gehen über einen automatischen Git-Workflow online: Die Seite bleibt statisch und lässt sich leicht erweitern.",
+            "fr": "Un portfolio interactif conçu comme une chambre isométrique à explorer. Les visiteurs passent des projets au CV et au contact dans un décor en pixel art. Derrière, un outil d'édition privé gère contenus, traductions, zones de la pièce, etc. Les changements sont publiés via un workflow Git automatisé : le site reste statique et facile à enrichir."
+          },
+          "role": {
+            "en": "Solo builder",
+            "de": "Solo-Entwickler",
+            "fr": "Développeur solo"
+          },
           "stack": [
-            "Rust",
-            "CLI"
+            "JavaScript",
+            "Canvas 2D",
+            "Node.js",
+            "HTML",
+            "CSS",
+            "GitHub Pages"
           ],
-          "highlight": "The hardest or proudest part, one sentence.",
-          "gallery": [],
+          "highlight": {
+            "en": "Built a visual editor for spatial navigation, collision masks and interaction zones, alongside a multilingual CMS and automated Git publishing pipeline.",
+            "de": "Ein visueller Editor für Navigation im Raum, Kollisionsmasken und Interaktionszonen, dazu ein mehrsprachiges CMS und eine automatische Git-Pipeline.",
+            "fr": "Un éditeur visuel pour la navigation, les masques de collision et les zones d'interaction, avec un CMS multilingue et une publication Git automatisée."
+          },
+          "gallery": [
+            {
+              "type": "image",
+              "src": "content/projects/project-three/editor-tour.gif",
+              "alt": ""
+            },
+            {
+              "type": "image",
+              "src": "content/projects/project-three/zones-demo.gif",
+              "alt": ""
+            }
+          ],
           "links": []
         }
       }
@@ -123,7 +250,6 @@
   },
   "cv": {
     "placeholder": true,
-    "intro": "My bureau. Every paper here is part of the story...\nHere is the CV.",
     "photo": "",
     "name": "Seif",
     "role": "Role placeholder",
@@ -162,27 +288,455 @@
     "pdf": ""
   },
   "contact": {
-    "placeholder": true,
-    "intro": "The corkboard. Everywhere you can find me online is pinned up here...",
+    "placeholder": false,
     "links": [
       {
         "id": "linkedin",
-        "label": "LinkedIn",
+        "label": {
+          "en": "LinkedIn",
+          "de": "LinkedIn",
+          "fr": "LinkedIn"
+        },
         "url": "https://www.linkedin.com/",
         "icon": "linkedin"
       },
       {
         "id": "github",
-        "label": "GitHub",
+        "label": {
+          "en": "GitHub",
+          "de": "GitHub",
+          "fr": "GitHub"
+        },
         "url": "https://github.com/Seifpetit",
         "icon": "github"
       },
       {
         "id": "email",
-        "label": "Gmail",
-        "url": "mailto:",
+        "label": {
+          "en": "Gmail",
+          "de": "Gmail",
+          "fr": "Gmail"
+        },
+        "url": "seifjlassi00@gmail.com",
         "icon": "gmail"
       }
     ]
+  },
+  "ui": {
+    "dialogue": {
+      "projects.intro": {
+        "section": "projects",
+        "where": "Dialogue banner when Seif reaches the tech lab (Projects).",
+        "text": {
+          "en": "The tech lab, this is where the experiments grow...\nLet me pull up the projects.",
+          "de": "Das Tech-Labor, hier wachsen die Experimente...\nIch hole die Projekte hervor.",
+          "fr": "Le labo tech, c'est ici que poussent les expériences...\nJe t'affiche les projets."
+        }
+      },
+      "cv.intro": {
+        "section": "cv",
+        "where": "Dialogue banner when Seif reaches the bureau (CV).",
+        "text": {
+          "en": "My bureau. Every paper here is part of the story...\nHere is the CV.",
+          "de": "Mein Schreibtisch. Jedes Blatt hier erzählt einen Teil der Geschichte...\nHier ist mein Lebenslauf.",
+          "fr": "Mon bureau. Chaque feuille ici raconte une part de l'histoire...\nVoici mon CV."
+        }
+      },
+      "contact.intro": {
+        "section": "contact",
+        "where": "Dialogue banner when Seif reaches the corkboard (Contact).",
+        "text": {
+          "en": "The corkboard. Everywhere you can find me online is pinned up here...",
+          "de": "Die Pinnwand. Überall, wo du mich online findest, hängt hier...",
+          "fr": "Le tableau en liège. Tous les endroits où me trouver en ligne sont épinglés ici..."
+        }
+      },
+      "projects.hoverFallback": {
+        "section": "projects",
+        "where": "Dialogue banner while a project card with no line of its own is hovered ({name} = project name).",
+        "text": {
+          "en": "{name}: ask me about this one.",
+          "de": "{name}: Frag mich ruhig danach.",
+          "fr": "{name} : pose-moi des questions sur celui-ci."
+        }
+      }
+    },
+    "titles": {
+      "site.name": {
+        "section": "global",
+        "where": "Room title (top left, top centre on phones) and start screen title. The {braced} part is amber.",
+        "text": {
+          "en": "Seif's {Room}",
+          "de": "Seifs {Raum}",
+          "fr": "La {chambre} de Seif"
+        }
+      },
+      "name.projects": {
+        "section": "global",
+        "where": "Room label over the tech lab, the Projects shortcut button and the Projects panel title.",
+        "text": {
+          "en": "Projects",
+          "de": "Projekte",
+          "fr": "Projets"
+        }
+      },
+      "name.cv": {
+        "section": "global",
+        "where": "Room label over the bureau, the CV shortcut button and the CV panel title.",
+        "text": {
+          "en": "CV",
+          "de": "Lebenslauf",
+          "fr": "CV"
+        }
+      },
+      "name.contact": {
+        "section": "global",
+        "where": "Room label over the corkboard, the Contact shortcut button and the Contact panel title.",
+        "text": {
+          "en": "Contact",
+          "de": "Kontakt",
+          "fr": "Contact"
+        }
+      },
+      "banner.name": {
+        "section": "global",
+        "where": "Name plate on the dialogue banner.",
+        "text": {
+          "en": "Seif",
+          "de": "Seif",
+          "fr": "Seif"
+        }
+      },
+      "cv.experience": {
+        "section": "cv",
+        "where": "Section heading on the CV paper.",
+        "text": {
+          "en": "Experience",
+          "de": "Berufserfahrung",
+          "fr": "Expérience"
+        }
+      },
+      "cv.education": {
+        "section": "cv",
+        "where": "Section heading on the CV paper.",
+        "text": {
+          "en": "Education",
+          "de": "Ausbildung",
+          "fr": "Formation"
+        }
+      },
+      "cv.skills": {
+        "section": "cv",
+        "where": "Section heading on the CV paper.",
+        "text": {
+          "en": "Skills",
+          "de": "Kenntnisse",
+          "fr": "Compétences"
+        }
+      },
+      "cv.languages": {
+        "section": "cv",
+        "where": "Section heading on the CV paper (shown when languages are filled in).",
+        "text": {
+          "en": "Languages",
+          "de": "Sprachen",
+          "fr": "Langues"
+        }
+      },
+      "projects.detail.highlight": {
+        "section": "projects",
+        "where": "Heading of the highlight box in a project's detail view.",
+        "text": {
+          "en": "Highlight",
+          "de": "Highlight",
+          "fr": "Point fort"
+        }
+      },
+      "projects.detail.stack": {
+        "section": "projects",
+        "where": "Heading above the tech chips in a project's detail view.",
+        "text": {
+          "en": "Built with",
+          "de": "Gebaut mit",
+          "fr": "Réalisé avec"
+        }
+      }
+    },
+    "buttons": {
+      "panel.back": {
+        "section": "global",
+        "where": "Back button at the top right of every panel.",
+        "text": {
+          "en": "Back",
+          "de": "Zurück",
+          "fr": "Retour"
+        }
+      },
+      "projects.ctaFallback": {
+        "section": "projects",
+        "where": "Link text at the bottom right of a project card that has no button text.",
+        "text": {
+          "en": "Open",
+          "de": "Öffnen",
+          "fr": "Ouvrir"
+        }
+      },
+      "cv.download": {
+        "section": "cv",
+        "where": "Button at the bottom of the CV paper (shown once a PDF is set).",
+        "text": {
+          "en": "Download CV",
+          "de": "Lebenslauf herunterladen",
+          "fr": "Télécharger le CV"
+        }
+      },
+      "projects.detail.close": {
+        "section": "projects",
+        "where": "Close button at the top right of a project's detail view.",
+        "text": {
+          "en": "Close",
+          "de": "Schließen",
+          "fr": "Fermer"
+        }
+      },
+      "contact.mail.gmail": {
+        "section": "contact",
+        "where": "Menu under the email pin: writes the email in Gmail, in the browser.",
+        "text": {
+          "en": "Write in Gmail",
+          "de": "In Gmail schreiben",
+          "fr": "Écrire dans Gmail"
+        }
+      },
+      "contact.mail.outlook": {
+        "section": "contact",
+        "where": "Menu under the email pin: writes the email in Outlook, in the browser.",
+        "text": {
+          "en": "Write in Outlook",
+          "de": "In Outlook schreiben",
+          "fr": "Écrire dans Outlook"
+        }
+      },
+      "contact.mail.app": {
+        "section": "contact",
+        "where": "Menu under the email pin: opens the visitor's own mail app.",
+        "text": {
+          "en": "Open my mail app",
+          "de": "Meine Mail-App öffnen",
+          "fr": "Ouvrir mon appli mail"
+        }
+      },
+      "contact.mail.copy": {
+        "section": "contact",
+        "where": "Menu under the email pin: copies the email address.",
+        "text": {
+          "en": "Copy address",
+          "de": "Adresse kopieren",
+          "fr": "Copier l'adresse"
+        }
+      },
+      "contact.mail.copied": {
+        "section": "contact",
+        "where": "The copy line of the email pin's menu, right after the address was copied.",
+        "text": {
+          "en": "Copied!",
+          "de": "Kopiert!",
+          "fr": "Copié !"
+        }
+      },
+      "projects.enlarge": {
+        "section": "projects",
+        "where": "Chip in the top right corner of the Projects screen; it makes the screen bigger.",
+        "text": {
+          "en": "Enlarge",
+          "de": "Vergrößern",
+          "fr": "Agrandir"
+        }
+      },
+      "projects.shrink": {
+        "section": "projects",
+        "where": "Same chip while the Projects screen is enlarged; it puts the screen back.",
+        "text": {
+          "en": "Shrink",
+          "de": "Verkleinern",
+          "fr": "Réduire"
+        }
+      }
+    },
+    "hints": {
+      "start.click": {
+        "section": "global",
+        "where": "Hint under the title on the start screen, on computers.",
+        "text": {
+          "en": "Click anywhere to move",
+          "de": "Klicke irgendwo, um dich zu bewegen",
+          "fr": "Clique n'importe où pour te déplacer"
+        }
+      },
+      "start.tap": {
+        "section": "global",
+        "where": "Hint under the title on the start screen, on phones and tablets.",
+        "text": {
+          "en": "Tap anywhere to move",
+          "de": "Tippe irgendwo, um dich zu bewegen",
+          "fr": "Touche n'importe où pour te déplacer"
+        }
+      },
+      "placeholder.tag": {
+        "section": "global",
+        "where": "Purple tag in the panels while \"Show Placeholder content tag\" is ticked.",
+        "text": {
+          "en": "Placeholder content",
+          "de": "Platzhalter",
+          "fr": "Contenu provisoire"
+        }
+      },
+      "projects.prompt": {
+        "section": "projects",
+        "where": "Green terminal prompt at the top of the Projects screen.",
+        "text": {
+          "en": "SEIF:\\ROOM\\PROJECTS>",
+          "de": "SEIF:\\RAUM\\PROJEKTE>",
+          "fr": "SEIF:\\CHAMBRE\\PROJETS>"
+        }
+      },
+      "projects.pick": {
+        "section": "projects",
+        "where": "Line after the terminal prompt on the Projects screen.",
+        "text": {
+          "en": "Pick a project...",
+          "de": "Wähle ein Projekt...",
+          "fr": "Choisis un projet..."
+        }
+      },
+      "contact.pick": {
+        "section": "contact",
+        "where": "Line above the corkboard in the Contact panel.",
+        "text": {
+          "en": "Pick where to find me.",
+          "de": "Wähle, wo du mich findest.",
+          "fr": "Choisis où me trouver."
+        }
+      }
+    },
+    "screenReader": {
+      "sr.start": {
+        "section": "global",
+        "where": "Read aloud for the start screen.",
+        "text": {
+          "en": "Seif's Room. Click anywhere to start.",
+          "de": "Seifs Raum. Klicke irgendwo, um zu starten.",
+          "fr": "La chambre de Seif. Clique n'importe où pour commencer."
+        }
+      },
+      "sr.loading": {
+        "section": "global",
+        "where": "Read aloud for the loading bar on the start screen.",
+        "text": {
+          "en": "Loading the room",
+          "de": "Der Raum wird geladen",
+          "fr": "Chargement de la chambre"
+        }
+      },
+      "sr.room": {
+        "section": "global",
+        "where": "Read aloud for the room picture.",
+        "text": {
+          "en": "A pixel room. Tap a spot to walk there.",
+          "de": "Ein Pixel-Raum. Tippe auf eine Stelle, um dorthin zu gehen.",
+          "fr": "Une chambre en pixels. Touche un endroit pour t'y rendre."
+        }
+      },
+      "sr.shortcuts": {
+        "section": "global",
+        "where": "Read aloud for the row of shortcut buttons.",
+        "text": {
+          "en": "Shortcuts",
+          "de": "Abkürzungen",
+          "fr": "Raccourcis"
+        }
+      },
+      "sr.back": {
+        "section": "global",
+        "where": "Read aloud for the Back button.",
+        "text": {
+          "en": "Back to the room",
+          "de": "Zurück in den Raum",
+          "fr": "Retour à la chambre"
+        }
+      },
+      "sr.portrait": {
+        "section": "global",
+        "where": "Read aloud for Seif's portrait on the dialogue banner.",
+        "text": {
+          "en": "The capybara, in a teal hoodie and glasses, talking",
+          "de": "Das Wasserschwein in türkisem Hoodie und Brille, beim Sprechen",
+          "fr": "Le capybara, en sweat à capuche turquoise et lunettes, qui parle"
+        }
+      },
+      "sr.language": {
+        "section": "global",
+        "where": "Read aloud for the flag button. {name} becomes the language name.",
+        "text": {
+          "en": "Language: {name}",
+          "de": "Sprache: {name}",
+          "fr": "Langue : {name}"
+        }
+      },
+      "sr.cv": {
+        "section": "cv",
+        "where": "Read aloud for the CV paper.",
+        "text": {
+          "en": "CV. Press Enter to zoom.",
+          "de": "Lebenslauf. Drücke Enter zum Vergrößern.",
+          "fr": "CV. Appuie sur Entrée pour zoomer."
+        }
+      },
+      "sr.photo": {
+        "section": "cv",
+        "where": "Read aloud for the CV photo. {name} becomes your name.",
+        "text": {
+          "en": "Photo of {name}",
+          "de": "Foto von {name}",
+          "fr": "Photo de {name}"
+        }
+      },
+      "sr.noPhoto": {
+        "section": "cv",
+        "where": "Read aloud for the empty CV photo.",
+        "text": {
+          "en": "Photo placeholder",
+          "de": "Platzhalter für ein Foto",
+          "fr": "Emplacement de la photo"
+        }
+      },
+      "sr.projectDetail": {
+        "section": "projects",
+        "where": "Read aloud when a project's detail view opens ({name} = project name).",
+        "text": {
+          "en": "Project details: {name}",
+          "de": "Projektdetails: {name}",
+          "fr": "Détails du projet : {name}"
+        }
+      },
+      "projects.media.prev": {
+        "section": "projects",
+        "where": "Read aloud for the left arrow on a project's pictures in the detail view.",
+        "text": {
+          "en": "Previous picture",
+          "de": "Vorheriges Bild",
+          "fr": "Image précédente"
+        }
+      },
+      "projects.media.next": {
+        "section": "projects",
+        "where": "Read aloud for the right arrow on a project's pictures in the detail view.",
+        "text": {
+          "en": "Next picture",
+          "de": "Nächstes Bild",
+          "fr": "Image suivante"
+        }
+      }
+    }
   }
 }

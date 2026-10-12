@@ -448,6 +448,39 @@ nav small {
   cursor: var(--hand);
 }
 
+/* hovered close button: fills amber, lifts onto a hard shadow and its arrow nudges back toward the room */
+.close {
+  transition:
+    background 0.15s steps(3),
+    transform 0.15s steps(3),
+    box-shadow 0.15s steps(3);
+}
+
+/* the lifted, amber state */
+.close:hover {
+  background: var(--amber);
+  transform: translate(-2px, -2px);
+  box-shadow: 3px 3px 0 #120e1a;
+}
+
+/* the arrow's loop while the button is hovered */
+.close:hover .pxi {
+  animation: backnudge 0.6s steps(2) infinite;
+}
+
+/* back nudge: two pixel-steps left and back */
+@keyframes backnudge {
+  50% {
+    transform: translateX(-3px);
+  }
+}
+
+/* pressed: back down onto the page */
+.close:active {
+  transform: translate(1px, 1px);
+  box-shadow: none;
+}
+
 /* amber ring around the close button on keyboard focus */
 .close:focus-visible {
   outline: 3px solid var(--amber);
@@ -773,10 +806,27 @@ body.floating .banner-next {
   padding: 6px 6px 12px;
 }
 
-/* fixed-width cards that snap at their start */
+/* cards sized from the free height and width (bigger again while the screen is enlarged), snapping at their start */
 .pcards > .pcard {
-  flex: 0 0 240px;
+  flex: 0 0 var(--cw);
   scroll-snap-align: start;
+  transition: flex-basis 0.25s steps(5);
+}
+
+/* card width: as big as the height above the banner allows (a card is about 0.56 x its width + 175px tall), and
+   three cards side by side */
+.pcards {
+  --cw: clamp(240px, min((min(1500px, 100vw) - 170px) / 3, 178vh - 1262px), 440px);
+}
+
+/* when all the cards fit on the screen they sit in the middle; when they don't, the row still starts at the left
+   edge and scrolls (auto margins, unlike justify-content: center, never push cards out of reach) */
+.pcards > .pcard:first-child {
+  margin-left: auto;
+}
+
+.pcards > .pcard:last-child {
+  margin-right: auto;
 }
 
 /* =================================================================================================
@@ -937,11 +987,11 @@ body.floating .banner-next {
   transform: translate(1px, 1px);
 }
 
-/* card thumbnail area, 2:1, under a gold line */
+/* card thumbnail area, 16:9 like the screen captures, under a gold line */
 .pthumb {
   position: relative;
   display: block;
-  aspect-ratio: 2 / 1;
+  aspect-ratio: 16 / 9;
   border-bottom: 3px solid #e8c98a;
   background: #0c0912;
   overflow: hidden;
@@ -990,7 +1040,7 @@ body.floating .banner-next {
   line-height: 1.35;
   color: var(--muted);
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -1029,9 +1079,48 @@ body.floating .banner-next {
   color: var(--amber);
 }
 
-/* call-to-action in cyan */
+/* call-to-action: a cyan pixel chip with a hard shadow */
 .pcta {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  gap: 4px;
+  margin-left: 8px;
+  padding: 3px 8px;
+  white-space: nowrap;
   color: #7ff3ff;
+  border: 2px solid #7ff3ff;
+  box-shadow: 2px 2px 0 #1d6f78;
+  transition:
+    background 0.15s steps(3),
+    color 0.15s steps(3),
+    transform 0.15s steps(3),
+    box-shadow 0.15s steps(3);
+}
+
+/* its arrow, ready to slide */
+.pcta .pxi {
+  transition: transform 0.15s steps(3);
+}
+
+/* hovered: the chip fills, lifts onto a longer shadow and its arrow nudges right in a loop */
+.pcta:hover {
+  background: #7ff3ff;
+  color: #14101f;
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 #1d6f78;
+}
+
+/* the arrow's loop while the chip is hovered */
+.pcta:hover .pxi {
+  animation: ctanudge 0.6s steps(2) infinite;
+}
+
+/* arrow nudge: two pixel-steps right and back */
+@keyframes ctanudge {
+  50% {
+    transform: translateX(3px);
+  }
 }
 
 /* phones: bigger cards that snap one at a time */
@@ -1044,7 +1133,7 @@ body.floating .banner-next {
 
   /* cards take most of the width, snapping to centre */
   .pcards > .pcard {
-    flex: 0 0 72%;
+    flex: 0 0 min(72%, var(--cw));
     scroll-snap-align: center;
   }
 
@@ -1065,6 +1154,13 @@ body.floating .banner-next {
   /* no lift on hovered cards */
   .pcard:hover {
     transform: none;
+  }
+
+  /* no lift or arrow loop on the hovered call-to-action */
+  .pcta:hover,
+  .pcta:hover .pxi {
+    transform: none;
+    animation: none;
   }
 }
 
@@ -1173,9 +1269,64 @@ body.floating .banner-next {
   text-shadow: 2px 2px 0 #120e1a;
 }
 
+/* =================================================================================================
+   email pin menu: write in Gmail or Outlook on the web, open a mail app, or copy the address
+   ================================================================================================= */
+
+/* the menu: a dark pixel box under the pin, above the panel */
+.mailmenu {
+  position: fixed;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  min-width: 210px;
+  padding: 6px;
+  background: #1c1530;
+  border: 3px solid #e8c98a;
+  box-shadow:
+    0 0 0 3px #120e1a,
+    5px 6px 0 3px rgba(0, 0, 0, 0.45);
+  animation: pop 0.2s steps(3) backwards;
+}
+
+/* the address on top, selectable */
+.mailto {
+  padding: 4px 8px 8px;
+  margin-bottom: 4px;
+  border-bottom: 2px dotted #3b2d57;
+  color: var(--amber);
+  font: 600 0.85rem var(--display);
+  user-select: all;
+  word-break: break-all;
+}
+
+/* one line of the menu: icon and label */
+.mailitem {
+  all: unset;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 8px;
+  color: var(--ink);
+  font: 600 0.9rem var(--display);
+  cursor: var(--hand);
+}
+
+/* hovered or focused line fills cyan, like the card buttons */
+.mailitem:hover,
+.mailitem:focus-visible {
+  background: #7ff3ff;
+  color: #14101f;
+}
+
 /* wide dialog header: extra room between title and close button */
 .dialog.wide .dialog-head {
   gap: 56px;
+}
+
+/* the projects screen may run wider than the other panels */
+.dialog.wide[data-panel="projects"] {
+  width: min(1500px, 100%);
 }
 
 /* socials dialog shrinks to fit its icons */
@@ -1256,10 +1407,10 @@ body.floating .banner-next {
   color: #5cf2c6;
 }
 
-/* monitor neck under the screen */
+/* monitor neck under the screen, tall enough to lift the screen off the desk */
 .stand {
   width: 64px;
-  height: 18px;
+  height: 40px;
   margin: 0 auto;
   background: #2c2640;
   box-shadow:
@@ -1276,12 +1427,71 @@ body.floating .banner-next {
   position: absolute;
   left: -48px;
   right: -48px;
-  top: 18px;
+  top: 40px;
   height: 12px;
   background: #3a3350;
   box-shadow:
     inset 0 4px 0 #5a5175,
     0 0 0 4px #120e1a;
+}
+
+/* the two faint screens beside the main one: as wide as the free space allows (none on a phone), dimmer and a
+   little lower, each on its own short neck */
+.sidescreen {
+  --sw: max(0px, min(150px, (100vw - 100%) / 2 - 34px));
+  position: absolute;
+  top: 12%;
+  bottom: 6%;
+  width: var(--sw);
+  padding: 8px;
+  background: #2c2640;
+  box-shadow:
+    inset 3px 3px 0 #453d5e,
+    inset -3px -3px 0 #1d1829,
+    0 0 0 4px #120e1a;
+  filter: brightness(0.5);
+  pointer-events: none;
+}
+
+/* left one, a gap away from the main screen */
+.sidescreen.left {
+  left: calc(-1 * var(--sw) - 18px);
+}
+
+/* right one, the same gap on the other side */
+.sidescreen.right {
+  right: calc(-1 * var(--sw) - 18px);
+}
+
+/* its dark glass with a faint glow and scanlines */
+.sidescreen::before {
+  content: "";
+  display: block;
+  height: 100%;
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.25) 0 2px, transparent 2px 4px),
+    radial-gradient(ellipse at 50% 40%, #12384a 0, #08141f 100%);
+  box-shadow: inset 0 0 0 2px #120e1a;
+}
+
+/* its neck, from the bottom edge down */
+.sidescreen::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 28px;
+  height: 30px;
+  margin: 4px 0 0 -14px;
+  background: #2c2640;
+  box-shadow: 0 0 0 4px #120e1a;
+}
+
+/* no room for side screens when the stand would sit under nothing (very narrow windows) */
+@media (max-width: 700px) {
+  .sidescreen {
+    display: none;
+  }
 }
 
 /* no gap above whatever follows the stand */
@@ -1988,10 +2198,10 @@ body.cvzoom .cvscene .desk {
   translate: -50% -50%;
   transform-origin: 0 0;
   box-sizing: border-box;
-  width: min(900px, 92vw);
-  max-height: 86vh;
+  width: min(1280px, 94vw);
+  height: min(760px, 86vh);
   display: grid;
-  grid-template-columns: 1.15fr 1fr;
+  grid-template-columns: minmax(0, 2.3fr) minmax(300px, 1fr);
   background: #1c1530;
   border: 3px solid #e8c98a;
   box-shadow:
@@ -2031,20 +2241,23 @@ body.cvzoom .cvscene .desk {
   border-color: var(--amber);
 }
 
-/* left column of the modal holding the media */
+/* left column of the modal holding the media: the preview takes most of the modal, centred in its column */
 .pmedia {
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 8px;
-  padding: 12px;
+  padding: 16px;
   border-right: 3px solid #e8c98a;
   background: #0c0912;
   min-width: 0;
 }
 
-/* 16:9 media frame on a black background */
+/* 16:9 media frame on a black background, as wide as the column allows without growing taller than it */
 .phero {
+  width: min(100%, (min(760px, 86vh) - 40px) * 16 / 9);
+  align-self: center;
   aspect-ratio: 16 / 9;
   background: #000;
   border: 2px solid #3b2d57;
@@ -2179,6 +2392,7 @@ body.cvzoom .cvscene .desk {
   .pmodal {
     grid-template-columns: 1fr;
     width: 94vw;
+    height: auto;
     max-height: 88dvh;
     overflow-y: auto;
   }
@@ -2353,6 +2567,197 @@ body.cvzoom .cvscene .desk {
 /* reduced motion: slides switch without fading */
 @media (prefers-reduced-motion: reduce) {
   .pslide .pin {
+    animation: none;
+  }
+}
+
+/* short windows: the monitor loses its stand and some padding so the cards keep a readable size above the banner */
+@media (max-height: 860px) {
+  /* no stand or side screens */
+  .stand,
+  .sidescreen {
+    display: none;
+  }
+
+  /* cards sized from the height the stand gave back */
+  .pcards {
+    --cw: clamp(220px, min(26vw, 178vh - 1109px), 360px);
+  }
+
+  /* tighter screen */
+  .screen {
+    padding: 16px 12px 12px;
+  }
+
+  /* tighter prompt line */
+  .screen .sample-note {
+    margin-bottom: 10px !important;
+  }
+
+  /* thinner bezel */
+  .monitor {
+    padding: 8px;
+  }
+
+  /* the panel starts closer to the top of the window */
+  .overlay.floating {
+    padding-top: 6px;
+  }
+
+  /* wider, shorter thumbnails */
+  .pthumb {
+    aspect-ratio: 2 / 1;
+  }
+}
+
+/* =================================================================================================
+   ENLARGED PROJECTS SCREEN
+   ================================================================================================= */
+
+/* the bare screen is clickable: it enlarges, or with pfocus puts itself back */
+.screen {
+  cursor: var(--hand);
+  transition: box-shadow 0.2s steps(3);
+}
+
+/* hovered screen (not a card): a brighter glow and a lit-up rim say it can be clicked */
+.screen:hover:not(:has(.pcard:hover, .pscroll:hover)) {
+  box-shadow:
+    inset 0 0 0 3px #5cf2c6,
+    inset 0 0 48px rgba(92, 242, 198, 0.34);
+}
+
+/* cards and the scrollbar keep their own cursor */
+.screen .pcard,
+.screen .pscroll {
+  cursor: var(--hand);
+}
+
+/* enlarge / shrink chip in the screen's top right corner, in terminal green */
+.pzoom {
+  all: unset;
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  font: 600 0.75rem var(--display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9ff5dc;
+  border: 2px solid #2f8f78;
+  opacity: 0.55;
+  cursor: var(--hand);
+  transition:
+    opacity 0.15s steps(3),
+    background 0.15s steps(3),
+    color 0.15s steps(3);
+}
+
+/* the chip wakes up while the screen is hovered */
+.screen:hover .pzoom {
+  opacity: 1;
+  border-color: #5cf2c6;
+}
+
+/* hovered or focused chip: filled green */
+.pzoom:hover,
+.pzoom:focus-visible {
+  opacity: 1;
+  background: #5cf2c6;
+  color: #0b2030;
+}
+
+/* amber ring on keyboard focus */
+.pzoom:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 2px;
+}
+
+/* touch screens have no hover: the chip is always awake */
+@media (hover: none) {
+  .pzoom {
+    opacity: 1;
+  }
+}
+
+/* enlarged: the overlay sits above the banner, darker, with no room kept for the banner */
+body.pfocus .overlay.floating {
+  z-index: 7;
+  background: rgba(8, 6, 14, 0.9);
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  transition: background 0.25s;
+}
+
+/* enlarged: the banner and the capybara step down out of the way */
+body.pfocus .banner {
+  visibility: hidden;
+}
+
+/* enlarged: the screen takes nearly the whole window */
+body.pfocus .dialog.wide[data-panel="projects"] {
+  width: min(1600px, 100%);
+  align-self: center;
+}
+
+/* enlarged: the stand and the side screens go, so the screen can grow */
+body.pfocus .stand,
+body.pfocus .sidescreen {
+  display: none;
+}
+
+/* enlarged: full 16:9 thumbnails again, even on short windows */
+body.pfocus .pthumb {
+  aspect-ratio: 16 / 9;
+}
+
+/* enlarged: bigger cards, sized from the whole window height */
+body.pfocus .pcards {
+  --cw: clamp(260px, min((min(1600px, 100vw) - 170px) / 3, 178vh - 716px), 520px);
+}
+
+/* enlarged: room for the bigger text */
+body.pfocus .screen {
+  padding: 34px 18px 26px;
+}
+
+/* enlarged: a little bigger title and text on the cards */
+body.pfocus .ptitle {
+  font-size: 1.3rem;
+}
+
+/* enlarged: card blurb */
+body.pfocus .pdesc {
+  font-size: 0.95rem;
+}
+
+/* phones: the chip gets its own line above the prompt, and an enlarged screen shows one wide card at a time */
+@media (max-width: 640px) {
+  /* room for the chip above the prompt */
+  .screen,
+  body.pfocus .screen {
+    padding-top: 40px;
+  }
+
+  /* enlarged: one wide card */
+  body.pfocus .pcards > .pcard {
+    flex-basis: 86%;
+  }
+
+  /* enlarged: the blurb keeps its normal size so it isn't cut */
+  body.pfocus .pdesc {
+    font-size: 0.84rem;
+  }
+}
+
+/* reduced motion: cards change size without stepping */
+@media (prefers-reduced-motion: reduce) {
+  .pcards > .pcard,
+  .close:hover .pxi {
+    transition: none;
     animation: none;
   }
 }
