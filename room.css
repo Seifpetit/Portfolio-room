@@ -816,7 +816,7 @@ body.floating .banner-next {
 /* card width: as big as the height above the banner allows (a card is about 0.56 x its width + 175px tall), and
    three cards side by side */
 .pcards {
-  --cw: clamp(240px, min((min(1500px, 100vw) - 170px) / 3, 178vh - 1262px), 440px);
+  --cw: clamp(240px, min((min(1200px, 80vw) - 170px) / 3, 178vh - 1262px), 440px);
 }
 
 /* when all the cards fit on the screen they sit in the middle; when they don't, the row still starts at the left
@@ -1324,9 +1324,18 @@ body.floating .banner-next {
   gap: 56px;
 }
 
-/* the projects screen may run wider than the other panels */
+/* the projects screen may run wider than the other panels, but keeps a fifth of the window free so the room shows
+   around it (phones use the whole width) */
 .dialog.wide[data-panel="projects"] {
-  width: min(1500px, 100%);
+  width: min(1200px, 80%);
+}
+
+/* phones: the screen takes the whole width again */
+@media (max-width: 700px) {
+  /* full width */
+  .dialog.wide[data-panel="projects"] {
+    width: 100%;
+  }
 }
 
 /* socials dialog shrinks to fit its icons */
@@ -2573,15 +2582,29 @@ body.cvzoom .cvscene .desk {
 
 /* short windows: the monitor loses its stand and some padding so the cards keep a readable size above the banner */
 @media (max-height: 860px) {
-  /* no stand or side screens */
-  .stand,
+  /* no side screens */
   .sidescreen {
     display: none;
   }
 
+  /* a shorter neck, so the screen still stands on its foot */
+  .stand {
+    height: 18px;
+  }
+
+  /* the foot right under the shorter neck */
+  .stand::after {
+    top: 18px;
+  }
+
+  /* less space under the foot */
+  .monitor + .stand {
+    margin-bottom: 18px;
+  }
+
   /* cards sized from the height the stand gave back */
   .pcards {
-    --cw: clamp(220px, min(26vw, 178vh - 1109px), 360px);
+    --cw: clamp(220px, min(21vw, 178vh - 1109px), 330px);
   }
 
   /* tighter screen */
