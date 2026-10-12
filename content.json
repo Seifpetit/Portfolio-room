@@ -274,9 +274,9 @@
         "end": "",
         "bullets": [
           {
-            "en": "Static-analysis pipeline that maps JS and Python repos into dependency graphs.",
-            "de": "Statische Analyse, die JS- und Python-Repos als Abhängigkeitsgraphen darstellt.",
-            "fr": "Analyse statique qui transforme des dépôts JS et Python en graphes de dépendances."
+            "en": "Static analysis that maps Facebook's React repo into a dependency graph in 4 minutes.",
+            "de": "Statische Analyse, die Facebooks React-Repo in 4 Minuten als Abhängigkeitsgraph abbildet.",
+            "fr": "Analyse statique : le dépôt React de Facebook cartographié en graphe en 4 minutes."
           },
           {
             "en": "Risk and pressure signals in a React Flow UI, with no AI involved.",
@@ -301,9 +301,9 @@
             "fr": "Espace IA qui transforme les données produit en audiences, angles, offres et pubs."
           },
           {
-            "en": "Every AI step is stored and logged in PostgreSQL, so results stay traceable.",
-            "de": "Jeder KI-Schritt wird in PostgreSQL gespeichert und protokolliert, also nachvollziehbar.",
-            "fr": "Chaque étape IA est stockée et journalisée dans PostgreSQL : tout reste traçable."
+            "en": "Used by an e-commerce seller for his ad campaigns; every AI step is logged.",
+            "de": "Von einem E-Commerce-Händler für seine Kampagnen genutzt; jeder KI-Schritt protokolliert.",
+            "fr": "Utilisé par un e-commerçant pour ses campagnes ; chaque étape IA est journalisée."
           }
         ]
       },
