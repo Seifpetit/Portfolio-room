@@ -279,9 +279,9 @@
             "fr": "Analyse statique qui transforme des dépôts JS et Python en graphes de dépendances."
           },
           {
-            "en": "Risk signals and refactor simulations in a React Flow UI, with no AI involved.",
-            "de": "Risikosignale und Refactoring-Simulationen in einer React-Flow-UI, ganz ohne KI.",
-            "fr": "Signaux de risque et simulations de refactoring dans une UI React Flow, sans IA."
+            "en": "Risk and pressure signals in a React Flow UI, with no AI involved.",
+            "de": "Risiko- und Drucksignale in einer React-Flow-UI, ganz ohne KI.",
+            "fr": "Signaux de risque et de pression dans une UI React Flow, sans IA."
           }
         ]
       },
