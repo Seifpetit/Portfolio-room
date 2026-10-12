@@ -258,9 +258,9 @@
       "fr": "Développeur full-stack · outils & web interactif"
     },
     "summary": {
-      "en": "I build tools that make complex systems easy to see and use: a map for unfamiliar codebases, an AI workspace for ad experiments, and this room with its own editor. I work across the stack, from canvas to Node and Git.",
-      "de": "Ich baue Tools, die komplexe Systeme sichtbar und einfach machen: eine Karte für fremden Code, einen KI-Workspace für Werbetests und diesen Raum mit eigenem Editor. Ich arbeite im ganzen Stack, von Canvas bis Node und Git.",
-      "fr": "Je crée des outils qui rendent les systèmes complexes lisibles : une carte pour du code inconnu, un espace IA pour tester des pubs, et cette chambre avec son éditeur. Je travaille sur tout le stack, du canvas à Node et Git."
+      "en": "Student at TU Dortmund, open to working student roles (up to 80 h a month). I build tools that make complex systems easy to see: a map for unfamiliar code, an AI ad workspace, and a portfolio room with its own editor.",
+      "de": "Informatikstudent an der TU Dortmund, offen für Werkstudentenstellen (bis 80 Std. im Monat). Ich baue Tools, die komplexe Systeme sichtbar machen: eine Karte für fremden Code, einen KI-Werbe-Workspace und ein Portfolio-Raum mit eigenem Editor.",
+      "fr": "Étudiant en informatique à la TU Dortmund, dispo en job étudiant (80 h/mois max). Je crée des outils qui rendent les systèmes complexes lisibles : une carte pour du code inconnu, un espace IA pour la pub, et une pièce-portfolio avec son propre éditeur."
     },
     "experience": [
       {
@@ -330,7 +330,18 @@
         ]
       }
     ],
-    "education": [],
+    "education": [
+      {
+        "school": "TU Dortmund",
+        "degree": {
+          "en": "B.Sc. Computer Science, 8th semester",
+          "de": "B.Sc. Informatik, 8. Semester",
+          "fr": "B.Sc. Informatique, 8e semestre"
+        },
+        "start": "2022",
+        "end": "2028"
+      }
+    ],
     "skills": [
       {
         "group": {
@@ -397,7 +408,7 @@
           "de": "LinkedIn",
           "fr": "LinkedIn"
         },
-        "url": "https://www.linkedin.com/",
+        "url": "https://www.linkedin.com/in/seif-jlassi",
         "icon": "linkedin"
       },
       {
