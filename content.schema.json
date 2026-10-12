@@ -264,14 +264,30 @@
           }
         },
         "languages": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "description": "spoken languages as one line, e.g. Arabic (native), French; older files used a list",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/text"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
         },
         "pdf": {
+          "$ref": "#/$defs/text",
+          "description": "path/URL of the CV PDF, one per language; empty hides the Download button"
+        },
+        "location": {
+          "$ref": "#/$defs/text",
+          "description": "city on the A4 CV contact line; at most 40 characters per language"
+        },
+        "website": {
           "type": "string",
-          "description": "path/URL of the CV PDF; empty hides the Download button"
+          "description": "portfolio link on the A4 CV contact line"
         },
         "say": {
           "$ref": "#/$defs/text",

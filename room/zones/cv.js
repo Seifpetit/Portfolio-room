@@ -135,10 +135,12 @@ zone({
       }),
     );
 
-    if ((C.languages || []).length) sec(ui("cv.languages"), [el("p", "cvskill", C.languages.join(", "))]);
+    // Spoken languages: one translatable line (older files kept a list).
+    const langs = Array.isArray(C.languages) ? C.languages.join(", ") : tr(C.languages);
+    if (langs) sec(ui("cv.languages"), [el("p", "cvskill", langs)]);
     // CV footer and the PDF link, kept only when it is a safe URL.
     const foot = el("div", "cvfoot"),
-      pdf = safeUrl(C.pdf);
+      pdf = safeUrl(tr(C.pdf));
 
     // Adds the download button for the CV PDF without zooming the paper.
     if (pdf) {

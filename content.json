@@ -250,7 +250,7 @@
   },
   "cv": {
     "placeholder": false,
-    "photo": "content/1791836394781.png",
+    "photo": "content/cv/photo.jpg",
     "name": "Seif Jlassi",
     "role": {
       "en": "Full-stack developer · tools & interactive web",
@@ -380,23 +380,32 @@
         },
         "items": [
           "Git",
-          "GitHub Pages",
-          "Static analysis"
+          "GitHub",
+          "GitHub Pages"
         ]
       }
     ],
-    "languages": [
-      "Arabic (Tunisian)",
-      "French",
-      "English",
-      "German (B2-C1)"
-    ],
-    "pdf": "",
+    "languages": {
+      "en": "Arabic (Tunisian), French, English, German (B2-C1)",
+      "de": "Arabisch (Tunesisch), Französisch, Englisch, Deutsch (B2-C1)",
+      "fr": "Arabe (tunisien), français, anglais, allemand (B2-C1)"
+    },
+    "pdf": {
+      "en": "content/cv/Seif-Jlassi-CV-EN.pdf",
+      "de": "content/cv/Seif-Jlassi-Lebenslauf-DE.pdf",
+      "fr": "content/cv/Seif-Jlassi-CV-FR.pdf"
+    },
     "say": {
       "en": "My CV. The projects on the left screen say more than this paper, though.",
       "de": "Mein Lebenslauf. Die Projekte auf dem Bildschirm sagen aber mehr als dieses Blatt.",
       "fr": "Mon CV. Mais les projets sur l'écran en disent plus que cette feuille."
-    }
+    },
+    "location": {
+      "en": "Dortmund, Germany",
+      "de": "Dortmund, Deutschland",
+      "fr": "Dortmund, Allemagne"
+    },
+    "website": "https://seifpetit.github.io/Portfolio-room/"
   },
   "contact": {
     "placeholder": false,
@@ -522,9 +531,9 @@
         "section": "cv",
         "where": "Section heading on the CV paper.",
         "text": {
-          "en": "Experience",
-          "de": "Berufserfahrung",
-          "fr": "Expérience"
+          "en": "Projects",
+          "de": "Projekte",
+          "fr": "Projets"
         }
       },
       "cv.education": {
