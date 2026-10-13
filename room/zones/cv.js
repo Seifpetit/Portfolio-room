@@ -301,7 +301,7 @@ function fitCv() {
 function cvLens(doc) {
   if (!matchMedia("(hover: hover) and (pointer: fine)").matches) return;
   const Z = 1.6, // how much bigger the strip shows the text
-    LINES = 3; // lines of enlarged text the strip holds
+    LINES = 6; // lines of enlarged text the strip holds
 
   // The strip and the copy of the paper inside it.
   const lens = el("div", "cvlens"),
@@ -347,12 +347,12 @@ function cvLens(doc) {
     copy.style.transform = `translate(${left}px, ${h / 2 - y0 * k}px) scale(${k})`;
   };
 
-  // Follows the mouse over the paper, and hides when it leaves or the paper is pressed.
+  // Follows the mouse over the paper, and hides when it leaves the paper or rests on the Download button.
   doc.addEventListener("pointermove", (e) => {
     if (e.pointerType !== "mouse") return;
     last = e;
     place();
-    lens.classList.add("on");
+    lens.classList.toggle("on", !e.target.closest(".cvdl")); // the Download button stays in view, uncovered
   });
 
   doc.addEventListener("pointerleave", () => lens.classList.remove("on"));

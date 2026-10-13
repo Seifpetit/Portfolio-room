@@ -2129,13 +2129,49 @@ body.cvzoom .cvscene .desk {
     0 0 0 2px #120e1a,
     3px 3px 0 2px rgba(0, 0, 0, 0.35);
   cursor: var(--hand);
+  transition:
+    transform 0.12s steps(2),
+    box-shadow 0.12s steps(2);
 }
 
-/* download button darkens on hover or focus */
+/* download button on hover or focus: turns amber, lifts off the paper, and its arrow drops like a download */
 .cvdl:hover,
 .cvdl:focus-visible {
-  background: #8a5a3c;
+  background: var(--amber);
+  color: #2a1d14;
+  transform: translate(-2px, -2px);
+  box-shadow:
+    0 0 0 2px #120e1a,
+    5px 5px 0 2px rgba(0, 0, 0, 0.45);
   outline: none;
+}
+
+/* the download arrow bobs down while the button is hovered */
+.cvdl:hover .pxi,
+.cvdl:focus-visible .pxi {
+  animation: dlbob 0.6s steps(2) infinite;
+}
+
+/* pressed download button sinks back onto the paper */
+.cvdl:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0 0 0 2px #120e1a;
+}
+
+/* arrow bob: two pixel-steps down and back */
+@keyframes dlbob {
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+/* reduced motion: the button only changes colour */
+@media (prefers-reduced-motion: reduce) {
+  .cvdl,
+  .cvdl .pxi {
+    animation: none !important;
+    transform: none !important;
+  }
 }
 
 /* sample stamp sits flush in the CV footer */
