@@ -702,6 +702,15 @@
           "fr": "Touche n'importe où pour te déplacer"
         }
       },
+      "start.quick": {
+        "section": "global",
+        "where": "Start screen, before the quick links that open a panel without walking.",
+        "text": {
+          "en": "Short on time? Jump to",
+          "de": "Wenig Zeit? Direkt zu",
+          "fr": "Pressé ? Aller à"
+        }
+      },
       "placeholder.tag": {
         "section": "global",
         "where": "Purple tag in the panels while \"Show Placeholder content tag\" is ticked.",

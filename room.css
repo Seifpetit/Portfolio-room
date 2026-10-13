@@ -251,6 +251,49 @@ h1 span {
   }
 }
 
+/* quick links under the hint: open a panel without walking, shown once the room has loaded */
+.title-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* hidden while the room loads, like the hint */
+.title:not(.ready) .title-quick {
+  visibility: hidden;
+}
+
+/* "Short on time? Jump to" before the links */
+.title-quick small {
+  width: 100%;
+  font: 400 0.8rem var(--display);
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+/* one quick link: a small pixel tab like the header shortcuts */
+.title-quick button {
+  font: 600 0.75rem var(--display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: rgba(27, 22, 38, 0.85);
+  border: 2px solid var(--wall);
+  padding: 6px 14px;
+  border-radius: 2px;
+  cursor: var(--hand);
+}
+
+/* quick link hover and keyboard focus turn amber */
+.title-quick button:hover,
+.title-quick button:focus-visible {
+  border-color: var(--amber);
+  color: var(--amber);
+  outline: none;
+}
+
 /* press-to-start hint under the title, pulsing */
 .title-hint {
   position: relative;

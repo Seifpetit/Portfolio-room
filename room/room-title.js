@@ -6,6 +6,8 @@
   // Dismisses the title screen on the first click, tap or key once everything has loaded.
   function startRoom(e) {
     if (!title || title.classList.contains("out")) return;
+    // Tab and keys on the quick links move between them instead of starting the room.
+    if (e && e.type === "keydown" && (e.key === "Tab" || e.target.closest?.(".title-quick"))) return;
     // Ignores input while the assets are still loading.
     if (!title.classList.contains("ready")) {
       // Swallows the event so it does not also walk the capybara.
@@ -32,6 +34,8 @@
   if (title) {
     title.addEventListener("pointerdown", startRoom);
     addEventListener("keydown", startRoom, true);
+    // A press on a quick link is a click on that link, not a start-the-room press.
+    title.querySelector(".title-quick")?.addEventListener("pointerdown", (e) => e.stopPropagation());
   }
 
   // show the title in its pixel font only, never a fallback flash (give up waiting after 1.5 s)

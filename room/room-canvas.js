@@ -467,12 +467,14 @@
 
   // One shortcut button per zone in the header nav, before its hint (none for shortcut: false or panel: false).
   const nav = document.querySelector(".app nav");
-  // Adds the zone's button; applyStatic() writes its name.
+  const quick = document.querySelector(".title-quick");
+  // Adds the zone's button, and its twin in the start screen's quick links; applyStatic() writes their names.
   ZONES.filter((z) => z.shortcut !== false && z.panel !== false).forEach((z) => {
     const b = document.createElement("button");
     b.type = "button";
     b.dataset.open = z.id;
     nav.insertBefore(b, nav.querySelector("small"));
+    if (quick) quick.append(b.cloneNode());
   });
 
   // Sets an attribute on the first element matching a selector, if it is there.
@@ -493,7 +495,10 @@
 
     document.querySelectorAll(".title-hint .mouse").forEach((x) => (x.textContent = ui("start.click")));
     document.querySelectorAll(".title-hint .touch").forEach((x) => (x.textContent = ui("start.tap")));
-    document.querySelectorAll("nav [data-open]").forEach((b) => (b.textContent = ui(zoneById(b.dataset.open).name)));
+    document
+      .querySelectorAll("nav [data-open], .title-quick [data-open]")
+      .forEach((b) => (b.textContent = ui(zoneById(b.dataset.open).name)));
+    document.querySelectorAll(".title-quick small").forEach((x) => (x.textContent = ui("start.quick")));
     const back = document.getElementById("close");
     back.replaceChildren(pxi("arrow-left"), ui("panel.back"));
     back.setAttribute("aria-label", ui("sr.back"));

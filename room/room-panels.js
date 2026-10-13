@@ -84,9 +84,10 @@
     if (e.key === "Escape" && !overlay.hidden) closePanel();
   });
 
-  // The header shortcut buttons open their panel directly, skipping the walk.
+  // The header shortcut buttons, and the start screen's quick links, open their panel directly, skipping the walk.
   document.querySelectorAll("[data-open]").forEach((b) =>
     b.addEventListener("click", () => {
+      if (b.closest(".title-quick")) startRoom(); // a quick link also puts the start screen away
       endTalk(false);
       openPanel(b.dataset.open);
     }),
