@@ -1832,6 +1832,43 @@ body.cvzoom .cvscene .desk {
   opacity: 0;
 }
 
+/* =================================================================================================
+   .cvlens
+   ================================================================================================= */
+
+/* reading strip over the CV paper: a gold-framed band that follows the mouse and shows the lines enlarged */
+.cvlens {
+  position: fixed;
+  z-index: 30;
+  overflow: hidden;
+  pointer-events: none;
+  background: #f4ead8;
+  box-shadow:
+    0 0 0 3px var(--amber),
+    0 0 0 6px #120e1a,
+    0 14px 30px rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+/* strip shown while the mouse is over the paper */
+.cvlens.on {
+  opacity: 1;
+}
+
+/* the enlarged copy of the paper: flat, still and unframed, scaled from its top-left corner */
+.cvlens .cvdoc {
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: none;
+  aspect-ratio: auto;
+  transform-origin: 0 0;
+  animation: none;
+  transition: none;
+  box-shadow: none;
+}
+
 /* reduced motion: CV and desk stay still */
 @media (prefers-reduced-motion: reduce) {
   .cvdoc,

@@ -178,11 +178,13 @@ zone({
 
     fitCv();
     if (document.fonts) document.fonts.ready.then(fitCv);
+    if (doc) cvLens(doc);
   },
 
-  // Closing the panel puts a zoomed paper back.
+  // Closing the panel puts a zoomed paper back and removes the reading strip.
   closed() {
     cvZoom(false);
+    document.querySelector(".cvlens")?.remove();
   },
 
   // With the paper zoomed, a press outside it only zooms it back out (true keeps the panel open).
@@ -287,6 +289,74 @@ function fitCv() {
     fs -= 0.5;
     doc.style.fontSize = fs + "px";
   }
+}
+
+// =================================================================================================
+// cvLens()
+// =================================================================================================
+
+// The reading strip: a band that follows the mouse up and down the CV paper and shows the lines under it
+// enlarged (a live copy of the paper, so the text stays sharp). It reaches past the paper's edges so whole
+// lines fit. Mouse only: touch screens have no cursor to follow, and pinch-zoom already works there.
+function cvLens(doc) {
+  if (!matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+  const Z = 1.6, // how much bigger the strip shows the text
+    LINES = 3; // lines of enlarged text the strip holds
+
+  // The strip and the copy of the paper inside it.
+  const lens = el("div", "cvlens"),
+    copy = doc.cloneNode(true);
+
+  lens.setAttribute("aria-hidden", "true");
+  copy.removeAttribute("tabindex");
+  lens.append(copy);
+  document.body.append(lens);
+  let last = null;
+
+  // ===============================================================================================
+  // place()
+  // ===============================================================================================
+
+  // Puts the strip under the pointer and lines the enlarged copy up with the paper beneath it.
+  const place = () => {
+    if (!last || !doc.isConnected) return;
+    const r = doc.getBoundingClientRect(),
+      ow = doc.offsetWidth,
+      oh = doc.offsetHeight,
+      s = r.width / ow, // the paper's current scale (hover lift or zoom)
+      k = s * Z;
+
+    // Paper point under the pointer, in the paper's own pixels.
+    const x0 = Math.min(ow, Math.max(0, (last.clientX - r.left) / s)),
+      y0 = Math.min(oh, Math.max(0, (last.clientY - r.top) / s));
+
+    // Strip size: as wide as the enlarged lines (inside the window), a few enlarged lines tall.
+    const fs = parseFloat(getComputedStyle(doc).fontSize),
+      w = Math.min(ow * k, innerWidth - 16),
+      h = fs * 1.45 * LINES * k;
+
+    lens.style.width = w + "px";
+    lens.style.height = h + "px";
+    lens.style.left = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2)) + "px";
+    lens.style.top = last.clientY - h / 2 + "px";
+    // Copy at the paper's size and font, scaled up; centred when it fits, else panned with the pointer.
+    copy.style.width = ow + "px";
+    copy.style.height = oh + "px";
+    copy.style.fontSize = doc.style.fontSize;
+    const left = ow * k <= w ? (w - ow * k) / 2 : -(x0 / ow) * (ow * k - w);
+    copy.style.transform = `translate(${left}px, ${h / 2 - y0 * k}px) scale(${k})`;
+  };
+
+  // Follows the mouse over the paper, and hides when it leaves or the paper is pressed.
+  doc.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse") return;
+    last = e;
+    place();
+    lens.classList.add("on");
+  });
+
+  doc.addEventListener("pointerleave", () => lens.classList.remove("on"));
+  doc.addEventListener("transitionend", place); // the paper lifts or zooms under a still mouse
 }
 
 // focusing the CV brings the paper front and center, over the banner, as big as the screen allows
