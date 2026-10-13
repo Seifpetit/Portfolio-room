@@ -13,7 +13,7 @@ turns it on:
 ```
 
 The order of these lines is the order of the shortcut buttons under the room. Zone files load right after
-`room-scene.js` and before the rest of the room code, so they only *declare* things; anything that touches the
+`room-scene.js` and before the rest of the room code, so they only _declare_ things; anything that touches the
 page runs later, inside the zone's own functions.
 
 ## Adding a zone
@@ -49,27 +49,29 @@ the `<script>` line yourself.
 
 ## The fields
 
-| Field      | Needed | What it does                                                                                                                     |
-| ---------- | ------ | -------------------------------------------------------------------------------------------------------------------------------- |
-| `id`       | yes    | Short name. Used by the shortcut button, the dialogue, and `room.css` as `.dialog[data-panel="<id>"]`.                           |
-| `name`     | yes    | UI copy id of the zone's name: room label, shortcut button and panel title.                                                      |
-| `intro`    | yes    | UI copy id of what Seif says when he gets there.                                                                                 |
-| `icon`     | yes    | Pixelarticon in front of the room label: a name in the `PXI` map of `icons.js` (copy new ones from `pixelarticons/svg`).          |
-| `poly`     | yes    | Outline of the furniture for the hover glow and taps, as `d2([[x, y], ...])` in 2x room coordinates.                             |
-| `stand`    | yes    | `[x, y]` in room pixels (1x) where the capybara stops to use it.                                                                 |
-| `build()`  | yes\*  | Returns the panel content (a DOM node or fragment). Read text from `CONTENT` with `tr()` and `ui()`; build with `el()`.          |
-| `float`    | no     | `true`: the content floats over the dimmed room and the dialogue banner stays up (all three current zones do this).              |
-| `blocked`  | no     | Floor footprint he cannot walk through, `d2([...])`.                                                                             |
-| `occluder` | no     | Image of the furniture cut out of the room (like `assets/occ-bureau.png`), repainted over him when he walks behind `blocked`.    |
-| `copy`     | no     | Default text for the zone's own lines, shaped like `ui` in `content.json`: `{ titles: { id: {...} }, dialogue: { id: {...} } }`. |
-| `css`      | no     | Path of the zone's own stylesheet (`room/zones/<id>.css`), loaded with the zone.                                                 |
-| `shortcut` | no     | `false` leaves the zone out of the shortcut buttons.                                                                             |
-| `panel`    | no     | `false`: no panel (\*so no `build()`, no shortcut button). He says his line and keeps playing the zone's animation until he walks off. |
-| `anim`     | no     | The capybara's own animation at this zone instead of the shared reach-in (see below).                                            |
-| `opened()` | no     | Runs once the panel is on screen: wire up listeners, draw canvases.                                                              |
-| `closed()` | no     | Runs whenever any panel closes: put the zone's own state back (the CV unzooms, Projects closes its detail view).                 |
-| `press(e)` | no     | A press on the dimmed backdrop while this zone's panel is open; return `true` to keep the panel open.                            |
-| `init()`   | no     | Runs once when the room starts: room-wide listeners such as resize or keyboard.                                                  |
+| Field        | Needed | What it does                                                                                                                           |
+| ------------ | ------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`         | yes    | Short name. Used by the shortcut button, the dialogue, and `room.css` as `.dialog[data-panel="<id>"]`.                                 |
+| `name`       | yes    | UI copy id of the zone's name: room label, shortcut button and panel title.                                                            |
+| `intro`      | yes    | UI copy id of what Seif says when he gets there.                                                                                       |
+| `icon`       | yes    | Pixelarticon in front of the room label: a name in the `PXI` map of `icons.js` (copy new ones from `pixelarticons/svg`).               |
+| `poly`       | yes    | Outline of the furniture for the hover glow and taps, as `d2([[x, y], ...])` in 2x room coordinates.                                   |
+| `stand`      | yes    | `[x, y]` in room pixels (1x) where the capybara stops to use it.                                                                       |
+| `build()`    | yes\*  | Returns the panel content (a DOM node or fragment). Read text from `CONTENT` with `tr()` and `ui()`; build with `el()`.                |
+| `float`      | no     | `true`: the content floats over the dimmed room and the dialogue banner stays up (all three current zones do this).                    |
+| `blocked`    | no     | Floor footprint he cannot walk through, `d2([...])`.                                                                                   |
+| `occluder`   | no     | Image of the furniture cut out of the room (like `assets/occ-bureau.png`), repainted over him when he walks behind `blocked`.          |
+| `copy`       | no     | Default text for the zone's own lines, shaped like `ui` in `content.json`: `{ titles: { id: {...} }, dialogue: { id: {...} } }`.       |
+| `css`        | no     | Path of the zone's own stylesheet (`room/zones/<id>.css`), loaded with the zone.                                                       |
+| `shortcut`   | no     | `false` leaves the zone out of the shortcut buttons.                                                                                   |
+| `lineColor`  | no     | Outline and label colour in the room when not hovered, like `"#f4ead8"`. Left out: no outline until hovered.                           |
+| `hoverColor` | no     | Outline, glow and label colour when hovered. Left out: cyan `#7ff3ff`.                                                                 |
+| `panel`      | no     | `false`: no panel (\*so no `build()`, no shortcut button). He says his line and keeps playing the zone's animation until he walks off. |
+| `anim`       | no     | The capybara's own animation at this zone instead of the shared reach-in (see below).                                                  |
+| `opened()`   | no     | Runs once the panel is on screen: wire up listeners, draw canvases.                                                                    |
+| `closed()`   | no     | Runs whenever any panel closes: put the zone's own state back (the CV unzooms, Projects closes its detail view).                       |
+| `press(e)`   | no     | A press on the dimmed backdrop while this zone's panel is open; return `true` to keep the panel open.                                  |
+| `init()`     | no     | Runs once when the room starts: room-wide listeners such as resize or keyboard.                                                        |
 
 Helpers declared at the top of a zone file share one global scope with the rest of the room, so give them names
 that belong to the zone (`drawDesk`, `fitCv`) to keep two files from clashing.

@@ -106,17 +106,48 @@
     ctx.closePath();
   };
 
-  // Draws the glowing outline of the hovered or focused hotspot.
+  // Colour of a zone's outline, glow and label while hovered (its own hover colour, else cyan).
+  const hoverColor = (o) => o.hoverColor || "#7ff3ff";
+
+  // Draws the outline of every zone that has an outline colour, except the hovered one (drawHover draws that).
+  function drawOutlines() {
+    ctx.save();
+    ctx.lineWidth = 2 / K;
+    ctx.lineJoin = "round";
+    // One closed line per zone, in its own colour.
+    for (const o of ZONES) {
+      if (!o.lineColor || o.id === hover) continue;
+      path(o.poly);
+      ctx.strokeStyle = o.lineColor;
+      ctx.stroke();
+    }
+
+    ctx.restore();
+  }
+
+  // Draws the glowing outline of the hovered or focused hotspot, in its hover colour.
   function drawHover(t) {
     const o = zoneById(hover);
     if (!o || !imgs.room) return;
-    // brighten the painted object inside its outline
+    // brighten the painted object inside its outline, tinted with the hover colour
     ctx.save();
     path(o.poly);
     ctx.clip();
     ctx.globalCompositeOperation = "lighter";
     ctx.globalAlpha = 0.16 + 0.06 * Math.sin(t * 5);
     ctx.drawImage(imgs.room, 0, 0);
+    ctx.fillStyle = hoverColor(o);
+    ctx.globalAlpha = 0.08 + 0.03 * Math.sin(t * 5);
+    ctx.fillRect(0, 0, ROOM_W, ROOM_H);
+    ctx.restore();
+    // then its outline, pulsing with the glow
+    ctx.save();
+    path(o.poly);
+    ctx.strokeStyle = hoverColor(o);
+    ctx.globalAlpha = 0.75 + 0.25 * Math.sin(t * 5);
+    ctx.lineWidth = 3 / K;
+    ctx.lineJoin = "round";
+    ctx.stroke();
     ctx.restore();
   }
 
@@ -344,7 +375,7 @@
 
       ctx.fillStyle = "rgba(14,10,22,.85)";
       ctx.fillRect(x0, cy - 10, w, 20);
-      ctx.fillStyle = hover === o.id ? "#7ff3ff" : "#f4ead8";
+      ctx.fillStyle = hover === o.id ? hoverColor(o) : o.lineColor || "#f4ead8";
       labelIcon(o.icon, x0 + 6, Math.round(cy) - 6);
       ctx.fillText(text, x0 + 22 + (w - 30) / 2, cy + 1);
     }
@@ -393,6 +424,7 @@
     ctx.imageSmoothingEnabled = false;
     ctx.clearRect(0, 0, ROOM_W, ROOM_H);
     if (imgs.room) ctx.drawImage(imgs.room, 0, 0);
+    drawOutlines();
     drawHover(clock);
     // Draws the pulsing ring on the floor where the player clicked.
     if (marker) {
