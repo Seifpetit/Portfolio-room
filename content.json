@@ -23,7 +23,7 @@
           "de": "Code Atlas",
           "fr": "Code Atlas"
         },
-        "thumbnail": "content/projects/project-one/timeline.gif",
+        "thumbnail": "content/projects/project-one/timeline.mp4",
         "description": {
           "en": "Explore unfamiliar codebases through visual maps, dependencies and risk signals.",
           "de": "Unbekannte Codebasen über visuelle Karten, Abhängigkeiten und Risiken erkunden.",
@@ -72,23 +72,23 @@
           },
           "gallery": [
             {
-              "type": "image",
-              "src": "content/projects/project-one/navigation.gif",
+              "type": "video",
+              "src": "content/projects/project-one/navigation.mp4",
               "alt": ""
             },
             {
-              "type": "image",
-              "src": "content/projects/project-one/source.gif",
+              "type": "video",
+              "src": "content/projects/project-one/source.mp4",
               "alt": ""
             },
             {
-              "type": "image",
-              "src": "content/projects/project-one/timeline.gif",
+              "type": "video",
+              "src": "content/projects/project-one/timeline.mp4",
               "alt": ""
             },
             {
-              "type": "image",
-              "src": "content/projects/project-one/demo.gif",
+              "type": "video",
+              "src": "content/projects/project-one/demo.mp4",
               "alt": ""
             }
           ],
@@ -162,13 +162,13 @@
               "alt": ""
             },
             {
-              "type": "image",
-              "src": "content/projects/project-two/prism-pipeline.gif",
+              "type": "video",
+              "src": "content/projects/project-two/prism-pipeline.mp4",
               "alt": ""
             },
             {
-              "type": "image",
-              "src": "content/projects/project-two/prism-performance.gif",
+              "type": "video",
+              "src": "content/projects/project-two/prism-performance.mp4",
               "alt": ""
             }
           ],
@@ -233,13 +233,13 @@
           },
           "gallery": [
             {
-              "type": "image",
-              "src": "content/projects/project-three/editor-tour.gif",
+              "type": "video",
+              "src": "content/projects/project-three/editor-tour.mp4",
               "alt": ""
             },
             {
-              "type": "image",
-              "src": "content/projects/project-three/zones-demo.gif",
+              "type": "video",
+              "src": "content/projects/project-three/zones-demo.mp4",
               "alt": ""
             }
           ],
