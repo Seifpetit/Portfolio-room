@@ -120,13 +120,14 @@
     ctx.restore();
   }
 
-  // idle variation sheets, played in this order between stretches of the base idle loop
-  const IDLE_VARS = [
-    { key: "idle2", frames: 8 },
-    { key: "idle4", frames: 16 },
-    // drink ends by lowering the bottle again: frame 15, then row 1 col 0, row 0 col 3, then back to frame 0
-    { key: "drink", frames: 19, seq: [...Array(16).keys(), 4, 3, 0] },
-  ];
+  // Idle variation sheets (vary in ANIMS), played in this order between stretches of the base idle loop. drink ends
+  // by lowering the bottle again, through its play order.
+  const IDLE_VARS = Object.entries(ANIMS)
+    .filter(([, a]) => a.vary)
+    .map(([key, a]) => {
+      const seq = a.seq && a.seq.length ? a.seq : [...Array(a.frames).keys()];
+      return { key, frames: seq.length, seq, fps: a.fps || 6 };
+    });
 
   // Idle variation timing, the queued drink and interact start and end times.
   let idleVar = null,
@@ -138,17 +139,25 @@
     freeAt = null,
     busyAnim = null;
 
-  // The interact sheet every zone plays unless it has its own: reach in (0-7) once at 10 frames a second, keep
-  // working (8-14 back and forth) at 6 a second, then turn back at 14 a second.
-  const INTERACT = {
-    key: "interact",
-    fps: 10,
-    intro: 8,
-    loop: [8, 9, 10, 11, 12, 13, 14, 13, 12, 11, 10, 9],
-    loopFps: 6,
-    outro: [15, 6, 5, 4, 3, 2, 1, 0],
-    outroFps: 14,
-  };
+  // An animation ready to play while he is busy at a zone, with the defaults filled in: loop every frame after the
+  // intro, no turn-back, all at the same speed.
+  function busyPlan(key, a) {
+    const fps = a.fps || 10,
+      intro = a.intro || 0;
+
+    return {
+      key,
+      fps,
+      intro,
+      loop: a.loop && a.loop.length ? a.loop : [...Array(a.frames).keys()].slice(intro),
+      loopFps: a.loopFps || fps,
+      outro: a.outro || [],
+      outroFps: a.outroFps || fps,
+    };
+  }
+
+  // The interact sheet every zone plays unless it has its own: reach in, keep working, then turn back (see ANIMS).
+  const INTERACT = busyPlan("interact", ANIMS.interact);
 
   // ===============================================================================================
   // zoneAnim()
@@ -163,19 +172,7 @@
       a = z && z.anim;
 
     if (!a || !imgs["anim-" + z.id]) return INTERACT;
-    const fps = a.fps || 10,
-      intro = a.intro || 0;
-
-    // Fills in the defaults: loop every frame after the intro, no turn-back, all at the same speed.
-    return {
-      key: "anim-" + z.id,
-      fps,
-      intro,
-      loop: a.loop || [...Array(a.frames).keys()].slice(intro),
-      loopFps: a.loopFps || fps,
-      outro: a.outro || [],
-      outroFps: a.outroFps || fps,
-    };
+    return busyPlan("anim-" + z.id, a);
   }
 
   // "d" makes the capybara drink once; it waits for any other animation to finish and is ignored mid-drink
@@ -252,7 +249,7 @@
     }
 
     // Ends a finished variation and schedules the next one 4 to 9 seconds later.
-    if (idleVar !== null && clock - idleVar >= curVar.frames / 6) {
+    if (idleVar !== null && clock - idleVar >= curVar.frames / curVar.fps) {
       idleVar = curVar = null;
       nextVar = clock + 4 + Math.random() * 5;
     }
@@ -277,15 +274,13 @@
 
     // Picks the frame number within the chosen sheet for the current state.
     const n = walking
-      ? Math.floor(player.t * 10) % CHAR.frames
+      ? Math.floor(player.t * ANIMS.walk.fps) % ANIMS.walk.frames
       : act !== null
         ? act
         : idleVar !== null
-          ? (curVar.seq || [...Array(curVar.frames).keys()])[
-              Math.min(curVar.frames - 1, Math.floor((clock - idleVar) * 6))
-            ]
+          ? curVar.seq[Math.min(curVar.frames - 1, Math.floor((clock - idleVar) * curVar.fps))]
           : imgs.idle
-            ? Math.floor(clock * 5) % 16
+            ? Math.floor(clock * ANIMS.idle.fps) % ANIMS.idle.frames
             : 0;
 
     // Source position of that frame in the sheet grid.

@@ -11,21 +11,53 @@
   const CORNERS = { top: [260, 85], right: [555, 228], bottom: [310, 350], left: [15, 207] };
   const N = 26; // floor grid is N x N tiles
 
-  // Image files to preload: the room, capybara animations and furniture cutouts (zones add their own cutouts).
+  // ===============================================================================================
+  // ANIMATIONS
+  // ===============================================================================================
+
+  // Every sprite sheet animation, by sprite key: who plays it, its sheet (64x64 frames, 4 per row), frame count and
+  // speed in frames a second. vary marks the idle variations. seq is a play order; interact plays intro frames once,
+  // then loop, then outro at their own speeds. Frame numbers count from 0, left to right, row by row.
+  // <anim-settings> written by the editor's Animation page; edit it there, or by hand keeping both marker lines
+  const ANIMS = {
+    walk: { entity: "Capybara", name: "Walk", sheet: "assets/capybara-walk-sheet.png", frames: 8, fps: 10 },
+    idle: { entity: "Capybara", name: "Idle", sheet: "assets/capybara-idle3.png", frames: 16, fps: 5 },
+    idle2: { entity: "Capybara", name: "Idle 2", sheet: "assets/capybara-idle2.png", frames: 8, fps: 6, vary: true },
+    idle4: { entity: "Capybara", name: "Idle 4", sheet: "assets/capybara-idle4.png", frames: 16, fps: 6, vary: true },
+    drink: {
+      entity: "Capybara",
+      name: "Drink",
+      sheet: "assets/capybara-drink.png",
+      frames: 16,
+      fps: 6,
+      vary: true,
+      seq: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 4, 3, 0],
+    },
+    interact: {
+      entity: "Capybara",
+      name: "Interact",
+      sheet: "assets/capybara-interact.png",
+      frames: 16,
+      fps: 10,
+      intro: 8,
+      loop: [8, 9, 10, 11, 12, 13, 14, 13, 12, 11, 10, 9],
+      loopFps: 6,
+      outro: [15, 6, 5, 4, 3, 2, 1, 0],
+      outroFps: 14,
+    },
+  };
+  // </anim-settings>
+
+  // Image files to preload: the room, every animation sheet and furniture cutouts (zones add their own cutouts).
   const SPRITES = {
     room: "assets/room.png",
-    walk: "assets/capybara-walk-sheet.png",
-    idle: "assets/capybara-idle3.png",
-    interact: "assets/capybara-interact.png",
-    idle2: "assets/capybara-idle2.png",
-    idle4: "assets/capybara-idle4.png",
-    drink: "assets/capybara-drink.png",
+    ...Object.fromEntries(Object.entries(ANIMS).map(([k, a]) => [k, a.sheet])),
     "occ-gear": "assets/occ-gear.png",
     "occ-plant": "assets/occ-plant.png",
   };
 
-  // capybara.png: 4 cols x 2 rows of 64x64 frames, one walk cycle drawn facing right; mirrored for left
-  const CHAR = { frame: 64, cols: 4, frames: 8, footY: 60, scale: 1.15, facesLeft: false };
+  // Capybara frames: 64x64, 4 per row, drawn facing right and mirrored for left; feet 60 px down the frame.
+  const CHAR = { frame: 64, cols: 4, frames: ANIMS.walk.frames, footY: 60, scale: 1.15, facesLeft: false };
 
   // Room coordinates are measured on the 2x room art, so outlines are halved: d2 maps them to room.png pixels.
   const d2 = (pts) => pts.map(([x, y]) => [x / 2, y / 2]);
