@@ -16,8 +16,9 @@
   // ===============================================================================================
 
   // Every sprite sheet animation, by sprite key: who plays it, its sheet (64x64 frames, 4 per row), frame count and
-  // speed in frames a second. vary marks the idle variations. seq is a play order; interact plays intro frames once,
-  // then loop, then outro at their own speeds. Frame numbers count from 0, left to right, row by row.
+  // speed in frames a second. vary marks the idle variations. seq is a play order (walk and idle loop it, the
+  // variations play it once; every frame in turn when left out). interact plays intro (a frame count, or a list)
+  // once, then loop, then outro at their own speeds. Frame numbers count from 0, left to right, row by row.
   // <anim-settings> written by the editor's Animation page; edit it there, or by hand keeping both marker lines
   const ANIMS = {
     walk: { entity: "Capybara", name: "Walk", sheet: "assets/capybara-walk-sheet.png", frames: 8, fps: 10 },

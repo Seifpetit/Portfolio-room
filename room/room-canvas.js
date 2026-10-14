@@ -139,17 +139,22 @@
     freeAt = null,
     busyAnim = null;
 
-  // An animation ready to play while he is busy at a zone, with the defaults filled in: loop every frame after the
-  // intro, no turn-back, all at the same speed.
+  // The frame to show at tick k of an animation: its play order (seq) when it has one, else every frame in turn.
+  const frameAt = (a, k) => (a.seq && a.seq.length ? a.seq[k % a.seq.length] : k % a.frames);
+
+  // An animation ready to play while he is busy at a zone, with the defaults filled in: the intro is a frame count
+  // (frames 0 up) or a list of frames, then the loop (every frame after the intro if left out), no turn-back, all at
+  // the same speed. introSeq is the intro as a list of frames.
   function busyPlan(key, a) {
     const fps = a.fps || 10,
-      intro = a.intro || 0;
+      introSeq = Array.isArray(a.intro) ? a.intro : [...Array(a.intro || 0).keys()];
 
     return {
       key,
       fps,
-      intro,
-      loop: a.loop && a.loop.length ? a.loop : [...Array(a.frames).keys()].slice(intro),
+      intro: introSeq.length,
+      introSeq,
+      loop: a.loop && a.loop.length ? a.loop : [...Array(a.frames).keys()].slice(introSeq.length),
       loopFps: a.loopFps || fps,
       outro: a.outro || [],
       outroFps: a.outroFps || fps,
@@ -207,7 +212,7 @@
     // While busy: play the reach-in once, then loop the working frames.
     if (busyAt !== null) {
       const k = Math.floor((clock - busyAt) * A.fps);
-      return k < A.intro ? k : A.loop[Math.floor(((k - A.intro) * A.loopFps) / A.fps) % A.loop.length];
+      return k < A.intro ? A.introSeq[k] : A.loop[Math.floor(((k - A.intro) * A.loopFps) / A.fps) % A.loop.length];
     }
 
     // After closing: play the turn-back frames once, then return to idle.
@@ -274,13 +279,13 @@
 
     // Picks the frame number within the chosen sheet for the current state.
     const n = walking
-      ? Math.floor(player.t * ANIMS.walk.fps) % ANIMS.walk.frames
+      ? frameAt(ANIMS.walk, Math.floor(player.t * ANIMS.walk.fps))
       : act !== null
         ? act
         : idleVar !== null
           ? curVar.seq[Math.min(curVar.frames - 1, Math.floor((clock - idleVar) * curVar.fps))]
           : imgs.idle
-            ? Math.floor(clock * ANIMS.idle.fps) % ANIMS.idle.frames
+            ? frameAt(ANIMS.idle, Math.floor(clock * ANIMS.idle.fps))
             : 0;
 
     // Source position of that frame in the sheet grid.

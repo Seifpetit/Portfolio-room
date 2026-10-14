@@ -84,7 +84,7 @@ anim: {
   sheet: "assets/capybara-sit.png", // same layout as the other capybara sheets: 64x64 frames, 4 per row
   frames: 12, // how many frames the sheet holds
   fps: 8, // speed, frames per second (10 if left out)
-  intro: 4, // frames 0-3 play once when he starts (0 if left out)
+  intro: 4, // frames 0-3 play once when he starts (0 if left out; a list like [0, 2, 4] works too)
   loop: [4, 5, 6, 7, 6, 5], // then these repeat while he is busy (every frame after the intro if left out)
   outro: [3, 2, 1, 0], // played once when he stops, before he walks off (nothing if left out)
 },
