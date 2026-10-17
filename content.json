@@ -2,9 +2,10 @@
   "schemaVersion": 1,
   "site": {
     "title": {
-      "en": "Seif's Room",
-      "de": "Seifs Raum",
-      "fr": "La chambre de Seif"
+      "en": "Portfolio Room",
+      "de": "Portfolio Raum",
+      "fr": "Portfolio de Seif",
+      "aeb": "Portfolio Seif"
     },
     "description": {
       "en": "My Portfolio Room",
@@ -486,9 +487,9 @@
         "section": "global",
         "where": "Room title (top left, top centre on phones) and start screen title. The {braced} part is amber.",
         "text": {
-          "en": "Seif's {Room}",
-          "de": "Seifs {Raum}",
-          "fr": "La {chambre} de Seif"
+          "en": "Portfolio {Room}",
+          "de": "Portfolio {Raum}",
+          "fr": "Le {Portfolio} de Seif"
         }
       },
       "name.projects": {
