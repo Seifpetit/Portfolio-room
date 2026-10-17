@@ -393,7 +393,7 @@
     },
     "pdf": {
       "en": "content/cv/Seif-Jlassi-CV-EN.pdf",
-      "de": "content/cv/Seif-Jlassi-Lebenslauf-DE.pdf",
+      "de": "content/cv/Seif-Jlassi-CV-DE.pdf",
       "fr": "content/cv/Seif-Jlassi-CV-FR.pdf"
     },
     "say": {
@@ -406,7 +406,11 @@
       "de": "Dortmund, Deutschland",
       "fr": "Dortmund, Allemagne"
     },
-    "website": "https://seifpetit.github.io/Portfolio-room/"
+    "website": "https://seifpetit.github.io/Portfolio-room/",
+    "pixel": {
+      "en": "",
+      "de": "content/cv/Seif-Jlassi-CV-DE-pixel.png"
+    }
   },
   "contact": {
     "placeholder": false,
