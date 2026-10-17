@@ -191,7 +191,7 @@
         },
         "experience": {
           "type": "array",
-          "maxItems": 3,
+          "maxItems": 6,
           "items": {
             "type": "object",
             "required": ["company", "role"],
@@ -211,7 +211,7 @@
               },
               "bullets": {
                 "type": "array",
-                "maxItems": 2,
+                "maxItems": 6,
                 "items": {
                   "$ref": "#/$defs/text",
                   "description": "at most 90 characters per language"
@@ -222,7 +222,7 @@
         },
         "education": {
           "type": "array",
-          "maxItems": 2,
+          "maxItems": 4,
           "items": {
             "type": "object",
             "required": ["school", "degree"],
@@ -245,7 +245,7 @@
         },
         "skills": {
           "type": "array",
-          "maxItems": 3,
+          "maxItems": 6,
           "items": {
             "type": "object",
             "required": ["items"],
@@ -292,6 +292,24 @@
         "say": {
           "$ref": "#/$defs/text",
           "description": "Seif's line while the CV paper is hovered; at most 100 characters per language"
+        },
+        "extra": {
+          "type": "array",
+          "maxItems": 4,
+          "description": "other sections of an uploaded CV: a title and text with one line per row",
+          "items": {
+            "type": "object",
+            "required": ["title", "text"],
+            "additionalProperties": false,
+            "properties": {
+              "title": {
+                "$ref": "#/$defs/text"
+              },
+              "text": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          }
         }
       }
     },

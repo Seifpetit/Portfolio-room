@@ -94,7 +94,7 @@ zone({
         e.append(
           el("span", "cvwhen", [x.start, x.end].filter(Boolean).join(" - ")),
           el("b", null, tr(x.role)),
-          " \u00B7 " + x.company,
+          x.company ? " \u00B7 " + x.company : "",
         );
 
         // Bullet list of the job's highlights, when it has any.
@@ -117,7 +117,7 @@ zone({
         e.append(
           el("span", "cvwhen", [x.start, x.end].filter(Boolean).join(" - ")),
           el("b", null, tr(x.degree)),
-          " \u00B7 " + x.school,
+          x.school ? " \u00B7 " + x.school : "",
         );
 
         return e;
@@ -138,6 +138,17 @@ zone({
     // Spoken languages: one translatable line (older files kept a list).
     const langs = Array.isArray(C.languages) ? C.languages.join(", ") : tr(C.languages);
     if (langs) sec(ui("cv.languages"), [el("p", "cvskill", langs)]);
+    // Sections the uploaded CV had beyond the usual ones: a title and one line per row of text.
+    (C.extra || []).forEach((x) =>
+      sec(
+        tr(x.title),
+        tr(x.text)
+          .split("\n")
+          .filter(Boolean)
+          .map((l) => el("p", "cvskill", l)),
+      ),
+    );
+
     // CV footer and the PDF link, kept only when it is a safe URL.
     const foot = el("div", "cvfoot"),
       pdf = safeUrl(tr(C.pdf));
