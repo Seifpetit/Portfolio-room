@@ -279,7 +279,7 @@
         },
         "pdf": {
           "$ref": "#/$defs/text",
-          "description": "path/URL of the CV PDF, one per language; empty hides the Download button"
+          "description": "path/URL of the downloadable CV file (PDF, or Word, ODT, RTF, text), one per language; empty hides the Download button"
         },
         "location": {
           "$ref": "#/$defs/text",

@@ -88,7 +88,7 @@ loop, or a YouTube/Vimeo link; the thumbnail is shown first), `links` (`[{ "labe
 | `education`   | array, 2 max        | no  | `{ school, degree, start, end }`                          |
 | `skills`      | array, 3 groups max | no  | `{ group, items[] }`, about 10 items total                |
 | `languages`   | string[]            | no  | Spoken languages                                          |
-| `pdf`         | string              | no  | Empty hides the "Download CV" button                      |
+| `pdf`         | text                | no  | CV file (PDF best; Word, ODT, RTF, text). Empty hides it  |
 | `say`         | text, 100           | no  | Seif's line while the CV paper is hovered                 |
 
 It is one paper. If the content is long, the text shrinks to fit (down to a floor), so stay inside the limits above or
