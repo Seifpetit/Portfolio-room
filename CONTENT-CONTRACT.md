@@ -84,10 +84,10 @@ loop, or a YouTube/Vimeo link; the thumbnail is shown first), `links` (`[{ "labe
 | `name`        | string, 32          | yes |                                                           |
 | `role`        | string, 48          | yes |                                                           |
 | `summary`     | string, 240         | no  | 2 to 3 sentences                                          |
-| `experience`  | array, 6 max        | no  | `{ company, role, start, end, bullets[6 max] }`           |
-| `education`   | array, 4 max        | no  | `{ school, degree, start, end }`                          |
-| `skills`      | array, 6 groups max | no  | `{ group, items[] }`                                      |
-| `extra`       | array, 4 max        | no  | `{ title, text }` other CV sections, one line per row     |
+| `experience`  | array, 3 max        | no  | `{ company, role, start, end, bullets[2 max, 90 chars] }` |
+| `education`   | array, 2 max        | no  | `{ school, degree, start, end }`                          |
+| `skills`      | array, 3 groups max | no  | `{ group, items[] }`, about 10 items total                |
+| `pixel`       | text                | no  | PNG of the CV PDF, made by the editor; shown on the paper |
 | `languages`   | string[]            | no  | Spoken languages                                          |
 | `pdf`         | text                | no  | CV file (PDF best; Word, ODT, RTF, text). Empty hides it  |
 | `say`         | text, 100           | no  | Seif's line while the CV paper is hovered                 |

@@ -52,7 +52,9 @@ zone({
     desk.width = 200;
     desk.height = 140;
     desk.setAttribute("aria-hidden", "true");
-    const doc = el("article", "cvdoc");
+    const doc = el("article", "cvdoc"),
+      pixel = safeUrl(tr(C.pixel)); // the uploaded CV as a pixel-art picture, when there is one
+
     if (tr(C.say)) doc.dataset.say = tr(C.say); // Seif's line while the paper is hovered
     doc.tabIndex = 0;
     doc.setAttribute("aria-label", ui("sr.cv"));
@@ -138,16 +140,14 @@ zone({
     // Spoken languages: one translatable line (older files kept a list).
     const langs = Array.isArray(C.languages) ? C.languages.join(", ") : tr(C.languages);
     if (langs) sec(ui("cv.languages"), [el("p", "cvskill", langs)]);
-    // Sections the uploaded CV had beyond the usual ones: a title and one line per row of text.
-    (C.extra || []).forEach((x) =>
-      sec(
-        tr(x.title),
-        tr(x.text)
-          .split("\n")
-          .filter(Boolean)
-          .map((l) => el("p", "cvskill", l)),
-      ),
-    );
+    // An uploaded CV is shown as its pixel-art picture, instead of the text built from the fields.
+    if (pixel) {
+      const im = el("img", "cvpage");
+      im.src = pixel;
+      im.alt = "";
+      doc.classList.add("raster");
+      doc.replaceChildren(im);
+    }
 
     // CV footer and the PDF link, kept only when it is a safe URL.
     const foot = el("div", "cvfoot"),
