@@ -177,6 +177,70 @@
         }
       },
       {
+        "id": "project-mvhffzp0",
+        "name": {
+          "en": "Lead Gen & CRM (Tunisia)",
+          "de": "Lead Gen & CRM (Tunesien)"
+        },
+        "thumbnail": "content/projects/project-mvhffzp0/crm-boards.gif",
+        "description": {
+          "en": "Finds freight shippers and their decision-makers in a region.",
+          "de": "Findet Frachtkunden und ihre Entscheider in einer Region."
+        },
+        "tags": [
+          "TypeScript",
+          "React",
+          "Postgres"
+        ],
+        "badge": "New",
+        "cta": {
+          "label": {
+            "en": "Repo",
+            "it": "Repo ",
+            "de": "Repo"
+          },
+          "url": "https://github.com/Seifpetit/Lead-Gen-CRM"
+        },
+        "say": {
+          "en": "Cold calling is guesswork. This finds who to call. Ask me!",
+          "de": "Kaltakquise ist Raten. Das hier findet, wen man anruft. Frag mich!"
+        },
+        "detail": {
+          "summary": {
+            "en": "A lead generation tool for freight transporters in Tunisia. Pick a region and a spend cap: it searches Google Maps for companies that ship goods, finds the people who decide on transport, and looks up a contact channel for each. Leads land on two drag-and-drop boards, and every value shows its source.",
+            "de": "Ein Lead-Generator für Transportunternehmen in Tunesien. Du wählst eine Region und ein Ausgabenlimit: Er durchsucht Google Maps nach Firmen, die Waren versenden, findet die Entscheider für den Transport und sucht je einen Kontaktweg. Die Leads landen auf zwei Drag-and-drop-Boards, und jeder Wert zeigt seine Quelle."
+          },
+          "role": {
+            "en": "Design and build, with Claude",
+            "de": "Konzept und Umsetzung, mit Claude"
+          },
+          "stack": [
+            "TypeScript",
+            "React",
+            "Fastify",
+            "Postgres",
+            "Apify"
+          ],
+          "highlight": {
+            "en": "Safe paid runs: hard spend caps, an append-only cost ledger and crash-safe runs, so a bug can’t burn money.",
+            "de": "Sichere bezahlte Läufe: harte Kostenlimits, ein unveränderliches Kostenbuch und absturzsichere Runs, damit ein Fehler kein Geld verbrennt"
+          },
+          "gallery": [
+            {
+              "type": "image",
+              "src": "content/projects/project-mvhffzp0/start-a-run.gif",
+              "alt": ""
+            },
+            {
+              "type": "image",
+              "src": "content/projects/project-mvhffzp0/coverage.gif",
+              "alt": ""
+            }
+          ],
+          "links": []
+        }
+      },
+      {
         "id": "project-three",
         "name": {
           "en": "Seif's Room",
